@@ -37,9 +37,16 @@ jobs:
           python rsoe_crawler.py
           ls -al  # 디버그
 
-      - name: Copy data to docs/
+      - name: Prepare docs directory
         run: |
           mkdir -p docs/data
+          # Copy all necessary files to docs directory
+          cp index.html docs/
+          cp script.js docs/
+          cp style.css docs/  # Make sure CSS file is copied
+          
+      - name: Copy data to docs/
+        run: |
           if [ -f crawler/rsoe_events.json ]; then
             cp crawler/rsoe_events.json docs/data/events.json
           elif [ -f crawler/fixed_rsoe_events.json ]; then
@@ -49,23 +56,33 @@ jobs:
           fi
           ls -al docs/data  # 디버그
       
-      - name: Rewrite asset paths to relative + add cache buster
+      - name: Fix HTML file references and add cache busters
         run: |
-          # 절대경로를 상대경로로 교정
-          sed -i 's|href="/style\.css"|href="style.css"|g' docs/index.html
-          sed -i 's|src="/script\.js"|src="script.js"|g' docs/index.html
-          sed -i 's|href="/docs/style\.css"|href="style.css"|g' docs/index.html
-          sed -i 's|src="/docs/script\.js"|src="script.js"|g' docs/index.html
-          # 캐시 무효화를 위한 쿼리 추가
-          sed -i "s|style\.css\"|style.css?v=${GITHUB_RUN_NUMBER}\"|g" docs/index.html
-          sed -i "s|script\.js\"|script.js?v=${GITHUB_RUN_NUMBER}\"|g" docs/index.html
+          cd docs
+          # Fix CSS filename reference (styles.css -> style.css)
+          sed -i 's|href="styles\.css"|href="style.css?v='${GITHUB_RUN_NUMBER}'"|g' index.html
+          # Add cache buster to script.js (remove existing ?v= first)
+          sed -i 's|script\.js?v=[0-9]*"|script.js?v='${GITHUB_RUN_NUMBER}'"|g' index.html
+          # If no cache buster exists, add one
+          sed -i 's|src="script\.js"|src="script.js?v='${GITHUB_RUN_NUMBER}'"|g' index.html
+          
+          # Verify the changes
+          echo "=== Updated index.html content ==="
+          grep -E "(style\.css|script\.js)" index.html || echo "No matches found"
+          
+          echo "=== Files in docs directory ==="
+          ls -la
+
+      - name: Create last update timestamp
+        run: |
+          echo "Last updated: $(date -u)" > docs/data/last_update.txt
 
       - name: Commit updated site
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/index.html docs/data/events.json docs/style.css docs/script.js
-          git commit -m "chore: update site assets (run ${GITHUB_RUN_NUMBER})" || echo "no changes"
+          git add docs/
+          git commit -m "chore: update site assets and data (run ${GITHUB_RUN_NUMBER})" || echo "no changes"
           git push
 
       - name: Upload artifact for Pages
