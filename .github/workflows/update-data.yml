@@ -4,7 +4,7 @@ name: Update Disaster Data
 
 on:
   schedule:
-    - cron: "*/10 * * * *" # 10분마다 실행
+    - cron: "0 0 * * *"  # 매일 00:00 UTC = 한국 09:00
   workflow_dispatch:
 
 permissions:
