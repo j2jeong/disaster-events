@@ -2,33 +2,79 @@ name: Update Disaster Data
 
 on:
   schedule:
-    - cron: '0 23 * * *'   # 매일 오전 8시 KST = UTC 23:00
+    - cron: "0 23 * * *"   # 매일 08:00 KST
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
-  update-data:
+  build:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
-        
-    - name: Install dependencies
-      run: |
-        cd crawler
-        pip install -r requirements.txt
-        
-    - name: Run crawler
-      run: |
-        cd crawler
-        python rsoe_crawler.py
-        
-    - name: Copy data to docs folder
-      run: |
-        mkdir -p docs/data
-        cp crawler/rsoe_events.json docs/data/events.json || echo "No new data file generated"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          cd crawler
+          pip install -r requirements.txt
+
+      - name: Run crawler
+        run: |
+          cd crawler
+          python rsoe_crawler.py
+          ls -al  # 디버그
+
+      - name: Copy data to docs/
+        run: |
+          mkdir -p docs/data
+          if [ -f crawler/rsoe_events.json ]; then
+            cp crawler/rsoe_events.json docs/data/events.json
+          elif [ -f crawler/fixed_rsoe_events.json ]; then
+            cp crawler/fixed_rsoe_events.json docs/data/events.json
+          else
+            echo "No new data file generated"; exit 1
+          fi
+          ls -al docs/data  # 디버그
+
+      - name: Prerender docs/index.html
+        run: |
+          python crawler/prerender.py
+          git status
+          git diff --stat || true
+
+      - name: Commit updated HTML
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/index.html docs/data/events.json
+          git commit -m "chore: prerender index.html with latest data" || echo "no changes"
+          git push
+
+      - name: Upload artifact for Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./docs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
