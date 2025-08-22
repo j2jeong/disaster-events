@@ -8,6 +8,67 @@ from urllib.parse import urljoin, urlparse
 import sys
 import os
 
+# 파일 상단 import들 아래에 추가
+import pathlib
+from typing import Dict, Any, List
+
+def _parse_iso(dt: str) -> float:
+    # crawled_at은 ISO라서 바로 비교 가능 (없으면 0)
+    try:
+        return datetime.fromisoformat(dt).timestamp()
+    except Exception:
+        return 0.0
+
+def merge_events(new_events: List[Dict[str, Any]],
+                 existing_path: str = "docs/data/events.json") -> List[Dict[str, Any]]:
+    """
+    기존 docs/data/events.json과 새 크롤링 결과를 병합하여
+    - event_id 기준으로 중복 제거
+    - 같은 event_id면 crawled_at(최신) 우선
+    - 보조 키(title, date, lat, lon)로 한 번 더 중복 제거
+    """
+    merged: Dict[str, Dict[str, Any]] = {}
+
+    # 1) 기존 로드
+    p = pathlib.Path(existing_path)
+    if p.exists():
+        try:
+            old = json.loads(p.read_text(encoding="utf-8"))
+            for ev in old:
+                merged[ev.get("event_id", "")] = ev
+        except Exception:
+            old = []
+    else:
+        old = []
+
+    # 2) 새 데이터로 갱신(같은 ID면 최신 crawled_at 우선)
+    for ev in new_events:
+        eid = ev.get("event_id", "")
+        if not eid:
+            # event_id 없을 때는 임시 키 생성
+            key = f"{ev.get('event_title','')}|{ev.get('event_date_utc','')}|{ev.get('latitude','')}|{ev.get('longitude','')}"
+            eid = key
+        prev = merged.get(eid)
+        if prev:
+            if _parse_iso(ev.get("crawled_at","")) >= _parse_iso(prev.get("crawled_at","")):
+                merged[eid] = ev
+        else:
+            merged[eid] = ev
+
+    # 3) 보조 키로도 한 번 더 중복 제거 (서로 다른 ID지만 사실상 동일한 경우)
+    seen_keys = set()
+    deduped = []
+    for ev in merged.values():
+        key = f"{ev.get('event_title','')}|{ev.get('event_date_utc','')}|{ev.get('latitude','')}|{ev.get('longitude','')}"
+        if key not in seen_keys:
+            seen_keys.add(key)
+            deduped.append(ev)
+
+    # (선택) 최신순 정렬
+    deduped.sort(key=lambda x: _parse_iso(x.get("crawled_at","")), reverse=True)
+    return deduped
+
+
 class RSOECrawler:
     def __init__(self):
         self.base_url = "https://rsoe-edis.org"
@@ -331,7 +392,12 @@ if __name__ == "__main__":
             print(f"  {category}: {count}")
         
         # JSON으로 저장
-        crawler.save_to_json("rsoe_events.json")
+        merged = merge_events(crawler.collected_events, existing_path="docs/data/events.json")
+        # 병합된 결과를 다음 단계에서 복사하는 파일명으로 저장
+        with open("rsoe_events.json", "w", encoding="utf-8") as f:
+            json.dump(merged, f, ensure_ascii=False, indent=2)
+        print(f"Saved merged events: {len(merged)} items")
+        sys.exit(0)
         print("\nCrawling completed successfully!")
         sys.exit(0)
     else:

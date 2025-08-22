@@ -48,13 +48,24 @@ jobs:
             echo "No new data file generated"; exit 1
           fi
           ls -al docs/data  # 디버그
+      
+      - name: Rewrite asset paths to relative + add cache buster
+        run: |
+          # 절대경로를 상대경로로 교정
+          sed -i 's|href="/style\.css"|href="style.css"|g' docs/index.html
+          sed -i 's|src="/script\.js"|src="script.js"|g' docs/index.html
+          sed -i 's|href="/docs/style\.css"|href="style.css"|g' docs/index.html
+          sed -i 's|src="/docs/script\.js"|src="script.js"|g' docs/index.html
+          # 캐시 무효화를 위한 쿼리 추가
+          sed -i "s|style\.css\"|style.css?v=${GITHUB_RUN_NUMBER}\"|g" docs/index.html
+          sed -i "s|script\.js\"|script.js?v=${GITHUB_RUN_NUMBER}\"|g" docs/index.html
 
-      - name: Commit updated HTML
+      - name: Commit updated site
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/index.html docs/data/events.json
-          git commit -m "chore: prerender index.html with latest data" || echo "no changes"
+          git add docs/index.html docs/data/events.json docs/style.css docs/script.js
+          git commit -m "chore: update site assets (run ${GITHUB_RUN_NUMBER})" || echo "no changes"
           git push
 
       - name: Upload artifact for Pages
