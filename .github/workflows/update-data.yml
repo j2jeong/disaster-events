@@ -2,7 +2,7 @@ name: Update Disaster Data
 
 on:
   schedule:
-    - cron: "*/5 * * * *"  # 임시: 5분마다 (GitHub은 최소 5분 주기 권장)
+    - cron: "*/10 * * * *"  # 10분마다 실행
   workflow_dispatch:
 
 permissions:
@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 전체 히스토리를 가져와서 기존 파일들 확보
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -31,59 +33,139 @@ jobs:
           cd crawler
           pip install -r requirements.txt
 
-      - name: Run crawler
-        run: |
-          cd crawler
-          python rsoe_crawler.py
-          ls -al  # 디버그
-
-      - name: Prepare docs directory
+      - name: Ensure docs/data directory exists
         run: |
           mkdir -p docs/data
-          # Files are already in docs directory, just ensure data directory exists
-          ls -la docs/  # Debug: show what's in docs directory
+          echo "=== Current docs/data contents ==="
+          ls -la docs/data/ || echo "docs/data directory is empty or doesn't exist"
+
+      - name: Run crawler with data merging
+        run: |
+          cd crawler
+          echo "=== Running crawler with merge functionality ==="
+          python rsoe_crawler.py
+          echo "=== Crawler completed ==="
+          ls -al
           
-      - name: Copy data to docs/
+          # 크롤러 결과 확인
+          if [ -f rsoe_events.json ]; then
+            echo "✓ New merged data file created: rsoe_events.json"
+            wc -l rsoe_events.json
+          else
+            echo "✗ No output file generated from crawler"
+            exit 1
+          fi
+
+      - name: Copy merged data to docs
         run: |
           if [ -f crawler/rsoe_events.json ]; then
+            echo "=== Copying merged data ==="
             cp crawler/rsoe_events.json docs/data/events.json
-          elif [ -f crawler/fixed_rsoe_events.json ]; then
-            cp crawler/fixed_rsoe_events.json docs/data/events.json
+            
+            # 파일 크기와 이벤트 수 확인
+            echo "=== Data statistics ==="
+            echo "File size: $(du -h docs/data/events.json)"
+            echo "Event count: $(cat docs/data/events.json | jq length 2>/dev/null || echo 'Could not count events')"
+            
+            # 최신 10개 이벤트 ID 확인 (디버깅용)
+            echo "=== Latest 10 event IDs ==="
+            cat docs/data/events.json | jq -r '.[0:10][].event_id' 2>/dev/null || echo 'Could not extract event IDs'
           else
-            echo "No new data file generated"; exit 1
+            echo "✗ No crawler output to copy"
+            exit 1
           fi
-          ls -al docs/data  # 디버그
-      
-      - name: Fix HTML file references and add cache busters
+
+      - name: Create historical backup
+        run: |
+          # 매일 자정(UTC)에 백업 생성 또는 강제 백업
+          CURRENT_HOUR=$(date -u +%H)
+          BACKUP_DATE=$(date -u +%Y%m%d)
+          
+          mkdir -p docs/data/backups
+          
+          # 자정이거나 워크플로우를 수동 실행한 경우 백업 생성
+          if [ "$CURRENT_HOUR" = "00" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            if [ -f docs/data/events.json ]; then
+              cp docs/data/events.json "docs/data/backups/events_backup_${BACKUP_DATE}.json"
+              echo "✓ Daily backup created: events_backup_${BACKUP_DATE}.json"
+            fi
+          fi
+          
+          # 백업 파일 목록 확인
+          echo "=== Available backups ==="
+          ls -la docs/data/backups/ || echo "No backups directory"
+
+      - name: Update HTML assets with cache busting
         run: |
           cd docs
-          # Fix CSS filename reference (styles.css -> style.css)
+          
+          # CSS 파일명 수정 및 캐시 버스터 추가
           sed -i 's|href="styles\.css"|href="style.css?v='${GITHUB_RUN_NUMBER}'"|g' index.html
-          # Add cache buster to script.js (remove existing ?v= first)
+          
+          # JavaScript 캐시 버스터 업데이트
           sed -i 's|script\.js?v=[0-9]*"|script.js?v='${GITHUB_RUN_NUMBER}'"|g' index.html
-          # If no cache buster exists, add one
           sed -i 's|src="script\.js"|src="script.js?v='${GITHUB_RUN_NUMBER}'"|g' index.html
           
-          # Verify the changes
-          echo "=== Updated index.html content ==="
-          grep -E "(style\.css|script\.js)" index.html || echo "No matches found"
-          
-          echo "=== Files in docs directory ==="
-          ls -la
+          echo "=== Updated HTML references ==="
+          grep -E "(style\.css|script\.js)" index.html
 
-      - name: Create last update timestamp
+      - name: Create update timestamp
         run: |
-          echo "Last updated: $(date -u)" > docs/data/last_update.txt
+          echo "Last updated: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" > docs/data/last_update.txt
+          echo "Build number: ${GITHUB_RUN_NUMBER}" >> docs/data/last_update.txt
+          echo "Commit: ${GITHUB_SHA:0:7}" >> docs/data/last_update.txt
 
-      - name: Commit updated site
+      - name: Validate data integrity
+        run: |
+          echo "=== Data integrity check ==="
+          
+          # JSON 형식 검증
+          if ! jq empty docs/data/events.json 2>/dev/null; then
+            echo "✗ Invalid JSON format in events.json"
+            exit 1
+          fi
+          
+          # 기본 데이터 검증
+          EVENT_COUNT=$(jq length docs/data/events.json)
+          echo "✓ Valid JSON with $EVENT_COUNT events"
+          
+          if [ "$EVENT_COUNT" -eq 0 ]; then
+            echo "⚠️ Warning: No events in data file"
+          fi
+          
+          # 필수 필드 존재 확인
+          EVENTS_WITH_ID=$(jq '[.[] | select(.event_id != null and .event_id != "")] | length' docs/data/events.json)
+          echo "✓ Events with valid IDs: $EVENTS_WITH_ID"
+          
+          # 최신 데이터 확인
+          LATEST_CRAWL=$(jq -r '[.[] | .crawled_at] | max' docs/data/events.json 2>/dev/null || echo "unknown")
+          echo "✓ Latest crawl time: $LATEST_CRAWL"
+
+      - name: Commit and push changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/
-          git commit -m "chore: update site assets and data (run ${GITHUB_RUN_NUMBER})" || echo "no changes"
-          git push
+          
+          # 변경사항 확인
+          if git diff --quiet; then
+            echo "No changes to commit"
+          else
+            echo "=== Changes to commit ==="
+            git diff --name-only
+            git add docs/
+            
+            # 커밋 메시지에 통계 정보 포함
+            EVENT_COUNT=$(jq length docs/data/events.json 2>/dev/null || echo "unknown")
+            git commit -m "chore: update disaster data - ${EVENT_COUNT} events (run #${GITHUB_RUN_NUMBER})" \
+                      -m "- Crawled at: $(date -u)" \
+                      -m "- Total events: ${EVENT_COUNT}" \
+                      -m "- Build: #${GITHUB_RUN_NUMBER}"
+            
+            git push
+            echo "✓ Changes committed and pushed"
+          fi
 
-      - name: Upload artifact for Pages
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./docs

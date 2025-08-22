@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import json
 import time
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 from urllib.parse import urljoin, urlparse
 import sys
 import os
@@ -13,60 +13,235 @@ import pathlib
 from typing import Dict, Any, List
 
 def _parse_iso(dt: str) -> float:
-    # crawled_at은 ISO라서 바로 비교 가능 (없으면 0)
+    """ISO 날짜 문자열을 timestamp로 변환"""
     try:
+        # Z 또는 +00:00 형태 처리
+        if dt.endswith('Z'):
+            dt = dt.replace('Z', '+00:00')
+        elif not dt.endswith(('+00:00', '-')):
+            dt += '+00:00'
         return datetime.fromisoformat(dt).timestamp()
-    except Exception:
+    except Exception as e:
+        print(f"Date parsing error for '{dt}': {e}")
         return 0.0
 
-def merge_events(new_events: List[Dict[str, Any]],
-                 existing_path: str = "docs/data/events.json") -> List[Dict[str, Any]]:
+def clean_duplicate_key(title: str, date: str, lat: str, lon: str) -> str:
+    """중복 제거용 키 생성 (정규화)"""
+    # 제목 정규화: 소문자, 특수문자 제거, 공백 정규화
+    clean_title = re.sub(r'[^\w\s]', '', title.lower()).strip()
+    clean_title = re.sub(r'\s+', ' ', clean_title)
+    
+    # 좌표 정규화: 소수점 4자리로 반올림
+    try:
+        lat_clean = f"{float(lat):.4f}" if lat else "0"
+        lon_clean = f"{float(lon):.4f}" if lon else "0"
+    except:
+        lat_clean = "0"
+        lon_clean = "0"
+    
+    # 날짜 정규화: 일자만 추출
+    date_clean = date[:10] if len(date) >= 10 else date
+    
+    return f"{clean_title}|{date_clean}|{lat_clean}|{lon_clean}"
+
+def merge_events(new_events: List[Dict[str, Any]], 
+                 existing_path: str = "docs/data/events.json",
+                 past_events_path: str = "docs/data/past_events.json") -> List[Dict[str, Any]]:
     """
-    기존 docs/data/events.json과 새 크롤링 결과를 병합하여
-    - event_id 기준으로 중복 제거
-    - 같은 event_id면 crawled_at(최신) 우선
-    - 보조 키(title, date, lat, lon)로 한 번 더 중복 제거
+    새로운 이벤트와 기존 이벤트를 병합하여 누적 저장
+    - event_id 기준으로 중복 제거 (1차)
+    - 같은 event_id면 최신 crawled_at 우선
+    - 보조 키(title, date, lat, lon)로 한 번 더 중복 제거 (2차)
+    - past_events.json도 함께 고려
+    - 오래된 이벤트는 자동으로 정리 (선택적)
     """
+    print("=== STARTING DATA MERGE PROCESS ===")
+    
     merged: Dict[str, Dict[str, Any]] = {}
+    stats = {
+        'past_events_loaded': 0,
+        'existing_events_loaded': 0,
+        'new_events_provided': len(new_events),
+        'new_events_added': 0,
+        'events_updated': 0,
+        'duplicates_removed': 0,
+        'old_events_removed': 0
+    }
 
-    # 1) 기존 로드
-    p = pathlib.Path(existing_path)
-    if p.exists():
+    # 1) past_events.json 로드 (최고 우선순위)
+    past_path = pathlib.Path(past_events_path)
+    if past_path.exists():
         try:
-            old = json.loads(p.read_text(encoding="utf-8"))
-            for ev in old:
-                merged[ev.get("event_id", "")] = ev
-        except Exception:
-            old = []
-    else:
-        old = []
+            past_content = past_path.read_text(encoding="utf-8")
+            if past_content.strip():
+                past_events = json.loads(past_content)
+                print(f"✓ Loaded {len(past_events)} past events from {past_events_path}")
+                for ev in past_events:
+                    event_id = str(ev.get("event_id", "")).strip()
+                    if event_id and event_id != "":
+                        merged[event_id] = ev
+                        stats['past_events_loaded'] += 1
+            else:
+                print(f"⚠️ {past_events_path} is empty")
+        except Exception as e:
+            print(f"⚠️ Error loading past events: {e}")
 
-    # 2) 새 데이터로 갱신(같은 ID면 최신 crawled_at 우선)
-    for ev in new_events:
-        eid = ev.get("event_id", "")
-        if not eid:
-            # event_id 없을 때는 임시 키 생성
-            key = f"{ev.get('event_title','')}|{ev.get('event_date_utc','')}|{ev.get('latitude','')}|{ev.get('longitude','')}"
-            eid = key
-        prev = merged.get(eid)
+    # 2) 기존 events.json 로드
+    existing_path_obj = pathlib.Path(existing_path)
+    if existing_path_obj.exists():
+        try:
+            existing_content = existing_path_obj.read_text(encoding="utf-8")
+            if existing_content.strip():
+                existing_events = json.loads(existing_content)
+                print(f"✓ Loaded {len(existing_events)} existing events from {existing_path}")
+                for ev in existing_events:
+                    event_id = str(ev.get("event_id", "")).strip()
+                    if event_id and event_id != "":
+                        # 기존 것이 더 최신이면 유지, 아니면 갱신
+                        if event_id in merged:
+                            existing_time = _parse_iso(ev.get("crawled_at", ""))
+                            merged_time = _parse_iso(merged[event_id].get("crawled_at", ""))
+                            if existing_time > merged_time:
+                                merged[event_id] = ev
+                                print(f"  → Updated event {event_id} with newer data from existing")
+                        else:
+                            merged[event_id] = ev
+                            stats['existing_events_loaded'] += 1
+            else:
+                print(f"⚠️ {existing_path} is empty")
+        except Exception as e:
+            print(f"⚠️ Error loading existing events: {e}")
+
+    # 3) 새 데이터로 갱신 (같은 ID면 최신 crawled_at 우선)
+    print(f"✓ Processing {len(new_events)} new events...")
+    
+    for i, ev in enumerate(new_events, 1):
+        if i % 50 == 0:
+            print(f"  → Processing event {i}/{len(new_events)}...")
+            
+        event_id = str(ev.get("event_id", "")).strip()
+        
+        # event_id가 없는 경우 임시 ID 생성
+        if not event_id or event_id == "":
+            title = str(ev.get('event_title', '')).strip()[:50]
+            date = str(ev.get('event_date_utc', '')).strip()[:10]
+            lat = str(ev.get('latitude', '')).strip()[:10]
+            lon = str(ev.get('longitude', '')).strip()[:10]
+            event_id = f"TEMP_{hash(f'{title}_{date}_{lat}_{lon}')}"
+            ev["event_id"] = event_id
+            
+        prev = merged.get(event_id)
         if prev:
-            if _parse_iso(ev.get("crawled_at","")) >= _parse_iso(prev.get("crawled_at","")):
-                merged[eid] = ev
+            # 기존 이벤트 있음 - 시간 비교해서 갱신
+            new_time = _parse_iso(ev.get("crawled_at", ""))
+            prev_time = _parse_iso(prev.get("crawled_at", ""))
+            if new_time >= prev_time:
+                merged[event_id] = ev
+                stats['events_updated'] += 1
+                if i <= 10:  # 처음 10개만 로그
+                    print(f"  ✓ Updated event: {event_id}")
         else:
-            merged[eid] = ev
+            # 새 이벤트
+            merged[event_id] = ev
+            stats['new_events_added'] += 1
+            if i <= 10:  # 처음 10개만 로그
+                print(f"  ✓ New event: {event_id}")
 
-    # 3) 보조 키로도 한 번 더 중복 제거 (서로 다른 ID지만 사실상 동일한 경우)
+    print(f"✓ ID-based merge completed: {len(merged)} unique events by ID")
+
+    # 4) 보조 키로도 한 번 더 중복 제거 (서로 다른 ID지만 사실상 동일한 경우)
+    print("✓ Performing secondary deduplication by content similarity...")
     seen_keys = set()
     deduped = []
+    
     for ev in merged.values():
-        key = f"{ev.get('event_title','')}|{ev.get('event_date_utc','')}|{ev.get('latitude','')}|{ev.get('longitude','')}"
+        # 제목, 날짜, 좌표로 중복 판단
+        title = str(ev.get('event_title', '')).strip()
+        date = str(ev.get('event_date_utc', '')).strip()
+        lat = str(ev.get('latitude', '')).strip()
+        lon = str(ev.get('longitude', '')).strip()
+        
+        # 필수 데이터가 없는 경우 스킵
+        if not title:
+            continue
+            
+        key = clean_duplicate_key(title, date, lat, lon)
+        
         if key not in seen_keys:
             seen_keys.add(key)
             deduped.append(ev)
+        else:
+            stats['duplicates_removed'] += 1
 
-    # (선택) 최신순 정렬
-    deduped.sort(key=lambda x: _parse_iso(x.get("crawled_at","")), reverse=True)
+    # 5) 오래된 이벤트 정리 (6개월 이상 된 것들 - 선택적)
+    if len(deduped) > 1000:  # 이벤트가 많을 때만 정리
+        print("✓ Cleaning up very old events...")
+        cutoff_date = datetime.now() - timedelta(days=180)  # 6개월
+        
+        filtered = []
+        for ev in deduped:
+            event_date_str = ev.get('event_date_utc', '')
+            try:
+                if event_date_str:
+                    event_date = datetime.fromisoformat(event_date_str.replace('Z', '+00:00'))
+                    if event_date >= cutoff_date:
+                        filtered.append(ev)
+                    else:
+                        stats['old_events_removed'] += 1
+                else:
+                    filtered.append(ev)  # 날짜 정보 없으면 보존
+            except:
+                filtered.append(ev)  # 날짜 파싱 실패하면 보존
+        
+        if stats['old_events_removed'] > 0:
+            print(f"  → Removed {stats['old_events_removed']} events older than 6 months")
+            deduped = filtered
+
+    # 6) 최신순 정렬 (crawled_at 기준)
+    deduped.sort(key=lambda x: _parse_iso(x.get("crawled_at", "")), reverse=True)
+    
+    # 통계 출력
+    print("\n=== MERGE STATISTICS ===")
+    print(f"Past events loaded: {stats['past_events_loaded']}")
+    print(f"Existing events loaded: {stats['existing_events_loaded']}")
+    print(f"New events provided: {stats['new_events_provided']}")
+    print(f"New events added: {stats['new_events_added']}")
+    print(f"Events updated: {stats['events_updated']}")
+    print(f"Duplicates removed: {stats['duplicates_removed']}")
+    print(f"Old events removed: {stats['old_events_removed']}")
+    print(f"Final total events: {len(deduped)}")
+    print("==========================")
+    
     return deduped
+
+def create_backup_if_needed(events_path: str = "docs/data/events.json"):
+    """
+    현재 events.json을 백업으로 저장 (날짜별)
+    """
+    try:
+        events_file = pathlib.Path(events_path)
+        if events_file.exists() and events_file.stat().st_size > 0:
+            backup_dir = pathlib.Path("docs/data/backups")
+            backup_dir.mkdir(parents=True, exist_ok=True)
+            
+            today = datetime.now().strftime("%Y%m%d_%H%M")
+            backup_path = backup_dir / f"events_backup_{today}.json"
+            
+            # 같은 시간대 백업이 없을 때만 생성
+            if not backup_path.exists():
+                backup_path.write_text(events_file.read_text(encoding="utf-8"), encoding="utf-8")
+                print(f"✓ Created backup: {backup_path}")
+                
+                # 오래된 백업 정리 (7일 이상)
+                cutoff_time = datetime.now() - timedelta(days=7)
+                for backup_file in backup_dir.glob("events_backup_*.json"):
+                    if backup_file.stat().st_mtime < cutoff_time.timestamp():
+                        backup_file.unlink()
+                        print(f"  → Removed old backup: {backup_file.name}")
+            else:
+                print(f"⚠️ Backup already exists for this time: {backup_path}")
+    except Exception as e:
+        print(f"⚠️ Error creating backup: {e}")
 
 
 class RSOECrawler:
@@ -75,7 +250,7 @@ class RSOECrawler:
         self.event_list_url = "https://rsoe-edis.org/eventList"
         self.session = requests.Session()
         self.session.headers.update({
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
         })
         
         # 필터링할 카테고리들
@@ -101,11 +276,11 @@ class RSOECrawler:
                 response.raise_for_status()
                 return response.text
             except requests.RequestException as e:
-                print(f"Request failed (attempt {attempt + 1}/{retries}): {e}")
+                print(f"⚠️ Request failed (attempt {attempt + 1}/{retries}): {e}")
                 if attempt < retries - 1:
                     time.sleep(2 ** attempt)
                 else:
-                    print(f"Failed to fetch {url} after {retries} attempts")
+                    print(f"✗ Failed to fetch {url} after {retries} attempts")
                     return None
     
     def extract_all_event_links(self, html_content):
@@ -124,7 +299,7 @@ class RSOECrawler:
                 full_url = urljoin(self.base_url, href)
                 event_links.append(full_url)
         
-        print(f"Found {len(event_links)} total event links on this page")
+        print(f"✓ Found {len(event_links)} event links on this page")
         return list(set(event_links))
     
     def find_pagination_links(self, html_content):
@@ -206,8 +381,6 @@ class RSOECrawler:
             title = fields.get("Event title", "").strip()
             category = fields.get("Event category", "").strip()
             
-            print(f"Event {event_id}: '{title}' - Category: '{category}'")
-            
             # 카테고리 매핑 및 필터링
             mapped_category = ""
             for target_cat, mapped_cat in self.target_categories.items():
@@ -216,10 +389,7 @@ class RSOECrawler:
                     break
             
             if not mapped_category:
-                print(f"  -> Skipping: Category '{category}' not in target list")
                 return None
-            
-            print(f"  -> Collecting: Target category '{mapped_category}' found!")
             
             # 소스 링크 추출
             source_link = None
@@ -285,80 +455,97 @@ class RSOECrawler:
             return event_data
             
         except Exception as e:
-            print(f"Error extracting details from {event_url}: {e}")
+            print(f"⚠️ Error extracting details from {event_url}: {e}")
             return None
     
     def crawl_events(self):
         """메인 크롤링 함수"""
-        print("Starting RSOE EDIS event crawling...")
+        print("=== STARTING RSOE EDIS EVENT CRAWLING ===")
         print(f"Target categories: {list(self.target_categories.keys())}")
         print("=" * 60)
         
         try:
             # 메인 페이지 로드
-            print("Loading main event list page...")
+            print("✓ Loading main event list page...")
             main_html = self.get_page_content(self.event_list_url)
             if not main_html:
-                print("Failed to load main page")
+                print("✗ Failed to load main page")
                 return False
             
             # 모든 이벤트 링크 추출
             all_event_links = self.extract_all_event_links(main_html)
             
             # 추가 페이지들도 확인 (최대 3페이지까지만)
-            print("Looking for additional pages...")
+            print("✓ Looking for additional pages...")
             pagination_links = self.find_pagination_links(main_html)
             
             if pagination_links:
-                print(f"Found {len(pagination_links)} pagination links")
+                print(f"✓ Found {len(pagination_links)} pagination links")
                 max_pages = min(len(pagination_links), 3)  # GitHub Actions 시간 제한 고려
                 
                 for i, page_url in enumerate(pagination_links[:max_pages]):
                     try:
-                        print(f"Loading additional page {i+1}/{max_pages}...")
+                        print(f"  → Loading additional page {i+1}/{max_pages}...")
                         page_html = self.get_page_content(page_url)
                         if page_html:
                             page_links = self.extract_all_event_links(page_html)
                             all_event_links.extend(page_links)
-                        time.sleep(1)
+                        time.sleep(1)  # 서버 부하 방지
                     except Exception as e:
-                        print(f"Error loading page {page_url}: {e}")
+                        print(f"⚠️ Error loading page {page_url}: {e}")
             
             all_event_links = list(set(all_event_links))
-            print(f"Total unique event links collected: {len(all_event_links)}")
+            print(f"✓ Total unique event links collected: {len(all_event_links)}")
             
             if not all_event_links:
-                print("No event links found!")
+                print("✗ No event links found!")
                 return False
             
             print("=" * 60)
-            print("Processing event detail pages...")
+            print("✓ Processing event detail pages...")
             print("=" * 60)
             
             # 각 이벤트의 상세 정보 수집
             target_events_found = 0
-            max_events_to_process = min(len(all_event_links), 100)  # 시간 제한을 위해 최대 100개
+            max_events_to_process = min(len(all_event_links), 100)  # 10분 주기이므로 제한
             
             for i, event_url in enumerate(all_event_links[:max_events_to_process], 1):
-                print(f"[{i:3d}/{max_events_to_process}] Processing: {event_url}")
+                if i % 10 == 0:
+                    print(f"[{i:3d}/{max_events_to_process}] Progress: {i/max_events_to_process*100:.1f}%")
                 
                 event_data = self.extract_event_details(event_url)
                 if event_data:
                     self.collected_events.append(event_data)
                     target_events_found += 1
-                    print(f"  ✓ COLLECTED! ({target_events_found} total)")
+                    if i <= 5:  # 처음 5개만 상세 로그
+                        print(f"  ✓ [{i:3d}] COLLECTED: {event_data['event_id']} - {event_data['event_title'][:50]}...")
                 
-                time.sleep(0.5)  # 서버 부하 방지
+                # 너무 빠르면 차단될 수 있으므로 적당한 딜레이
+                time.sleep(0.3)
             
             print("\n" + "=" * 60)
-            print(f"CRAWLING COMPLETED!")
+            print(f"✓ CRAWLING COMPLETED!")
             print(f"Total processed: {max_events_to_process} events")
             print(f"Target events collected: {len(self.collected_events)} events")
+            
+            # 카테고리별 통계
+            if self.collected_events:
+                category_stats = {}
+                for event in self.collected_events:
+                    cat = event['event_category']
+                    category_stats[cat] = category_stats.get(cat, 0) + 1
+                
+                print("\nNew events by category:")
+                for cat, count in sorted(category_stats.items()):
+                    print(f"  {cat}: {count}")
+            
             print("=" * 60)
             return True
             
         except Exception as e:
-            print(f"Error during crawling: {e}")
+            print(f"✗ Error during crawling: {e}")
+            import traceback
+            traceback.print_exc()
             return False
     
     def save_to_json(self, filename="rsoe_events.json"):
@@ -366,40 +553,102 @@ class RSOECrawler:
         try:
             with open(filename, 'w', encoding='utf-8') as f:
                 json.dump(self.collected_events, f, ensure_ascii=False, indent=2)
-            print(f"Data saved to {filename}")
+            print(f"✓ Data saved to {filename}")
             return True
         except Exception as e:
-            print(f"Error saving to JSON: {e}")
+            print(f"✗ Error saving to JSON: {e}")
             return False
 
-if __name__ == "__main__":
-    crawler = RSOECrawler()
+def main():
+    """메인 실행 함수"""
+    print("=" * 80)
+    print("🌍 RSOE DISASTER DATA CRAWLER WITH CUMULATIVE MERGE")
+    print("=" * 80)
     
-    # 크롤링 실행
-    success = crawler.crawl_events()
-    
-    if success and crawler.collected_events:
-        # 결과 요약 출력
-        category_counts = {}
-        for event in crawler.collected_events:
-            category = event['event_category']
-            category_counts[category] = category_counts.get(category, 0) + 1
+    try:
+        # 백업 생성
+        print("1. Creating backup of existing data...")
+        create_backup_if_needed("docs/data/events.json")
         
-        print("\n=== COLLECTION SUMMARY ===")
-        print(f"Total events collected: {len(crawler.collected_events)}")
-        print("\nEvents by category:")
-        for category, count in sorted(category_counts.items()):
-            print(f"  {category}: {count}")
+        # 크롤러 초기화 및 실행
+        print("\n2. Initializing crawler...")
+        crawler = RSOECrawler()
         
-        # JSON으로 저장
-        merged = merge_events(crawler.collected_events, existing_path="docs/data/events.json")
-        # 병합된 결과를 다음 단계에서 복사하는 파일명으로 저장
-        with open("rsoe_events.json", "w", encoding="utf-8") as f:
+        print("\n3. Starting crawling process...")
+        success = crawler.crawl_events()
+        
+        if success and crawler.collected_events:
+            print(f"\n4. Successfully collected {len(crawler.collected_events)} new events")
+            
+            # 카테고리별 통계 출력
+            category_counts = {}
+            for event in crawler.collected_events:
+                category = event['event_category']
+                category_counts[category] = category_counts.get(category, 0) + 1
+            
+            print("\n=== NEW COLLECTION SUMMARY ===")
+            print(f"Total new events: {len(crawler.collected_events)}")
+            print("New events by category:")
+            for category, count in sorted(category_counts.items()):
+                print(f"  📊 {category}: {count}")
+            
+        else:
+            print(f"\n4. No new events collected (success={success})")
+            crawler.collected_events = []  # 빈 리스트로 설정
+        
+        # 기존 데이터와 병합 (새 이벤트가 없어도 실행)
+        print(f"\n5. Merging with existing data...")
+        merged = merge_events(
+            crawler.collected_events, 
+            existing_path="docs/data/events.json",
+            past_events_path="docs/data/past_events.json"
+        )
+        
+        # 병합된 결과 저장
+        print(f"\n6. Saving merged results...")
+        output_file = "rsoe_events.json"
+        with open(output_file, "w", encoding="utf-8") as f:
             json.dump(merged, f, ensure_ascii=False, indent=2)
-        print(f"Saved merged events: {len(merged)} items")
-        sys.exit(0)
-        print("\nCrawling completed successfully!")
-        sys.exit(0)
-    else:
-        print("\nCrawling failed or no events collected!")
-        sys.exit(1)
+        
+        print(f"✓ Final merged events saved to {output_file}: {len(merged)} total events")
+        
+        # 최종 통계
+        if merged:
+            final_categories = {}
+            latest_events = 0
+            cutoff = datetime.now() - timedelta(days=7)
+            
+            for event in merged:
+                cat = event.get('event_category', 'Unknown')
+                final_categories[cat] = final_categories.get(cat, 0) + 1
+                
+                crawl_time = event.get('crawled_at', '')
+                if crawl_time:
+                    try:
+                        crawl_dt = datetime.fromisoformat(crawl_time.replace('Z', '+00:00'))
+                        if crawl_dt >= cutoff:
+                            latest_events += 1
+                    except:
+                        pass
+            
+            print(f"\n=== FINAL DATABASE SUMMARY ===")
+            print(f"📈 Total events in database: {len(merged)}")
+            print(f"🆕 Events from last 7 days: {latest_events}")
+            print(f"📊 Categories in database:")
+            for category, count in sorted(final_categories.items()):
+                print(f"  {category}: {count}")
+        
+        print(f"\n✅ PROCESS COMPLETED SUCCESSFULLY!")
+        print("=" * 80)
+        return 0
+        
+    except Exception as e:
+        print(f"\n❌ FATAL ERROR: {e}")
+        import traceback
+        traceback.print_exc()
+        print("=" * 80)
+        return 1
+
+if __name__ == "__main__":
+    exit_code = main()
+    sys.exit(exit_code)

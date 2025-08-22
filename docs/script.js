@@ -14,7 +14,7 @@ let riskAnimationMarkers = [];
 let currentSort = { column: null, direction: null };
 let lastUpdateTime = null;
 
-// 데이터 로딩 함수
+// 데이터 로딩 함수 (개선된 버전 - past_events.json도 고려)
 async function loadDisasterData() {
     const loadingIndicator = document.getElementById('loadingIndicator');
     const errorMessage = document.getElementById('errorMessage');
@@ -26,15 +26,69 @@ async function loadDisasterData() {
         refreshBtn.disabled = true;
         refreshBtn.textContent = '로딩 중...';
         
-        // JSON 데이터 로드
+        console.log('🔄 Starting data loading process...');
+        
+        // 1. 메인 이벤트 데이터 로드
+        console.log('📂 Loading main events data...');
         const response = await fetch('./data/events.json?t=' + new Date().getTime());
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         
-        const data = await response.json();
+        const mainData = await response.json();
+        console.log(`✅ Loaded ${mainData.length} events from main data file`);
         
-        // 업데이트 시간 로드
+        // 2. 과거 이벤트 데이터 로드 시도 (선택적)
+        let pastData = [];
+        try {
+            console.log('📂 Attempting to load past events data...');
+            const pastResponse = await fetch('./data/past_events.json?t=' + new Date().getTime());
+            if (pastResponse.ok) {
+                pastData = await pastResponse.json();
+                console.log(`✅ Loaded ${pastData.length} events from past events file`);
+            } else {
+                console.log('⚠️ Past events file not available or empty');
+            }
+        } catch (e) {
+            console.log('⚠️ Could not load past events:', e.message);
+        }
+        
+        // 3. 데이터 병합 및 중복 제거
+        console.log('🔄 Merging and deduplicating data...');
+        const allEvents = [...pastData, ...mainData];
+        const eventMap = new Map();
+        
+        // event_id 기준으로 중복 제거 (최신 것 우선)
+        allEvents.forEach(event => {
+            const eventId = event.event_id;
+            if (eventId && eventId.trim() !== '') {
+                const existing = eventMap.get(eventId);
+                if (!existing || new Date(event.crawled_at || 0) > new Date(existing.crawled_at || 0)) {
+                    eventMap.set(eventId, event);
+                }
+            }
+        });
+        
+        // 보조 키로 한 번 더 중복 제거
+        const deduped = [];
+        const seenKeys = new Set();
+        
+        for (const event of eventMap.values()) {
+            const title = (event.event_title || '').trim().toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, ' ');
+            const date = (event.event_date_utc || '').substring(0, 10);
+            const lat = parseFloat(event.latitude || 0).toFixed(4);
+            const lon = parseFloat(event.longitude || 0).toFixed(4);
+            const key = `${title}|${date}|${lat}|${lon}`;
+            
+            if (!seenKeys.has(key) && title) {
+                seenKeys.add(key);
+                deduped.push(event);
+            }
+        }
+
+        console.log(`🎯 Final deduplicated events: ${deduped.length}`);
+        
+        // 4. 업데이트 시간 로드
         try {
             const updateResponse = await fetch('./data/last_update.txt?t=' + new Date().getTime());
             if (updateResponse.ok) {
@@ -42,11 +96,11 @@ async function loadDisasterData() {
                 lastUpdateTime = updateText.replace('Last updated: ', '').trim();
             }
         } catch (e) {
-            console.log('Could not load update time:', e);
+            console.log('⚠️ Could not load update time:', e);
         }
         
-        // 데이터 전처리
-        disasterEvents = data.map(event => ({
+        // 5. 데이터 전처리
+        disasterEvents = deduped.map(event => ({
             ...event,
             latitude: parseFloat(event.latitude),
             longitude: parseFloat(event.longitude),
@@ -56,16 +110,44 @@ async function loadDisasterData() {
         // 시간순 정렬
         disasterEvents.sort((a, b) => a.event_date - b.event_date);
         
-        console.log(`Loaded ${disasterEvents.length} events`);
+        console.log(`✅ Processed ${disasterEvents.length} valid events with coordinates`);
         loadingIndicator.classList.add('hidden');
+        
+        // 통계 출력
+        const categoryStats = {};
+        const recentStats = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+        let recentCount = 0;
+        
+        disasterEvents.forEach(event => {
+            const cat = event.event_category || 'Unknown';
+            categoryStats[cat] = (categoryStats[cat] || 0) + 1;
+            
+            if (new Date(event.crawled_at || 0) >= recentStats) {
+                recentCount++;
+            }
+        });
+        
+        console.log('📊 Data Statistics:');
+        console.log(`  Total events: ${disasterEvents.length}`);
+        console.log(`  Recent events (7 days): ${recentCount}`);
+        console.log('  Categories:');
+        Object.entries(categoryStats).forEach(([cat, count]) => {
+            console.log(`    ${cat}: ${count}`);
+        });
         
         initializeData();
         updateLastUpdateDisplay();
         
     } catch (error) {
-        console.error('Failed to load disaster data:', error);
+        console.error('❌ Failed to load disaster data:', error);
         loadingIndicator.classList.add('hidden');
         errorMessage.classList.remove('hidden');
+        
+        // 에러 발생시에도 기존 데이터라도 유지하려고 시도
+        if (disasterEvents.length === 0) {
+            console.log('🔄 Attempting to use cached/existing data...');
+            // 여기에 localStorage나 다른 fallback 로직 추가 가능
+        }
     } finally {
         refreshBtn.disabled = false;
         refreshBtn.textContent = '🔄 새로고침';
@@ -73,16 +155,26 @@ async function loadDisasterData() {
     }
 }
 
-// 마지막 업데이트 시간 표시
+// 마지막 업데이트 시간 표시 (개선된 버전)
 function updateLastUpdateDisplay() {
     const lastUpdateElement = document.getElementById('lastUpdate');
+    
     if (lastUpdateTime) {
         lastUpdateElement.textContent = `최종 업데이트: ${lastUpdateTime}`;
     } else if (disasterEvents.length > 0) {
-        const latestEvent = disasterEvents.reduce((latest, event) => 
-            new Date(event.crawled_at) > new Date(latest.crawled_at) ? event : latest
-        );
-        lastUpdateElement.textContent = `최종 업데이트: ${new Date(latestEvent.crawled_at).toLocaleString()}`;
+        // crawled_at 중 가장 최신 것 찾기
+        const latestCrawl = disasterEvents.reduce((latest, event) => {
+            const eventCrawl = new Date(event.crawled_at || 0);
+            const latestCrawl = new Date(latest || 0);
+            return eventCrawl > latestCrawl ? event.crawled_at : latest;
+        }, null);
+        
+        if (latestCrawl) {
+            const crawlDate = new Date(latestCrawl);
+            lastUpdateElement.textContent = `최종 업데이트: ${crawlDate.toLocaleString()}`;
+        } else {
+            lastUpdateElement.textContent = '업데이트 시간 불명';
+        }
     } else {
         lastUpdateElement.textContent = '데이터 없음';
     }
@@ -94,8 +186,186 @@ async function refreshData() {
     refreshBtn.classList.add('refreshing');
     refreshBtn.textContent = '새로고침 중...';
     
+    console.log('🔄 Manual refresh requested');
     await loadDisasterData();
 }
+
+// 통계 업데이트 함수 (개선된 버전)
+function updateStats() {
+    const stats = document.getElementById('stats');
+    if (!stats) return;
+    
+    const totalEvents = filteredData.length;
+    const categories = [...new Set(filteredData.map(event => event.event_category))];
+    
+    // 최근 7일 이벤트
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    const recentEvents = filteredData.filter(event => {
+        return event.event_date >= sevenDaysAgo;
+    });
+    
+    // 최근 30일 크롤링된 이벤트 (실제 수집 시간 기준)
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const recentlyCrawled = filteredData.filter(event => {
+        const crawlDate = new Date(event.crawled_at || 0);
+        return crawlDate >= thirtyDaysAgo;
+    });
+
+    // 지역 클러스터링 (영향 받은 지역 수 추정)
+    const clusters = [];
+    const CLUSTER_RADIUS = 1.0; // 약 111km
+
+    filteredData.forEach(event => {
+        let addedToCluster = false;
+        
+        for (let cluster of clusters) {
+            const centerLat = cluster.events.reduce((sum, e) => sum + e.latitude, 0) / cluster.events.length;
+            const centerLng = cluster.events.reduce((sum, e) => sum + e.longitude, 0) / cluster.events.length;
+            
+            const distance = Math.sqrt(
+                Math.pow(event.latitude - centerLat, 2) + 
+                Math.pow(event.longitude - centerLng, 2)
+            );
+            
+            if (distance <= CLUSTER_RADIUS) {
+                cluster.events.push(event);
+                addedToCluster = true;
+                break;
+            }
+        }
+        
+        if (!addedToCluster) {
+            clusters.push({
+                events: [event]
+            });
+        }
+    });
+
+    stats.innerHTML = `
+        <div class="stat-box">
+            <div class="stat-number">${totalEvents.toLocaleString()}</div>
+            <div class="stat-label">총 이벤트</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">${categories.length}</div>
+            <div class="stat-label">카테고리</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">${recentEvents.length}</div>
+            <div class="stat-label">최근 7일</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">${clusters.length}</div>
+            <div class="stat-label">영향 지역</div>
+        </div>
+    `;
+    
+    // 콘솔에 상세 통계 출력
+    if (totalEvents > 0) {
+        console.log('📊 Current View Statistics:');
+        console.log(`  Displayed events: ${totalEvents.toLocaleString()}`);
+        console.log(`  Recent events (7 days): ${recentEvents.length}`);
+        console.log(`  Recently crawled (30 days): ${recentlyCrawled.length}`);
+        console.log(`  Geographic clusters: ${clusters.length}`);
+    }
+}
+
+// 위험 지역 감지 (개선된 버전)
+function checkRiskAlerts() {
+    const riskAlert = document.getElementById('riskAlert');
+    const riskMessage = document.getElementById('riskMessage');
+    
+    clearRiskAnimations();
+    
+    // 최근 30일 데이터로 위험도 분석
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    
+    const recentEvents = filteredData.filter(event => {
+        return event.event_date >= thirtyDaysAgo;
+    });
+
+    if (recentEvents.length === 0) {
+        if (riskAlert) riskAlert.classList.add('hidden');
+        return;
+    }
+
+    console.log(`🔍 Analyzing ${recentEvents.length} recent events for risk assessment`);
+
+    // 지역별 클러스터링
+    const clusters = [];
+    const CLUSTER_RADIUS = 0.5; // 약 55km
+
+    recentEvents.forEach(event => {
+        let addedToCluster = false;
+        
+        for (let cluster of clusters) {
+            const centerLat = cluster.events.reduce((sum, e) => sum + e.latitude, 0) / cluster.events.length;
+            const centerLng = cluster.events.reduce((sum, e) => sum + e.longitude, 0) / cluster.events.length;
+            
+            const distance = Math.sqrt(
+                Math.pow(event.latitude - centerLat, 2) + 
+                Math.pow(event.longitude - centerLng, 2)
+            );
+            
+            if (distance <= CLUSTER_RADIUS) {
+                cluster.events.push(event);
+                addedToCluster = true;
+                break;
+            }
+        }
+        
+        if (!addedToCluster) {
+            clusters.push({
+                events: [event],
+                centerLat: event.latitude,
+                centerLng: event.longitude
+            });
+        }
+    });
+
+    // 고위험 지역 (5개 이상의 이벤트가 밀집된 지역)
+    const riskClusters = clusters.filter(cluster => cluster.events.length >= 5);
+
+    if (riskClusters.length > 0 && riskAlert && riskMessage) {
+        const mostRiskyCluster = riskClusters.reduce((max, current) => 
+            current.events.length > max.events.length ? current : max
+        );
+        
+        const eventCount = mostRiskyCluster.events.length;
+        const categories = [...new Set(mostRiskyCluster.events.map(e => e.event_category))];
+        const centerLat = mostRiskyCluster.events.reduce((sum, e) => sum + e.latitude, 0) / mostRiskyCluster.events.length;
+        const centerLng = mostRiskyCluster.events.reduce((sum, e) => sum + e.longitude, 0) / mostRiskyCluster.events.length;
+        
+        console.log(`⚠️ High risk area detected: ${eventCount} events at ${centerLat.toFixed(2)}, ${centerLng.toFixed(2)}`);
+        
+        riskMessage.innerHTML = `
+            <strong>⚠️ 고위험 지역 감지!</strong><br>
+            좌표 ${centerLat.toFixed(2)}, ${centerLng.toFixed(2)} 반경 55km 내에서<br>
+            30일간 ${eventCount}건의 사건 발생 (${categories.join(', ')}).<br>
+            해당 지역에 대한 주의가 필요합니다.
+        `;
+        riskAlert.classList.remove('hidden');
+        showRiskAnimation(centerLat, centerLng, eventCount);
+        
+        // 다른 위험 지역들도 표시
+        riskClusters.forEach((cluster, index) => {
+            if (index > 0) { // 첫 번째는 이미 처리함
+                const clusterLat = cluster.events.reduce((sum, e) => sum + e.latitude, 0) / cluster.events.length;
+                const clusterLng = cluster.events.reduce((sum, e) => sum + e.longitude, 0) / cluster.events.length;
+                showRiskAnimation(clusterLat, clusterLng, cluster.events.length);
+            }
+        });
+        
+    } else if (riskAlert) {
+        riskAlert.classList.add('hidden');
+    }
+}
+
+// 나머지 함수들은 기존과 동일... (길어서 생략)
+// (기존 script.js의 나머지 함수들을 그대로 유지)
 
 // 테이블 정렬 함수
 function sortTable(column) {
@@ -522,79 +792,6 @@ function clearRiskAnimations() {
     riskAnimationMarkers = [];
 }
 
-function checkRiskAlerts() {
-    const riskAlert = document.getElementById('riskAlert');
-    const riskMessage = document.getElementById('riskMessage');
-    
-    clearRiskAnimations();
-    
-    const recentEvents = filteredData.filter(event => {
-        const thirtyDaysAgo = new Date();
-        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-        return event.event_date >= thirtyDaysAgo;
-    });
-
-    if (recentEvents.length === 0) {
-        if (riskAlert) riskAlert.classList.add('hidden');
-        return;
-    }
-
-    const clusters = [];
-    const CLUSTER_RADIUS = 0.5;
-
-    recentEvents.forEach(event => {
-        let addedToCluster = false;
-        
-        for (let cluster of clusters) {
-            const centerLat = cluster.events.reduce((sum, e) => sum + e.latitude, 0) / cluster.events.length;
-            const centerLng = cluster.events.reduce((sum, e) => sum + e.longitude, 0) / cluster.events.length;
-            
-            const distance = Math.sqrt(
-                Math.pow(event.latitude - centerLat, 2) + 
-                Math.pow(event.longitude - centerLng, 2)
-            );
-            
-            if (distance <= CLUSTER_RADIUS) {
-                cluster.events.push(event);
-                addedToCluster = true;
-                break;
-            }
-        }
-        
-        if (!addedToCluster) {
-            clusters.push({
-                events: [event],
-                centerLat: event.latitude,
-                centerLng: event.longitude
-            });
-        }
-    });
-
-    const riskClusters = clusters.filter(cluster => cluster.events.length >= 5);
-
-    if (riskClusters.length > 0 && riskAlert && riskMessage) {
-        const mostRiskyCluster = riskClusters.reduce((max, current) => 
-            current.events.length > max.events.length ? current : max
-        );
-        
-        const eventCount = mostRiskyCluster.events.length;
-        const categories = [...new Set(mostRiskyCluster.events.map(e => e.event_category))];
-        const centerLat = mostRiskyCluster.events.reduce((sum, e) => sum + e.latitude, 0) / mostRiskyCluster.events.length;
-        const centerLng = mostRiskyCluster.events.reduce((sum, e) => sum + e.longitude, 0) / mostRiskyCluster.events.length;
-        
-        riskMessage.innerHTML = `
-            <strong>⚠️ 고위험 지역 감지!</strong><br>
-            좌표 ${centerLat.toFixed(2)}, ${centerLng.toFixed(2)} 반경 55km 내에서<br>
-            30일간 ${eventCount}건의 사건 발생 (${categories.join(', ')}).<br>
-            해당 지역에 대한 주의가 필요합니다.
-        `;
-        riskAlert.classList.remove('hidden');
-        showRiskAnimation(centerLat, centerLng, eventCount);
-    } else if (riskAlert) {
-        riskAlert.classList.add('hidden');
-    }
-}
-
 function populateFilters() {
     const categories = [...new Set(disasterEvents.map(event => event.event_category))].sort();
     const categoryFilter = document.getElementById('categoryFilter');
@@ -676,67 +873,6 @@ function populateEventList(data) {
         
         eventList.appendChild(eventItem);
     });
-}
-
-function updateStats() {
-    const stats = document.getElementById('stats');
-    if (!stats) return;
-    
-    const totalEvents = filteredData.length;
-    const categories = [...new Set(filteredData.map(event => event.event_category))];
-    const recentEvents = filteredData.filter(event => {
-        const sevenDaysAgo = new Date();
-        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-        return event.event_date >= sevenDaysAgo;
-    });
-
-    const clusters = [];
-    const CLUSTER_RADIUS = 1.0;
-
-    filteredData.forEach(event => {
-        let addedToCluster = false;
-        
-        for (let cluster of clusters) {
-            const centerLat = cluster.events.reduce((sum, e) => sum + e.latitude, 0) / cluster.events.length;
-            const centerLng = cluster.events.reduce((sum, e) => sum + e.longitude, 0) / cluster.events.length;
-            
-            const distance = Math.sqrt(
-                Math.pow(event.latitude - centerLat, 2) + 
-                Math.pow(event.longitude - centerLng, 2)
-            );
-            
-            if (distance <= CLUSTER_RADIUS) {
-                cluster.events.push(event);
-                addedToCluster = true;
-                break;
-            }
-        }
-        
-        if (!addedToCluster) {
-            clusters.push({
-                events: [event]
-            });
-        }
-    });
-
-    stats.innerHTML = `
-        <div class="stat-box">
-            <div class="stat-number">${totalEvents}</div>
-            <div class="stat-label">이 이벤트</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-number">${categories.length}</div>
-            <div class="stat-label">카테고리</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-number">${recentEvents.length}</div>
-            <div class="stat-label">최근 7일</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-number">${clusters.length}</div>
-            <div class="stat-label">영향 지역</div>
-        </div>
-    `;
 }
 
 function switchView(view) {
@@ -870,17 +1006,17 @@ function setupEventListeners() {
     });
 }
 
-// 자동 새로고침 (5분마다)
+// 자동 새로고침 (10분마다)
 function startAutoRefresh() {
     setInterval(() => {
-        console.log('Auto-refreshing data...');
+        console.log('🔄 Auto-refreshing data...');
         loadDisasterData();
-    }, 5 * 60 * 1000); // 5분
+    }, 10 * 60 * 1000); // 10분
 }
 
 // 페이지 로드 시 초기화
 window.addEventListener('load', function() {
-    console.log('Initializing disaster monitoring system...');
+    console.log('🌍 Initializing disaster monitoring system...');
     
     // 데이터 로드
     loadDisasterData();
@@ -891,10 +1027,10 @@ window.addEventListener('load', function() {
     // 이벤트 리스너 설정
     setupEventListeners();
     
-    // 자동 새로고침 시작 (5분마다)
+    // 자동 새로고침 시작 (10분마다)
     startAutoRefresh();
     
-    console.log('System initialized successfully!');
+    console.log('✅ System initialized successfully!');
 });
 
 // 창 크기 변경 시 지도 크기 조정
@@ -908,7 +1044,7 @@ window.addEventListener('resize', function() {
 document.addEventListener('visibilitychange', function() {
     if (!document.hidden) {
         // 페이지가 다시 보일 때 데이터 새로고침
-        console.log('Page became visible, refreshing data...');
+        console.log('👀 Page became visible, refreshing data...');
         loadDisasterData();
     }
 });
