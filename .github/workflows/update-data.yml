@@ -40,10 +40,8 @@ jobs:
       - name: Prepare docs directory
         run: |
           mkdir -p docs/data
-          # Copy all necessary files to docs directory
-          cp index.html docs/
-          cp script.js docs/
-          cp style.css docs/  # Make sure CSS file is copied
+          # Files are already in docs directory, just ensure data directory exists
+          ls -la docs/  # Debug: show what's in docs directory
           
       - name: Copy data to docs/
         run: |
