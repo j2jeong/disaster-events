@@ -1,0 +1,71 @@
+<script>
+    let disasterEvents = [];
+    let filteredData = [];
+    let sortedData = [];
+    let map;
+    let markersLayer;
+    let currentView = 'map';
+    let animationInterval = null;
+    let animationSpeed = 700; // 보통 속도로 변경
+    let isPlaying = false;
+    let currentTimeIndex = 0;
+    let highlightedMarker = null;
+    let riskAnimationMarkers = [];
+    let currentSort = { column: null, direction: null };
+
+    // *** 이 부분이 핵심 변경 사항입니다! ***
+    // JSON 데이터를 비동기적으로 불러오는 함수
+    async function loadData() {
+        try {
+            // 우리 저장소에 있는 data/rsoe_events.json 파일을 fetch 합니다.
+            // 캐시를 사용하지 않도록 URL에 타임스탬프를 추가합니다.
+            const response = await fetch(`./data/rsoe_events.json?v=${new Date().getTime()}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+
+            // 데이터 전처리
+            disasterEvents = data.map(event => ({
+                ...event,
+                latitude: parseFloat(event.latitude),
+                longitude: parseFloat(event.longitude),
+                event_date: new Date(event.event_date_utc)
+            })).filter(event => !isNaN(event.latitude) && !isNaN(event.longitude));
+
+            // 시간순 정렬
+            disasterEvents.sort((a, b) => a.event_date - b.event_date);
+            
+            console.log(`${disasterEvents.length} events loaded successfully.`);
+            initializeData();
+
+        } catch (error) {
+            console.error("Could not load disaster data:", error);
+            // 에러 발생 시 사용자에게 알림
+            document.body.innerHTML = `<div style="text-align: center; padding: 50px;"><h1>데이터를 불러오는 데 실패했습니다.</h1><p>관리자에게 문의해주세요. (${error})</p></div>`;
+        }
+    }
+
+    // ... (기존 html 파일의 다른 모든 JavaScript 함수들은 그대로 유지) ...
+    // ... (initMap, openEventUrl, updateMapMarkers, getCategoryColor, 등등...)
+
+    // 페이지 로드 시 실행되는 함수만 변경
+    window.onload = async function() {
+        // loadSampleData() 대신 loadData()를 호출합니다.
+        await loadData();
+        initMap();
+        
+        // 키보드 단축키 (기존과 동일)
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && isPlaying) {
+                toggleAnimation();
+            }
+            if (e.key === ' ' && e.target.tagName !== 'INPUT') {
+                e.preventDefault();
+                toggleAnimation();
+            }
+        });
+    };
+
+    // ... (나머지 모든 JavaScript 함수들은 그대로 유지) ...
+</script>
