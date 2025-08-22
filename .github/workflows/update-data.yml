@@ -49,12 +49,6 @@ jobs:
           fi
           ls -al docs/data  # 디버그
 
-      - name: Prerender docs/index.html
-        run: |
-          python crawler/prerender.py
-          git status
-          git diff --stat || true
-
       - name: Commit updated HTML
         run: |
           git config user.name "github-actions[bot]"
