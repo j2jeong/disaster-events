@@ -2,7 +2,7 @@ name: Update Disaster Data
 
 on:
   schedule:
-    - cron: "0 4 * * *"   # 매일 08:00 KST
+    - cron: "*/5 * * * *"  # 임시: 5분마다 (GitHub은 최소 5분 주기 권장)
   workflow_dispatch:
 
 permissions:
