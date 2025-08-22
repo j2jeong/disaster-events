@@ -2,7 +2,7 @@ name: Update Disaster Data
 
 on:
   schedule:
-    - cron: "0 23 * * *"   # 매일 08:00 KST
+    - cron: "0 4 * * *"   # 매일 08:00 KST
   workflow_dispatch:
 
 permissions:
