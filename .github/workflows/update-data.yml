@@ -34,9 +34,6 @@ jobs:
       - name: Run crawler
         run: python crawler/rsoe_crawler.py
       
-      # ==================================================================== #
-      # ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 이 단계가 핵심입니다! ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ #
-      # ==================================================================== #
       - name: Archive previous events
         id: archive
         run: python crawler/merge_data.py
