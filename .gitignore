@@ -31,3 +31,5 @@ logs/
 *.temp
 
 .gitignore
+
+docs/data/backups/

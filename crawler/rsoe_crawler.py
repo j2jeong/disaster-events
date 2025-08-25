@@ -915,7 +915,7 @@ def main():
         
         # 병합된 결과 저장
         print(f"\n6. Saving merged results...")
-        output_file = "rsoe_events.json"
+        output_file = "docs/data/events.json"
         with open(output_file, "w", encoding="utf-8") as f:
             json.dump(merged, f, ensure_ascii=False, indent=2)
         
