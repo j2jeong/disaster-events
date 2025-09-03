@@ -563,7 +563,7 @@ class RSOECrawler:
             pagination_links = self.find_pagination_links(main_html)
             if pagination_links:
                 print(f"✓ Found {len(pagination_links)} pagination links")
-                max_pages = min(len(pagination_links), 3)
+                max_pages = min(len(pagination_links), 10)
                 for i, page_url in enumerate(pagination_links[:max_pages]):
                     try:
                         print(f"  → Loading additional page {i+1}/{max_pages}...")
@@ -586,7 +586,7 @@ class RSOECrawler:
             print("=" * 60)
             target_events_found = 0
             # process more to resist volatility on busy days
-            max_events_to_process = min(len(all_event_links), 200)
+            max_events_to_process = min(len(all_event_links), 500)
             for i, event_url in enumerate(all_event_links[:max_events_to_process], 1):
                 if i % 10 == 0:
                     print(f"[{i:3d}/{max_events_to_process}] Progress: {i/max_events_to_process*100:.1f}%")
