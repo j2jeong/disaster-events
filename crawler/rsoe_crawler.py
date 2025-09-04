@@ -423,29 +423,48 @@ class RSOECrawler:
         return _stable_dedupe(page_urls)
 
     def _map_category(self, raw_category: str) -> str:
-        # 관대한 매핑 (the/복수형 등 미세 차이 허용)
+        # Enhanced category mapping with better patterns
         raw = raw_category.strip()
         norm = raw.lower()
         norm = re.sub(r'\bthe\b', ' ', norm)
         norm = re.sub(r'\s+', ' ', norm).strip()
+        
+        # More comprehensive mapping patterns
         aliases = [
-            (r'war', 'War'),
-            (r'environment(al)? pollution', 'Environment pollution'),
-            (r'industrial explosion', 'Industrial explosion'),
-            (r'surroundings? explosion', 'Surroundings explosion'),
-            (r'fire in (the )?built environment', 'Fire in built environment'),
-            (r'earthquakes?', 'Earthquake'),
-            (r'landslides?', 'Landslide'),
-            (r'volcan(ic|o) eruption', 'Volcanic eruption'),
-            (r'flash? ?flood|floods?', 'Flood'),
+            # War-related
+            (r'\b(war|conflict|armed conflict|military)\b', 'War'),
+            
+            # Environment pollution
+            (r'\b(environment(al)? pollution|pollution|chemical spill|toxic|contamination)\b', 'Environment pollution'),
+            
+            # Explosions
+            (r'\b(industrial explosion|factory explosion|plant explosion)\b', 'Industrial explosion'),
+            (r'\b(surroundings? explosion|explosion|blast)\b', 'Surroundings explosion'),
+            
+            # Fires
+            (r'\b(fire in (the )?built environment|building fire|house fire|structure fire|residential fire|apartment fire)\b', 'Fire in built environment'),
+            (r'\b(fire|wildfire|forest fire|brush fire)\b', 'Fire in built environment'),
+            
+            # Natural disasters
+            (r'\b(earthquake|quake|seismic|tremor)\b', 'Earthquake'),
+            (r'\b(landslide|mudslide|rockslide|slope failure)\b', 'Landslide'),
+            (r'\b(volcan(ic|o) eruption|volcanic activity|volcano)\b', 'Volcanic eruption'),
+            (r'\b(flash? ?flood|floods?|flooding|inundation)\b', 'Flood'),
         ]
+        
+        # Try pattern matching first
         for patt, mapped in aliases:
-            if re.search(rf'\b({patt})\b', norm):
+            if re.search(patt, norm):
                 return mapped
-        # fallback: 기존 타깃에 부분 포함 시 허용
+                
+        # Fallback: partial matching with target categories
         for target_cat, mapped_cat in self.target_categories.items():
-            if target_cat.lower() in norm:
+            if target_cat.lower() in norm or any(word in norm for word in target_cat.lower().split()):
                 return mapped_cat
+                
+        # Debug: print unmapped categories to help improve mapping
+        if raw:
+            print(f"⚠️  UNMAPPED CATEGORY: '{raw}' -> normalized: '{norm}'")
         return ''
 
     def extract_event_details(self, event_url):
@@ -585,18 +604,19 @@ class RSOECrawler:
             print("✓ Processing event detail pages...")
             print("=" * 60)
             target_events_found = 0
-            # process more to resist volatility on busy days
-            max_events_to_process = min(len(all_event_links), 500)
+            # Process more events to capture all categories
+            max_events_to_process = min(len(all_event_links), 1000)
             for i, event_url in enumerate(all_event_links[:max_events_to_process], 1):
-                if i % 10 == 0:
+                if i % 25 == 0:
                     print(f"[{i:3d}/{max_events_to_process}] Progress: {i/max_events_to_process*100:.1f}%")
                 event_data = self.extract_event_details(event_url)
                 if event_data:
                     self.collected_events.append(event_data)
                     target_events_found += 1
-                    if i <= 5:
-                        print(f"  ✓ [{i:3d}] COLLECTED: {event_data['event_id']} - {event_data['event_title'][:50]}...")
-                time.sleep(0.3)
+                    if i <= 10:
+                        print(f"  ✓ [{i:3d}] COLLECTED: {event_data['event_id']} - {event_data['event_category']} - {event_data['event_title'][:40]}...")
+                # Reduce sleep time to process more events faster
+                time.sleep(0.1)
             print("\n" + "=" * 60)
             print("✓ CRAWLING COMPLETED!")
             print(f"Total processed: {max_events_to_process} events")
