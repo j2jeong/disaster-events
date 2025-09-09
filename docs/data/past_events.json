@@ -930,6 +930,21 @@
     "event_url": "https://rsoe-edis.org/eventList/details/947253/0"
   },
   {
+    "event_id": "947320",
+    "event_title": "United States - Fire",
+    "event_category": "Fire in built environment",
+    "original_category": "Fire - Outdoor fire",
+    "source": "https://earthdata.nasa.gov/",
+    "event_date_utc": "2025-09-09 05:04:00",
+    "last_update_utc": "2025-09-09 05:04:00",
+    "latitude": "47.702562",
+    "longitude": "-120.436771",
+    "area_range": "-",
+    "address": "-",
+    "crawled_at": "2025-09-09T09:45:58.307802",
+    "event_url": "https://rsoe-edis.org/eventList/details/947320/0"
+  },
+  {
     "event_id": "947259",
     "event_title": "Brazil - Fire",
     "event_category": "Fire in built environment",
@@ -1018,21 +1033,6 @@
     "address": "-",
     "crawled_at": "2025-09-09T08:30:21.361661",
     "event_url": "https://rsoe-edis.org/eventList/details/947239/0"
-  },
-  {
-    "event_id": "947320",
-    "event_title": "United States - Fire",
-    "event_category": "Fire in built environment",
-    "original_category": "Fire - Outdoor fire",
-    "source": "https://earthdata.nasa.gov/",
-    "event_date_utc": "2025-09-09 05:04:00",
-    "last_update_utc": "2025-09-09 05:04:00",
-    "latitude": "47.702562",
-    "longitude": "-120.436771",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-09-09T09:45:58.307802",
-    "event_url": "https://rsoe-edis.org/eventList/details/947320/0"
   },
   {
     "event_id": "947267",
@@ -3405,6 +3405,21 @@
     "event_url": "https://rsoe-edis.org/eventList/details/946942/0"
   },
   {
+    "event_id": "947326",
+    "event_title": "Bolivia - Fire",
+    "event_category": "Fire in built environment",
+    "original_category": "Fire - Outdoor fire",
+    "source": "https://earthdata.nasa.gov/",
+    "event_date_utc": "2025-09-08 19:04:00",
+    "last_update_utc": "2025-09-08 19:04:00",
+    "latitude": "-12.964809",
+    "longitude": "-65.649975",
+    "area_range": "-",
+    "address": "-",
+    "crawled_at": "2025-09-09T09:45:48.614924",
+    "event_url": "https://rsoe-edis.org/eventList/details/947326/0"
+  },
+  {
     "event_id": "947111",
     "event_title": "Brazil - Fire",
     "event_category": "Fire in built environment",
@@ -3478,21 +3493,6 @@
     "address": "-",
     "crawled_at": "2025-09-08T23:13:39.942413",
     "event_url": "https://rsoe-edis.org/eventList/details/946900/0"
-  },
-  {
-    "event_id": "947326",
-    "event_title": "Bolivia - Fire",
-    "event_category": "Fire in built environment",
-    "original_category": "Fire - Outdoor fire",
-    "source": "https://earthdata.nasa.gov/",
-    "event_date_utc": "2025-09-08 19:04:00",
-    "last_update_utc": "2025-09-08 19:04:00",
-    "latitude": "-12.964809",
-    "longitude": "-65.649975",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-09-09T09:45:48.614924",
-    "event_url": "https://rsoe-edis.org/eventList/details/947326/0"
   },
   {
     "event_id": "947287",
