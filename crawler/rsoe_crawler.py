@@ -507,26 +507,31 @@ class RSOECrawler:
         norm = re.sub(r'\bthe\b', ' ', norm)
         norm = re.sub(r'\s+', ' ', norm).strip()
         
-        # More comprehensive mapping patterns - ONLY target categories
+        # RSOE 실제 카테고리 패턴 매핑 (Main Category - Sub Category 형식)
         aliases = [
-            # War-related - more patterns
-            (r'\b(war|conflict|armed conflict|military|warfare|battle)\b', 'War'),
+            # Social incidents
+            (r'social incident.*war|^war$', 'War'),
+            (r'social incident.*(terrorism|local security conflict)', 'War'),
             
-            # Environment pollution - more patterns
-            (r'\b(environment(al)? pollution|pollution|chemical spill|toxic|contamination|hazardous|oil spill)\b', 'Environment pollution'),
+            # Ecological disasters  
+            (r'ecological disaster.*environment pollution', 'Environment pollution'),
+            (r'industrial.*environment pollution', 'Environment pollution'),
             
-            # Explosions - more specific patterns
-            (r'\b(industrial explosion|factory explosion|plant explosion|refinery explosion)\b', 'Industrial explosion'),
-            (r'\b(surroundings? explosion|explosion|blast|detonation)\b', 'Surroundings explosion'),
+            # Explosions
+            (r'explosion.*industrial explosion', 'Industrial explosion'),
+            (r'explosion.*surroundings explosion', 'Surroundings explosion'),
             
-            # Fires - more specific patterns for built environment only
-            (r'\b(fire in (the )?built environment|building fire|house fire|structure fire|residential fire|apartment fire|urban fire)\b', 'Fire in built environment'),
+            # Fire
+            (r'fire.*fire in built environment', 'Fire in built environment'),
             
-            # Natural disasters - more patterns
-            (r'\b(earthquake|quake|seismic|tremor|aftershock)\b', 'Earthquake'),
-            (r'\b(landslide|mudslide|rockslide|slope failure|debris flow)\b', 'Landslide'),
-            (r'\b(volcan(ic|o) eruption|volcanic activity|volcano|lava|ash cloud)\b', 'Volcanic eruption'),
-            (r'\b(flash ?flood|floods?|flooding|inundation|deluge)\b', 'Flood'),
+            # Geological events
+            (r'geological.*earthquake', 'Earthquake'),
+            (r'geological.*landslide', 'Landslide'),
+            (r'geological.*volcanic eruption', 'Volcanic eruption'),
+            
+            # Hydrological events
+            (r'hydrological.*(flood|flash flood)', 'Flood'),
+            (r'weather.*extreme rainfall', 'Flood'),  # 강우도 홍수로 분류
         ]
         
         # Try pattern matching first

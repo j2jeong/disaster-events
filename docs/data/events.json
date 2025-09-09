@@ -62,7 +62,7 @@
   {
     "event_id": "820490",
     "event_title": "Vietnam - PHU QUOC",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 06:00:00",
@@ -77,7 +77,7 @@
   {
     "event_id": "830952",
     "event_title": "Thailand - CHANTHA BURI",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -92,7 +92,7 @@
   {
     "event_id": "834206",
     "event_title": "Myanmar - DAWEI",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 12:00:00",
@@ -107,7 +107,7 @@
   {
     "event_id": "838052",
     "event_title": "China - GUANGZHOU",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -122,7 +122,7 @@
   {
     "event_id": "838347",
     "event_title": "China - YANGJIANG",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -137,7 +137,7 @@
   {
     "event_id": "838734",
     "event_title": "Thailand - 48363",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -152,7 +152,7 @@
   {
     "event_id": "839545",
     "event_title": "Myanmar - MERGUI",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 12:00:00",
@@ -197,7 +197,7 @@
   {
     "event_id": "857295",
     "event_title": "India - SILIGURI (42398-0)",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 12:00:00",
@@ -212,7 +212,7 @@
   {
     "event_id": "860856",
     "event_title": "China - TAIPA GRANDE",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -242,7 +242,7 @@
   {
     "event_id": "870467",
     "event_title": "South Korea - MOKPO",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -257,7 +257,7 @@
   {
     "event_id": "873962",
     "event_title": "India - COOCH BEHAR",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 12:00:00",
@@ -272,7 +272,7 @@
   {
     "event_id": "878646",
     "event_title": "China - QINZHOU",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -287,7 +287,7 @@
   {
     "event_id": "878959",
     "event_title": "Cameroon - DOUALA OBS.",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -302,7 +302,7 @@
   {
     "event_id": "884080",
     "event_title": "India - AMBIKAPUR",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -317,7 +317,7 @@
   {
     "event_id": "885925",
     "event_title": "Denmark - FLYVESTATION AALBORG",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 06:00:00",
@@ -332,7 +332,7 @@
   {
     "event_id": "887130",
     "event_title": "China - SHENZHEN",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -347,7 +347,7 @@
   {
     "event_id": "887135",
     "event_title": "China - SHANTOU",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 06:00:00",
@@ -362,7 +362,7 @@
   {
     "event_id": "887195",
     "event_title": "China - HONG KONG INTERNATIONAL AIRPORT",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -377,7 +377,7 @@
   {
     "event_id": "887989",
     "event_title": "China - SHANWEI",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -392,7 +392,7 @@
   {
     "event_id": "893451",
     "event_title": "China - SHANGCHUAN DAO",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -407,7 +407,7 @@
   {
     "event_id": "895585",
     "event_title": "Pakistan - PARACHINAR",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 00:00:00",
@@ -422,7 +422,7 @@
   {
     "event_id": "895734",
     "event_title": "China - FOGANG",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -452,7 +452,7 @@
   {
     "event_id": "913347",
     "event_title": "China - XIHUA",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -467,7 +467,7 @@
   {
     "event_id": "916058",
     "event_title": "China - LAOHEKOU",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -482,7 +482,7 @@
   {
     "event_id": "917487",
     "event_title": "Thailand - SURIN",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 12:00:00",
@@ -497,7 +497,7 @@
   {
     "event_id": "918427",
     "event_title": "Indonesia - PALEMBANG/ST. M. BADARUDIN II",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 00:00:00",
@@ -512,7 +512,7 @@
   {
     "event_id": "920602",
     "event_title": "Thailand - SURIN AGROMET",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -527,7 +527,7 @@
   {
     "event_id": "921169",
     "event_title": "United States - WILMINGTON, NC.",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 12:00:00",
@@ -542,7 +542,7 @@
   {
     "event_id": "923168",
     "event_title": "Thailand - RANONG",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -557,7 +557,7 @@
   {
     "event_id": "923781",
     "event_title": "Ethiopia - BAHAR DAR",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 06:00:00",
@@ -572,7 +572,7 @@
   {
     "event_id": "924287",
     "event_title": "Russian Federation - UST'-KAMCHATSK",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 00:00:00",
@@ -587,7 +587,7 @@
   {
     "event_id": "927900",
     "event_title": "Vietnam - NHA BE",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -602,7 +602,7 @@
   {
     "event_id": "928845",
     "event_title": "Thailand - RAYONG",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -647,7 +647,7 @@
   {
     "event_id": "931897",
     "event_title": "Malaysia - SIBU",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 00:00:00",
@@ -662,7 +662,7 @@
   {
     "event_id": "933393",
     "event_title": "Pakistan - LAHORE CITY",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -677,7 +677,7 @@
   {
     "event_id": "933394",
     "event_title": "Thailand - PARKXANH",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 00:00:00",
@@ -692,7 +692,7 @@
   {
     "event_id": "937285",
     "event_title": "Myanmar - SAGAING",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 12:00:00",
@@ -707,7 +707,7 @@
   {
     "event_id": "937307",
     "event_title": "Pakistan - MULTAN",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -722,7 +722,7 @@
   {
     "event_id": "941261",
     "event_title": "Thailand - KRABI",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -797,7 +797,7 @@
   {
     "event_id": "946015",
     "event_title": "Pakistan - JACOBABAD",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 12:00:00",
@@ -812,7 +812,7 @@
   {
     "event_id": "946016",
     "event_title": "India - BHUJ-RUDRAMATA",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -827,7 +827,7 @@
   {
     "event_id": "946017",
     "event_title": "Indonesia - JAMBI/SULTAN TAHA",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 00:00:00",
@@ -842,7 +842,7 @@
   {
     "event_id": "946018",
     "event_title": "United States - VICTORIA/VICTORIA REGIONAL, TX.",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 12:00:00",
@@ -2087,7 +2087,7 @@
   {
     "event_id": "946261",
     "event_title": "United States - ORLANDO/JETPORT FL.",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 12:00:00",
@@ -2102,7 +2102,7 @@
   {
     "event_id": "946262",
     "event_title": "Honduras - SOTO CANO AB",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 06:00:00",
@@ -3692,7 +3692,7 @@
   {
     "event_id": "946462",
     "event_title": "India - NALIYA",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -3707,7 +3707,7 @@
   {
     "event_id": "946463",
     "event_title": "Nepal - BIRATNAGAR AIRPORT",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 12:00:00",
@@ -3722,7 +3722,7 @@
   {
     "event_id": "946464",
     "event_title": "Tonga - LUPEPAU'U",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -3737,7 +3737,7 @@
   {
     "event_id": "946465",
     "event_title": "India - KANDLA AERODROME",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 12:00:00",
@@ -3752,7 +3752,7 @@
   {
     "event_id": "946466",
     "event_title": "Thailand - SATTAHIP",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 12:00:00",
@@ -3767,7 +3767,7 @@
   {
     "event_id": "946467",
     "event_title": "Thailand - UMPHANG",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -3782,7 +3782,7 @@
   {
     "event_id": "946468",
     "event_title": "India - PBO RAIPUR",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 12:00:00",
@@ -6362,7 +6362,7 @@
   {
     "event_id": "946716",
     "event_title": "Paraguay - PILAR",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -6377,7 +6377,7 @@
   {
     "event_id": "946717",
     "event_title": "Russian Federation - GDOV",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -6392,7 +6392,7 @@
   {
     "event_id": "946718",
     "event_title": "Paraguay - SAN JUAN BAUTISTA",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -6407,7 +6407,7 @@
   {
     "event_id": "946719",
     "event_title": "Samoa - APIA",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-08 18:00:00",
@@ -7907,7 +7907,7 @@
   {
     "event_id": "138179",
     "event_title": "Colombia - QUIBDO/EL CARANO",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -7982,7 +7982,7 @@
   {
     "event_id": "819049",
     "event_title": "Bangladesh - SYLHET",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -8012,7 +8012,7 @@
   {
     "event_id": "854440",
     "event_title": "Myanmar - HPAAN",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -8027,7 +8027,7 @@
   {
     "event_id": "855060",
     "event_title": "Thailand - KHLONG YAI",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 18:00:00",
@@ -8042,7 +8042,7 @@
   {
     "event_id": "858695",
     "event_title": "Myanmar - MAUBIN",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -8057,7 +8057,7 @@
   {
     "event_id": "861842",
     "event_title": "Thailand - PHLIU AGROMET",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 18:00:00",
@@ -8072,7 +8072,7 @@
   {
     "event_id": "870472",
     "event_title": "South Korea - JEONJU",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -8087,7 +8087,7 @@
   {
     "event_id": "870474",
     "event_title": "South Korea - GUNSAN",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -8102,7 +8102,7 @@
   {
     "event_id": "872582",
     "event_title": "India - AHMADABAD",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 18:00:00",
@@ -8117,7 +8117,7 @@
   {
     "event_id": "877021",
     "event_title": "Micronesia - KOSRAE AIRPORT VICE LELU, KOSRAE ATOLL, CAROLINE IS.",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 06:00:00",
@@ -8132,7 +8132,7 @@
   {
     "event_id": "878079",
     "event_title": "India - NAHAN",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -8147,7 +8147,7 @@
   {
     "event_id": "882588",
     "event_title": "India - AJMER",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 00:00:00",
@@ -8162,7 +8162,7 @@
   {
     "event_id": "884111",
     "event_title": "Pakistan - JHELUM",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 18:00:00",
@@ -8177,7 +8177,7 @@
   {
     "event_id": "886216",
     "event_title": "India - AGARTALA",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 18:00:00",
@@ -8192,7 +8192,7 @@
   {
     "event_id": "887138",
     "event_title": "China - HONG KONG OBSERVATORY",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 18:00:00",
@@ -8207,7 +8207,7 @@
   {
     "event_id": "890188",
     "event_title": "India - UDAIPUR DABOK",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 00:00:00",
@@ -8222,7 +8222,7 @@
   {
     "event_id": "891113",
     "event_title": "Malaysia - LABUAN",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 00:00:00",
@@ -8267,7 +8267,7 @@
   {
     "event_id": "909844",
     "event_title": "Indonesia - PONTIANAK/SUPADIO",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 00:00:00",
@@ -8282,7 +8282,7 @@
   {
     "event_id": "917023",
     "event_title": "Thailand - KAMALASAI",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 06:00:00",
@@ -8312,7 +8312,7 @@
   {
     "event_id": "921958",
     "event_title": "Canada - CHURCHILL, MAN",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 06:00:00",
@@ -8327,7 +8327,7 @@
   {
     "event_id": "922284",
     "event_title": "Thailand - SRAKAEW",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -8342,7 +8342,7 @@
   {
     "event_id": "922805",
     "event_title": "Colombia - BARRANCABERMEJA/YARIGUIES",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -8357,7 +8357,7 @@
   {
     "event_id": "923450",
     "event_title": "Thailand - VICTORIA POINT",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -8372,7 +8372,7 @@
   {
     "event_id": "923998",
     "event_title": "Vietnam - 48863",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -8387,7 +8387,7 @@
   {
     "event_id": "925832",
     "event_title": "India - DAHANU",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -8417,7 +8417,7 @@
   {
     "event_id": "928639",
     "event_title": "Thailand - CHAIYAPHUM",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 18:00:00",
@@ -8432,7 +8432,7 @@
   {
     "event_id": "928640",
     "event_title": "Thailand - SAMUTPRAKAN AGROMET",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -8447,7 +8447,7 @@
   {
     "event_id": "928846",
     "event_title": "Thailand - SUVARNABHUMI INTERNATIONAL AIRPORT",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 18:00:00",
@@ -8462,7 +8462,7 @@
   {
     "event_id": "930754",
     "event_title": "Pakistan - DERA ISMAIL KHAN",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 18:00:00",
@@ -8477,7 +8477,7 @@
   {
     "event_id": "932245",
     "event_title": "Canada - REA POINT, NU",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 18:00:00",
@@ -8492,7 +8492,7 @@
   {
     "event_id": "932981",
     "event_title": "India - AMRITSAR",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 06:00:00",
@@ -8522,7 +8522,7 @@
   {
     "event_id": "936747",
     "event_title": "Micronesia - WOLEAI ATOLL, CAROLINE IS.",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 00:00:00",
@@ -8537,7 +8537,7 @@
   {
     "event_id": "936749",
     "event_title": "Thailand - UBON RATCHATHANI",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 18:00:00",
@@ -8552,7 +8552,7 @@
   {
     "event_id": "937242",
     "event_title": "Tanzania - ZANZIBAR/KISAUNI",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 06:00:00",
@@ -8567,7 +8567,7 @@
   {
     "event_id": "939315",
     "event_title": "Laos - PAKSE",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 00:00:00",
@@ -8582,7 +8582,7 @@
   {
     "event_id": "942532",
     "event_title": "Brunei Darussalam - BRUNEI AIRPORT",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 18:00:00",
@@ -8612,7 +8612,7 @@
   {
     "event_id": "945100",
     "event_title": "South Korea - BORYEONG",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -8627,7 +8627,7 @@
   {
     "event_id": "945101",
     "event_title": "South Korea - DAEJEON",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -8642,7 +8642,7 @@
   {
     "event_id": "945102",
     "event_title": "Thailand - CHOK CHAI",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -8882,7 +8882,7 @@
   {
     "event_id": "945152",
     "event_title": "India - RAJKOT",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 00:00:00",
@@ -10622,7 +10622,7 @@
   {
     "event_id": "945360",
     "event_title": "Sri Lanka - TRINCOMALEE",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 06:00:00",
@@ -10637,7 +10637,7 @@
   {
     "event_id": "945361",
     "event_title": "Poland - MIKOLAJKI",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 18:00:00",
@@ -10652,7 +10652,7 @@
   {
     "event_id": "945362",
     "event_title": "Honduras - LA CEIBA (AIRPORT)",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -10667,7 +10667,7 @@
   {
     "event_id": "945363",
     "event_title": "Thailand - TAKFA AGROMET",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -11267,7 +11267,7 @@
   {
     "event_id": "945420",
     "event_title": "Vietnam - 48907",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 06:00:00",
@@ -12347,7 +12347,7 @@
   {
     "event_id": "945547",
     "event_title": "Vietnam - PHAN THIET",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -12362,7 +12362,7 @@
   {
     "event_id": "945548",
     "event_title": "India - HANAMKONDA",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -12377,7 +12377,7 @@
   {
     "event_id": "945549",
     "event_title": "China - HAIKOU",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 18:00:00",
@@ -12392,7 +12392,7 @@
   {
     "event_id": "945550",
     "event_title": "South Korea - JEONGEUP",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -12407,7 +12407,7 @@
   {
     "event_id": "945551",
     "event_title": "Thailand - NAKHONPATHOM AGROMET",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -12557,7 +12557,7 @@
   {
     "event_id": "945571",
     "event_title": "India - GANDHINAGAR",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -12572,7 +12572,7 @@
   {
     "event_id": "945572",
     "event_title": "India - SURENDRANAGAR",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 12:00:00",
@@ -14762,7 +14762,7 @@
   {
     "event_id": "945761",
     "event_title": "Czech Republic - Heavy rainfall covers parts of Czechia",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://english.radio.cz/heavy-rainfall-covers-parts-czechia-8861953",
     "event_date_utc": "2025-09-07 16:53:26",
@@ -14882,7 +14882,7 @@
   {
     "event_id": "945782",
     "event_title": "Colombia - BOGOTA/ELDORADO",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 18:00:00",
@@ -14897,7 +14897,7 @@
   {
     "event_id": "945783",
     "event_title": "Thailand - HUAI PONG AGROMET",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 18:00:00",
@@ -14912,7 +14912,7 @@
   {
     "event_id": "945784",
     "event_title": "Congo - OUESSO",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 18:00:00",
@@ -14927,7 +14927,7 @@
   {
     "event_id": "945785",
     "event_title": "United States - WASHINGTON/NAT., VA.",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-07 18:00:00",
@@ -16382,7 +16382,7 @@
   {
     "event_id": "936692",
     "event_title": "Thailand - ARANYAPRATHET",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-06 18:00:00",
@@ -16397,7 +16397,7 @@
   {
     "event_id": "937096",
     "event_title": "India - BARODA AERODROME",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-06 12:00:00",
@@ -16427,7 +16427,7 @@
   {
     "event_id": "937690",
     "event_title": "India - BHILWARA",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-06 12:00:00",
@@ -16442,7 +16442,7 @@
   {
     "event_id": "937725",
     "event_title": "Thailand - CHON BURI",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-06 18:00:00",
@@ -16472,7 +16472,7 @@
   {
     "event_id": "938616",
     "event_title": "Vietnam - 48875",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-06 18:00:00",
@@ -16772,7 +16772,7 @@
   {
     "event_id": "943938",
     "event_title": "Malaysia - SANDAKAN",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-06 00:00:00",
@@ -16787,7 +16787,7 @@
   {
     "event_id": "943939",
     "event_title": "China - DA XIAN",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-06 18:00:00",
@@ -16832,7 +16832,7 @@
   {
     "event_id": "944012",
     "event_title": "China - WANYUAN",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-06 18:00:00",
@@ -18602,7 +18602,7 @@
   {
     "event_id": "944271",
     "event_title": "India - LUDHIANA",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-06 12:00:00",
@@ -20552,7 +20552,7 @@
   {
     "event_id": "944494",
     "event_title": "India - NEW KANDLA",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-06 12:00:00",
@@ -20567,7 +20567,7 @@
   {
     "event_id": "944495",
     "event_title": "China - SHANGHAI (BAOSHAN)",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-06 18:00:00",
@@ -22697,7 +22697,7 @@
   {
     "event_id": "944754",
     "event_title": "Pakistan - 1 killed, several injured in blast during cricket match at stadium in Pakistan",
-    "event_category": "Fire in built environment",
+    "event_category": "War",
     "original_category": "Social incident - Terrorism",
     "source": "https://www.indiatoday.in/world/story/1-killed-in-blast-during-cricket-match-in-pakistan-2783126-2025-09-06",
     "event_date_utc": "2025-09-06 18:26:04",
@@ -22847,7 +22847,7 @@
   {
     "event_id": "944788",
     "event_title": "United States - KEY WEST/INT., FL",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-06 18:00:00",
@@ -22862,7 +22862,7 @@
   {
     "event_id": "944789",
     "event_title": "Thailand - SAMUTSONGKRAM",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-06 18:00:00",
@@ -22877,7 +22877,7 @@
   {
     "event_id": "944790",
     "event_title": "Denmark - JAEGERSBORG",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-06 18:00:00",
@@ -27392,7 +27392,7 @@
   {
     "event_id": "943046",
     "event_title": "Japan - CHOSHI",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-05 12:00:00",
@@ -27407,7 +27407,7 @@
   {
     "event_id": "943047",
     "event_title": "Japan - MITO",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-05 12:00:00",
@@ -27422,7 +27422,7 @@
   {
     "event_id": "943048",
     "event_title": "India - JHANSI",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-05 18:00:00",
@@ -27437,7 +27437,7 @@
   {
     "event_id": "943049",
     "event_title": "Thailand - UDON THANI",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-05 18:00:00",
@@ -27452,7 +27452,7 @@
   {
     "event_id": "943050",
     "event_title": "Singapore - SINGAPORE/CHANGI AIRPORT",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-05 06:00:00",
@@ -27467,7 +27467,7 @@
   {
     "event_id": "943051",
     "event_title": "Japan - TOKYO",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-05 12:00:00",
@@ -27767,7 +27767,7 @@
   {
     "event_id": "943095",
     "event_title": "Egypt - ISMAILIA",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-05 06:00:00",
@@ -27782,7 +27782,7 @@
   {
     "event_id": "943096",
     "event_title": "China - LANGZHONG",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-05 18:00:00",
@@ -29792,7 +29792,7 @@
   {
     "event_id": "943317",
     "event_title": "Canada - FORT SEVERN A, ONT",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-05 12:00:00",
@@ -29807,7 +29807,7 @@
   {
     "event_id": "943318",
     "event_title": "Japan - MAEBASHI",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-05 12:00:00",
@@ -30722,7 +30722,7 @@
   {
     "event_id": "943401",
     "event_title": "China - HUANG SHAN",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-05 18:00:00",
@@ -33752,7 +33752,7 @@
   {
     "event_id": "943753",
     "event_title": "Guyana - GEORGETOWN",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-05 18:00:00",
@@ -33767,7 +33767,7 @@
   {
     "event_id": "943754",
     "event_title": "China - NAXI",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-05 18:00:00",
@@ -36662,7 +36662,7 @@
   {
     "event_id": "941553",
     "event_title": "Japan - SHIONOMISAKI (47778-0)",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 12:00:00",
@@ -36677,7 +36677,7 @@
   {
     "event_id": "941554",
     "event_title": "New Zealand - PUYSEGUR POINT AWS",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 18:00:00",
@@ -36692,7 +36692,7 @@
   {
     "event_id": "941555",
     "event_title": "China - XINYANG",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 18:00:00",
@@ -36707,7 +36707,7 @@
   {
     "event_id": "941556",
     "event_title": "Serbia - VELIKO GRADISTE",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 12:00:00",
@@ -37562,7 +37562,7 @@
   {
     "event_id": "941635",
     "event_title": "India - UJJAIN",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 12:00:00",
@@ -37577,7 +37577,7 @@
   {
     "event_id": "941636",
     "event_title": "India - BHAUNAGAR",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 12:00:00",
@@ -42302,7 +42302,7 @@
   {
     "event_id": "942192",
     "event_title": "Vanuatu - ANEITYUM",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 18:00:00",
@@ -42317,7 +42317,7 @@
   {
     "event_id": "942193",
     "event_title": "Japan - TAKAMATSU",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 18:00:00",
@@ -42332,7 +42332,7 @@
   {
     "event_id": "942194",
     "event_title": "Vietnam - QUY NHON",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 18:00:00",
@@ -45722,7 +45722,7 @@
   {
     "event_id": "939930",
     "event_title": "Pakistan - Seven shot dead as passenger vehicle targeted in Lower Kurram",
-    "event_category": "Fire in built environment",
+    "event_category": "War",
     "original_category": "Social incident - Terrorism",
     "source": "https://tribune.com.pk/story/2564820/seven-shot-dead-as-passenger-vehicle-targeted-in-lower-kurram",
     "event_date_utc": "2025-09-03 11:04:43",
@@ -46067,7 +46067,7 @@
   {
     "event_id": "939975",
     "event_title": "India - Landslides, Heavy Rain Block Key Roads In J&K, Many Villages Flooded",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://www.ndtv.com/india-news/landslides-heavy-rain-block-key-roads-in-j-k-many-villages-flooded-9208607#publisher=newsstand",
     "event_date_utc": "2025-09-03 11:38:35",
@@ -46202,7 +46202,7 @@
   {
     "event_id": "940009",
     "event_title": "China - LUSHI",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-03 12:00:00",
@@ -46217,7 +46217,7 @@
   {
     "event_id": "940010",
     "event_title": "Italy - LAMPEDUSA",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-03 18:00:00",
@@ -46232,7 +46232,7 @@
   {
     "event_id": "940011",
     "event_title": "India - NARSINGHPUR",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-03 12:00:00",
@@ -46247,7 +46247,7 @@
   {
     "event_id": "940012",
     "event_title": "India - MALANJKHAND",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-03 12:00:00",
@@ -46262,7 +46262,7 @@
   {
     "event_id": "940013",
     "event_title": "India - SEONI",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-03 12:00:00",
@@ -46277,7 +46277,7 @@
   {
     "event_id": "940014",
     "event_title": "China - ZHUMADIAN",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 00:00:00",
@@ -46292,7 +46292,7 @@
   {
     "event_id": "940015",
     "event_title": "Canada - GERALDTON A, ONT",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 00:00:00",
@@ -51422,7 +51422,7 @@
   {
     "event_id": "940469",
     "event_title": "Turkey - HOPA",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-03 18:00:00",
@@ -51437,7 +51437,7 @@
   {
     "event_id": "940470",
     "event_title": "Thailand - PHETCHABURI",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 00:00:00",
@@ -51452,7 +51452,7 @@
   {
     "event_id": "940471",
     "event_title": "Nigeria - YOLA",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-03 18:00:00",
@@ -51467,7 +51467,7 @@
   {
     "event_id": "940472",
     "event_title": "Thailand - RATCHA BURI AGROMET",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 00:00:00",
@@ -53162,7 +53162,7 @@
   {
     "event_id": "940782",
     "event_title": "India - BILASPUR",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 00:00:00",
@@ -53177,7 +53177,7 @@
   {
     "event_id": "940783",
     "event_title": "Russian Federation - SOVETSKAYA GAVAN'",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 00:00:00",
@@ -53192,7 +53192,7 @@
   {
     "event_id": "940784",
     "event_title": "Canada - 71652",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 00:00:00",
@@ -53207,7 +53207,7 @@
   {
     "event_id": "940785",
     "event_title": "Indonesia - RANAI",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 00:00:00",
@@ -53222,7 +53222,7 @@
   {
     "event_id": "940786",
     "event_title": "Malaysia - KUCHING",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 00:00:00",
@@ -53237,7 +53237,7 @@
   {
     "event_id": "940787",
     "event_title": "Cuba - CAMAGUEY AEROPUERTO",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 00:00:00",
@@ -53252,7 +53252,7 @@
   {
     "event_id": "940788",
     "event_title": "New Zealand - HAAST AWS",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 00:00:00",
@@ -53267,7 +53267,7 @@
   {
     "event_id": "940789",
     "event_title": "Serbia - KRAGUJEVAC",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 00:00:00",
@@ -53282,7 +53282,7 @@
   {
     "event_id": "940790",
     "event_title": "Thailand - LAEM CHABANG",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 00:00:00",
@@ -53297,7 +53297,7 @@
   {
     "event_id": "940791",
     "event_title": "Indonesia - TAREMPA",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 00:00:00",
@@ -53312,7 +53312,7 @@
   {
     "event_id": "940792",
     "event_title": "China - MENGJIN",
-    "event_category": "Fire in built environment",
+    "event_category": "Flood",
     "original_category": "Weather - Extreme rainfall",
     "source": "https://severeweather.wmo.int/v2/",
     "event_date_utc": "2025-09-04 00:00:00",

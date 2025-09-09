@@ -326,8 +326,17 @@ function checkRiskAlerts() {
         }
     });
 
-    // 고위험 지역 (5개 이상의 이벤트가 밀집된 지역)
-    const riskClusters = clusters.filter(cluster => cluster.events.length >= 5);
+    // 고위험 지역 (15개 이상의 이벤트가 밀집된 지역, 최근 7일 내 3개 이상)
+    const riskClusters = clusters.filter(cluster => {
+        const recentWeek = cluster.events.filter(event => {
+            const eventDate = new Date(event.event_date_utc || event.crawled_at);
+            const daysDiff = (now - eventDate) / (1000 * 60 * 60 * 24);
+            return daysDiff <= 7;
+        });
+        
+        // 전체 15개 이상 + 최근 7일 내 3개 이상인 경우만 고위험
+        return cluster.events.length >= 15 && recentWeek.length >= 3;
+    });
 
     if (riskClusters.length > 0 && riskAlert && riskMessage) {
         const mostRiskyCluster = riskClusters.reduce((max, current) => 
