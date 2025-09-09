@@ -27,47 +27,44 @@ def _parse_iso(dt: str) -> float:
         return 0.0
 
 def clean_duplicate_key(title: str, date: str, lat: str, lon: str) -> str:
-    """중복 제거용 키 생성 (정규화) - Fire 이벤트에 대해 더 공격적인 클러스터링"""
+    """중복 제거용 키 생성 - Fire는 실제 거리 기반 클러스터링"""
     clean_title = re.sub(r'[^\w\s]', '', title.lower()).strip()
     clean_title = re.sub(r'\s+', ' ', clean_title)
     
-    # Remove common words that don't help distinguish events
+    # Remove common words
     common_words = ['earthquake', 'fire', 'flood', 'explosion', 'war', 'pollution', 'landslide', 'volcanic', 'eruption',
                    'building', 'house', 'residential', 'apartment', 'structure', 'commercial', 'industrial']
     title_words = [word for word in clean_title.split() if word not in common_words]
-    clean_title = ' '.join(title_words[:3])  # Only keep first 3 significant words
+    clean_title = ' '.join(title_words[:2])  # Keep 2 significant words
     
     try:
         lat_f = float(lat) if lat else 0
         lon_f = float(lon) if lon else 0
         
-        # Fire 이벤트의 경우 더 큰 반경으로 클러스터링 (0.2도 약 20km)
+        # Fire 이벤트: 위경도 각각 0.2도 단위로 클러스터링
         if 'fire' in title.lower():
-            lat_rounded = f"{round(lat_f * 5) / 5:.1f}"  # 0.2도 단위 (약 20km)
-            lon_rounded = f"{round(lon_f * 5) / 5:.1f}"
+            lat_rounded = f"{round(lat_f * 5) / 5:.1f}"  # 0.2도 단위
+            lon_rounded = f"{round(lon_f * 5) / 5:.1f}"  # 0.2도 단위
         else:
-            # 다른 이벤트는 기존대로 (0.01도 약 1km)
-            lat_rounded = f"{round(lat_f * 100) / 100:.2f}"
+            # 다른 이벤트: 더 정밀하게
+            lat_rounded = f"{round(lat_f * 100) / 100:.2f}"  # 0.01도 단위
             lon_rounded = f"{round(lon_f * 100) / 100:.2f}"
             
         location_key = f"{lat_rounded}|{lon_rounded}"
     except:
         location_key = "0|0"
     
-    # Fire 이벤트의 경우 시간 범위도 더 크게 (같은 주)
+    # Fire 이벤트: 한 달 단위로 그룹핑
     if 'fire' in title.lower():
         try:
-            from datetime import datetime, timedelta
+            from datetime import datetime
             date_obj = datetime.fromisoformat(date.replace('Z', '+00:00')) if date else datetime.now()
-            # 같은 주로 그룹핑 (월요일 기준)
-            week_start = date_obj - timedelta(days=date_obj.weekday())
-            date_clean = week_start.strftime('%Y-%W')  # Year-Week format
+            date_clean = f"{date_obj.year}-{date_obj.month:02d}"  # Year-Month
         except:
-            date_clean = date[:7] if len(date) >= 7 else date  # Year-Month
+            date_clean = date[:7] if len(date) >= 7 else date
     else:
-        date_clean = date[:10] if len(date) >= 10 else date  # Exact date
+        date_clean = date[:10] if len(date) >= 10 else date
     
-    # Create a key that groups similar events more aggressively for fires
     return f"{clean_title}|{date_clean}|{location_key}"
 
 def _stable_dedupe(urls: List[str]) -> List[str]:
