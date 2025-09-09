@@ -855,6 +855,21 @@
     "event_url": "https://rsoe-edis.org/eventList/details/947253/0"
   },
   {
+    "event_id": "947259",
+    "event_title": "Brazil - Fire",
+    "event_category": "Fire in built environment",
+    "original_category": "Fire - Outdoor fire",
+    "source": "https://earthdata.nasa.gov/",
+    "event_date_utc": "2025-09-09 05:04:00",
+    "last_update_utc": "2025-09-09 05:04:00",
+    "latitude": "-18.768369",
+    "longitude": "-49.639138",
+    "area_range": "-",
+    "address": "-",
+    "crawled_at": "2025-09-09T08:57:31.735295",
+    "event_url": "https://rsoe-edis.org/eventList/details/947259/0"
+  },
+  {
     "event_id": "947085",
     "event_title": "Canada - Fire",
     "event_category": "Fire in built environment",
@@ -930,21 +945,6 @@
     "event_url": "https://rsoe-edis.org/eventList/details/947239/0"
   },
   {
-    "event_id": "947259",
-    "event_title": "Brazil - Fire",
-    "event_category": "Fire in built environment",
-    "original_category": "Fire - Outdoor fire",
-    "source": "https://earthdata.nasa.gov/",
-    "event_date_utc": "2025-09-09 05:04:00",
-    "last_update_utc": "2025-09-09 05:04:00",
-    "latitude": "-18.768369",
-    "longitude": "-49.639138",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-09-09T08:57:31.735295",
-    "event_url": "https://rsoe-edis.org/eventList/details/947259/0"
-  },
-  {
     "event_id": "947267",
     "event_title": "Brazil - Fire",
     "event_category": "Fire in built environment",
@@ -960,21 +960,6 @@
     "event_url": "https://rsoe-edis.org/eventList/details/947267/0"
   },
   {
-    "event_id": "947233",
-    "event_title": "United States - Fire",
-    "event_category": "Fire in built environment",
-    "original_category": "Fire - Outdoor fire",
-    "source": "https://earthdata.nasa.gov/",
-    "event_date_utc": "2025-09-09 04:59:00",
-    "last_update_utc": "2025-09-09 04:59:00",
-    "latitude": "36.993649",
-    "longitude": "-119.112185",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-09-09T08:30:31.086543",
-    "event_url": "https://rsoe-edis.org/eventList/details/947233/0"
-  },
-  {
     "event_id": "947275",
     "event_title": "Brazil - Fire",
     "event_category": "Fire in built environment",
@@ -988,6 +973,21 @@
     "address": "-",
     "crawled_at": "2025-09-09T08:57:02.032192",
     "event_url": "https://rsoe-edis.org/eventList/details/947275/0"
+  },
+  {
+    "event_id": "947233",
+    "event_title": "United States - Fire",
+    "event_category": "Fire in built environment",
+    "original_category": "Fire - Outdoor fire",
+    "source": "https://earthdata.nasa.gov/",
+    "event_date_utc": "2025-09-09 04:59:00",
+    "last_update_utc": "2025-09-09 04:59:00",
+    "latitude": "36.993649",
+    "longitude": "-119.112185",
+    "area_range": "-",
+    "address": "-",
+    "crawled_at": "2025-09-09T08:30:31.086543",
+    "event_url": "https://rsoe-edis.org/eventList/details/947233/0"
   },
   {
     "event_id": "947231",
@@ -1245,6 +1245,21 @@
     "event_url": "https://rsoe-edis.org/eventList/details/947207/0"
   },
   {
+    "event_id": "947254",
+    "event_title": "Brazil - Fire",
+    "event_category": "Fire in built environment",
+    "original_category": "Fire - Outdoor fire",
+    "source": "https://earthdata.nasa.gov/",
+    "event_date_utc": "2025-09-09 03:45:00",
+    "last_update_utc": "2025-09-09 03:45:00",
+    "latitude": "-13.282016",
+    "longitude": "-43.744766",
+    "area_range": "-",
+    "address": "-",
+    "crawled_at": "2025-09-09T08:57:40.109618",
+    "event_url": "https://rsoe-edis.org/eventList/details/947254/0"
+  },
+  {
     "event_id": "947181",
     "event_title": "Brazil - Fire",
     "event_category": "Fire in built environment",
@@ -1378,21 +1393,6 @@
     "address": "-",
     "crawled_at": "2025-09-09T08:31:09.361451",
     "event_url": "https://rsoe-edis.org/eventList/details/947205/0"
-  },
-  {
-    "event_id": "947254",
-    "event_title": "Brazil - Fire",
-    "event_category": "Fire in built environment",
-    "original_category": "Fire - Outdoor fire",
-    "source": "https://earthdata.nasa.gov/",
-    "event_date_utc": "2025-09-09 03:45:00",
-    "last_update_utc": "2025-09-09 03:45:00",
-    "latitude": "-13.282016",
-    "longitude": "-43.744766",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-09-09T08:57:40.109618",
-    "event_url": "https://rsoe-edis.org/eventList/details/947254/0"
   },
   {
     "event_id": "947180",
