@@ -1,5 +1,35 @@
 [
   {
+    "event_id": "947297",
+    "event_title": "Afghanistan - Blast kills 8 in W. Afghanistan",
+    "event_category": "Surroundings explosion",
+    "original_category": "Explosion - Surroundings explosion",
+    "source": "https://english.news.cn/asiapacific/20250909/068cef5c63914549a80b22be18c14c7b/c.html",
+    "event_date_utc": "2025-09-09 09:14:42",
+    "last_update_utc": "2025-09-09 09:14:43",
+    "latitude": "32.374805",
+    "longitude": "62.115722",
+    "area_range": "Local event",
+    "address": "Balablok, Farah",
+    "crawled_at": "2025-09-09T09:35:28.446017",
+    "event_url": "https://rsoe-edis.org/eventList/details/947297/0"
+  },
+  {
+    "event_id": "947295",
+    "event_title": "Indonesia - Freeport suspends Grasberg operations after 7 mine workers trapped underground",
+    "event_category": "Industrial explosion",
+    "original_category": "Industrial - Mining accidents",
+    "source": "https://www.investing.com/news/commodities-news/freeport-suspends-grasberg-operations-after-7-mine-workers-trapped-underground-4230467",
+    "event_date_utc": "2025-09-09 09:07:54",
+    "last_update_utc": "2025-09-09 09:07:55",
+    "latitude": "-4.057769",
+    "longitude": "137.11341",
+    "area_range": "Local event",
+    "address": "Grasberg mine, Provinsi Papua Tengah",
+    "crawled_at": "2025-09-09T09:35:30.355876",
+    "event_url": "https://rsoe-edis.org/eventList/details/947295/0"
+  },
+  {
     "event_id": "947224",
     "event_title": "Philippines - M 4.8",
     "event_category": "Earthquake",
@@ -643,6 +673,21 @@
     "address": "-",
     "crawled_at": "2025-09-09T08:57:00.230637",
     "event_url": "https://rsoe-edis.org/eventList/details/947276/0"
+  },
+  {
+    "event_id": "947268",
+    "event_title": "Brazil - Fire",
+    "event_category": "Fire in built environment",
+    "original_category": "Fire - Outdoor fire",
+    "source": "https://earthdata.nasa.gov/",
+    "event_date_utc": "2025-09-09 05:48:00",
+    "last_update_utc": "2025-09-09 05:48:00",
+    "latitude": "-8.05154",
+    "longitude": "-48.640699",
+    "area_range": "-",
+    "address": "-",
+    "crawled_at": "2025-09-09T09:36:13.561912",
+    "event_url": "https://rsoe-edis.org/eventList/details/947268/0"
   },
   {
     "event_id": "947252",
@@ -3478,6 +3523,21 @@
     "address": "-",
     "crawled_at": "2025-09-08T23:13:36.238949",
     "event_url": "https://rsoe-edis.org/eventList/details/946902/0"
+  },
+  {
+    "event_id": "947287",
+    "event_title": "Brazil - Fire",
+    "event_category": "Fire in built environment",
+    "original_category": "Fire - Outdoor fire",
+    "source": "https://earthdata.nasa.gov/",
+    "event_date_utc": "2025-09-08 19:02:00",
+    "last_update_utc": "2025-09-08 19:02:00",
+    "latitude": "-15.402617",
+    "longitude": "-53.950656",
+    "area_range": "-",
+    "address": "-",
+    "crawled_at": "2025-09-09T09:35:40.780064",
+    "event_url": "https://rsoe-edis.org/eventList/details/947287/0"
   },
   {
     "event_id": "946778",
