@@ -285,36 +285,6 @@
     "event_url": "https://rsoe-edis.org/eventList/details/947383/0"
   },
   {
-    "event_id": "947385",
-    "event_title": "Canada - Fire",
-    "event_category": "Fire in built environment",
-    "original_category": "Fire - Outdoor fire",
-    "source": "https://earthdata.nasa.gov/",
-    "event_date_utc": "2025-09-09 05:04:00",
-    "last_update_utc": "2025-09-09 05:04:00",
-    "latitude": "53.036767",
-    "longitude": "-124.945338",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-09-09T23:14:10.629616",
-    "event_url": "https://rsoe-edis.org/eventList/details/947385/0"
-  },
-  {
-    "event_id": "947391",
-    "event_title": "United States - Fire",
-    "event_category": "Fire in built environment",
-    "original_category": "Fire - Outdoor fire",
-    "source": "https://earthdata.nasa.gov/",
-    "event_date_utc": "2025-09-09 04:59:00",
-    "last_update_utc": "2025-09-09 04:59:00",
-    "latitude": "36.945749",
-    "longitude": "-119.16401",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-09-09T23:14:04.062434",
-    "event_url": "https://rsoe-edis.org/eventList/details/947391/0"
-  },
-  {
     "event_id": "947395",
     "event_title": "Pakistan - PADIDAN",
     "event_category": "Flood",
@@ -598,36 +568,6 @@
     "address": "-",
     "crawled_at": "2025-09-09T23:13:24.761944",
     "event_url": "https://rsoe-edis.org/eventList/details/947446/0"
-  },
-  {
-    "event_id": "947474",
-    "event_title": "Brazil - Fire",
-    "event_category": "Fire in built environment",
-    "original_category": "Fire - Outdoor fire",
-    "source": "https://earthdata.nasa.gov/",
-    "event_date_utc": "2025-09-09 05:55:00",
-    "last_update_utc": "2025-09-09 05:55:00",
-    "latitude": "-21.445197",
-    "longitude": "-48.843008",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-09-09T23:13:06.853870",
-    "event_url": "https://rsoe-edis.org/eventList/details/947474/0"
-  },
-  {
-    "event_id": "947475",
-    "event_title": "Brazil - Fire",
-    "event_category": "Fire in built environment",
-    "original_category": "Fire - Outdoor fire",
-    "source": "https://earthdata.nasa.gov/",
-    "event_date_utc": "2025-09-09 05:48:00",
-    "last_update_utc": "2025-09-09 05:48:00",
-    "latitude": "-5.549747",
-    "longitude": "-45.177016",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-09-09T23:13:05.170783",
-    "event_url": "https://rsoe-edis.org/eventList/details/947475/0"
   },
   {
     "event_id": "947477",
@@ -1035,6 +975,21 @@
     "event_url": "https://rsoe-edis.org/eventList/details/947246/0"
   },
   {
+    "event_id": "947247",
+    "event_title": "Brazil - Fire",
+    "event_category": "Fire in built environment",
+    "original_category": "Fire - Outdoor fire",
+    "source": "https://earthdata.nasa.gov/",
+    "event_date_utc": "2025-09-09 05:55:00",
+    "last_update_utc": "2025-09-09 05:55:00",
+    "latitude": "-21.441203",
+    "longitude": "-48.850605",
+    "area_range": "-",
+    "address": "-",
+    "crawled_at": "2025-09-09T08:57:51.867207",
+    "event_url": "https://rsoe-edis.org/eventList/details/947247/0"
+  },
+  {
     "event_id": "947249",
     "event_title": "Brazil - Fire",
     "event_category": "Fire in built environment",
@@ -1288,6 +1243,21 @@
     "address": "-",
     "crawled_at": "2025-09-09T08:57:02.032192",
     "event_url": "https://rsoe-edis.org/eventList/details/947275/0"
+  },
+  {
+    "event_id": "947276",
+    "event_title": "Brazil - Fire",
+    "event_category": "Fire in built environment",
+    "original_category": "Fire - Outdoor fire",
+    "source": "https://earthdata.nasa.gov/",
+    "event_date_utc": "2025-09-09 05:48:00",
+    "last_update_utc": "2025-09-09 05:48:00",
+    "latitude": "-5.551384",
+    "longitude": "-45.176924",
+    "area_range": "-",
+    "address": "-",
+    "crawled_at": "2025-09-09T08:57:00.230637",
+    "event_url": "https://rsoe-edis.org/eventList/details/947276/0"
   },
   {
     "event_id": "947278",
@@ -3300,6 +3270,21 @@
     "event_url": "https://rsoe-edis.org/eventList/details/947232/0"
   },
   {
+    "event_id": "947233",
+    "event_title": "United States - Fire",
+    "event_category": "Fire in built environment",
+    "original_category": "Fire - Outdoor fire",
+    "source": "https://earthdata.nasa.gov/",
+    "event_date_utc": "2025-09-09 04:59:00",
+    "last_update_utc": "2025-09-09 04:59:00",
+    "latitude": "36.993649",
+    "longitude": "-119.112185",
+    "area_range": "-",
+    "address": "-",
+    "crawled_at": "2025-09-09T08:30:31.086543",
+    "event_url": "https://rsoe-edis.org/eventList/details/947233/0"
+  },
+  {
     "event_id": "947234",
     "event_title": "Australia - Fire",
     "event_category": "Fire in built environment",
@@ -3358,6 +3343,21 @@
     "address": "-",
     "crawled_at": "2025-09-09T08:30:24.620793",
     "event_url": "https://rsoe-edis.org/eventList/details/947237/0"
+  },
+  {
+    "event_id": "947238",
+    "event_title": "Canada - Fire",
+    "event_category": "Fire in built environment",
+    "original_category": "Fire - Outdoor fire",
+    "source": "https://earthdata.nasa.gov/",
+    "event_date_utc": "2025-09-09 05:04:00",
+    "last_update_utc": "2025-09-09 05:04:00",
+    "latitude": "53.009991",
+    "longitude": "-125.094149",
+    "area_range": "-",
+    "address": "-",
+    "crawled_at": "2025-09-09T08:30:22.900906",
+    "event_url": "https://rsoe-edis.org/eventList/details/947238/0"
   },
   {
     "event_id": "947241",
@@ -3883,21 +3883,6 @@
     "address": "-",
     "crawled_at": "2025-09-08T23:36:22.887361",
     "event_url": "https://rsoe-edis.org/eventList/details/918427/0"
-  },
-  {
-    "event_id": "920602",
-    "event_title": "Thailand - SURIN AGROMET",
-    "event_category": "Fire in built environment",
-    "original_category": "Weather - Extreme rainfall",
-    "source": "https://severeweather.wmo.int/v2/",
-    "event_date_utc": "2025-09-08 18:00:00",
-    "last_update_utc": "2025-09-08 18:00:00",
-    "latitude": "14.88",
-    "longitude": "103.45",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-09-08T23:36:21.274901",
-    "event_url": "https://rsoe-edis.org/eventList/details/920602/0"
   },
   {
     "event_id": "921169",
@@ -4648,6 +4633,21 @@
     "address": "-",
     "crawled_at": "2025-09-08T23:30:15.510038",
     "event_url": "https://rsoe-edis.org/eventList/details/946216/0"
+  },
+  {
+    "event_id": "946217",
+    "event_title": "Indonesia - M 4.5",
+    "event_category": "Earthquake",
+    "original_category": "Geological - Earthquake",
+    "source": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000qunk",
+    "event_date_utc": "2025-09-08 04:23:05",
+    "last_update_utc": "2025-09-08 04:51:22",
+    "latitude": "-1.0102",
+    "longitude": "134.2058",
+    "area_range": "-",
+    "address": "-",
+    "crawled_at": "2025-09-08T23:30:13.748441",
+    "event_url": "https://rsoe-edis.org/eventList/details/946217/0"
   },
   {
     "event_id": "946218",
@@ -7755,6 +7755,21 @@
     "event_url": "https://rsoe-edis.org/eventList/details/946827/0"
   },
   {
+    "event_id": "946833",
+    "event_title": "Greece - M 5.2",
+    "event_category": "Earthquake",
+    "original_category": "Geological - Earthquake",
+    "source": "http://bbnet.gein.noa.gr/Events/2025/09/noa2025rqmvb_info.html",
+    "event_date_utc": "2025-09-08 21:27:56",
+    "last_update_utc": "2025-09-08 21:27:56",
+    "latitude": "38.2093",
+    "longitude": "24.1821",
+    "area_range": "-",
+    "address": "-",
+    "crawled_at": "2025-09-08T23:15:26.899511",
+    "event_url": "https://rsoe-edis.org/eventList/details/946833/0"
+  },
+  {
     "event_id": "946845",
     "event_title": "Paraguay - Fire",
     "event_category": "Fire in built environment",
@@ -8593,21 +8608,6 @@
     "address": "-",
     "crawled_at": "2025-09-07T23:34:48.509006",
     "event_url": "https://rsoe-edis.org/eventList/details/932981/0"
-  },
-  {
-    "event_id": "934426",
-    "event_title": "Thailand - KRABI",
-    "event_category": "Fire in built environment",
-    "original_category": "Weather - Lightning",
-    "source": "https://severeweather.wmo.int/v2/",
-    "event_date_utc": "2025-09-07 21:00:00",
-    "last_update_utc": "2025-09-07 21:00:00",
-    "latitude": "8.1",
-    "longitude": "98.96",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-09-07T23:34:44.996311",
-    "event_url": "https://rsoe-edis.org/eventList/details/934426/0"
   },
   {
     "event_id": "936747",
@@ -10648,21 +10648,6 @@
     "address": "Tudun Wada Local Government Area, Kano State",
     "crawled_at": "2025-09-07T23:22:52.502484",
     "event_url": "https://rsoe-edis.org/eventList/details/945535/0"
-  },
-  {
-    "event_id": "945537",
-    "event_title": "Côte d'Ivoire - 11 missing in Ivory Coast after hippo capsizes boat",
-    "event_category": "Fire in built environment",
-    "original_category": "Biological origin - Animal attack",
-    "source": "https://www.scmp.com/news/world/africa/article/3324620/11-missing-ivory-coast-after-hippo-capsizes-boat?utm_source=rss_feed",
-    "event_date_utc": "2025-09-07 12:31:35",
-    "last_update_utc": "2025-09-07 12:31:35",
-    "latitude": "6.210737",
-    "longitude": "-7.01806",
-    "area_range": "Local event",
-    "address": "Sassandra River near Buyo, Département de Soubré, District du Bas-Sassandra",
-    "crawled_at": "2025-09-07T23:22:49.227829",
-    "event_url": "https://rsoe-edis.org/eventList/details/945537/0"
   },
   {
     "event_id": "945539",
@@ -12975,21 +12960,6 @@
     "event_url": "https://rsoe-edis.org/eventList/details/939322/0"
   },
   {
-    "event_id": "939766",
-    "event_title": "Last update (UTC): 2025-09-05 07:25:36",
-    "event_category": "Fire in built environment",
-    "original_category": "Critical infrastructure - Potable water supply distruption",
-    "source": "https://www.novinite.com/view_news.php?id=234174",
-    "event_date_utc": "2025-09-03 07:34:38",
-    "last_update_utc": "Latitude: 43.5",
-    "latitude": "",
-    "longitude": "",
-    "area_range": "Multiple cities / districts wide event",
-    "address": "Oblast Pleven",
-    "crawled_at": "2025-09-06T23:41:21.526477",
-    "event_url": "https://rsoe-edis.org/eventList/details/939766/0"
-  },
-  {
     "event_id": "941109",
     "event_title": "Nigeria - 10 Dead, 10 Hospitalised In Enugu Road Accidents",
     "event_category": "Fire in built environment",
@@ -14685,21 +14655,6 @@
     "event_url": "https://rsoe-edis.org/eventList/details/944396/0"
   },
   {
-    "event_id": "944397",
-    "event_title": "United Kingdom - 100 firefighters tackleblaze at former BBC television centre in London's White City",
-    "event_category": "Fire in built environment",
-    "original_category": "Fire - Fire in built environment",
-    "source": "https://news.sky.com/story/100-firefighters-tackling-blaze-at-nine-storey-building-in-londons-white-city-13425901",
-    "event_date_utc": "2025-09-06 09:57:23",
-    "last_update_utc": "2025-09-06 09:57:23",
-    "latitude": "51.511088",
-    "longitude": "-0.225115",
-    "area_range": "Local event",
-    "address": "BBC Television Centre, White City, London, Greater London, England",
-    "crawled_at": "2025-09-06T23:29:35.269830",
-    "event_url": "https://rsoe-edis.org/eventList/details/944397/0"
-  },
-  {
     "event_id": "944398",
     "event_title": "United States - 200-acre brush fire prompts evacuations in Jurupa Valley - VIDEO",
     "event_category": "Fire in built environment",
@@ -16305,21 +16260,6 @@
     "event_url": "https://rsoe-edis.org/eventList/details/944819/0"
   },
   {
-    "event_id": "944822",
-    "event_title": "United States - Washington, DC, residents protest against Trump's troop deployment to the city",
-    "event_category": "Fire in built environment",
-    "original_category": "Social incident - Serial demonstrations, mass movements",
-    "source": "https://www.reuters.com/world/us/washington-dc-residents-protest-against-trumps-troop-deployment-city-2025-09-06/",
-    "event_date_utc": "2025-09-06 19:40:18",
-    "last_update_utc": "2025-09-06 19:40:18",
-    "latitude": "38.892062",
-    "longitude": "-77.01991",
-    "area_range": "Local event",
-    "address": "Washington, District of Columbia",
-    "crawled_at": "2025-09-06T23:18:25.747692",
-    "event_url": "https://rsoe-edis.org/eventList/details/944822/0"
-  },
-  {
     "event_id": "944823",
     "event_title": "South Africa - Chaos at Nyanga taxi rank as gunmen open fire",
     "event_category": "Fire in built environment",
@@ -16738,21 +16678,6 @@
     "address": "-",
     "crawled_at": "2025-09-06T23:13:46.263439",
     "event_url": "https://rsoe-edis.org/eventList/details/944962/0"
-  },
-  {
-    "event_id": "944963",
-    "event_title": "South Korea - JEONJU",
-    "event_category": "Fire in built environment",
-    "original_category": "Weather - Lightning",
-    "source": "https://severeweather.wmo.int/v2/",
-    "event_date_utc": "2025-09-06 21:00:00",
-    "last_update_utc": "2025-09-06 21:00:00",
-    "latitude": "35.83",
-    "longitude": "127.11",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-09-06T23:13:44.609522",
-    "event_url": "https://rsoe-edis.org/eventList/details/944963/0"
   },
   {
     "event_id": "944965",
@@ -17968,6 +17893,21 @@
     "address": "-",
     "crawled_at": "2025-09-05T23:34:20.324656",
     "event_url": "https://rsoe-edis.org/eventList/details/943043/0"
+  },
+  {
+    "event_id": "943044",
+    "event_title": "Mexico - M 4.7",
+    "event_category": "Earthquake",
+    "original_category": "Geological - Earthquake",
+    "source": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000qu0w",
+    "event_date_utc": "2025-09-05 06:33:14",
+    "last_update_utc": "2025-09-05 06:51:56",
+    "latitude": "15.9324",
+    "longitude": "-96.1984",
+    "area_range": "-",
+    "address": "-",
+    "crawled_at": "2025-09-05T23:34:16.366692",
+    "event_url": "https://rsoe-edis.org/eventList/details/943044/0"
   },
   {
     "event_id": "943046",
@@ -24480,21 +24420,6 @@
     "event_url": "https://rsoe-edis.org/eventList/details/942150/0"
   },
   {
-    "event_id": "942151",
-    "event_title": "United Kingdom - 17 injured after bus mounts pavement near Victoria Station",
-    "event_category": "Fire in built environment",
-    "original_category": "Traffic incident - Public road accident",
-    "source": "https://www.standard.co.uk/news/uk/metropolitan-police-westminster-people-emergency-services-transport-b1245983.html",
-    "event_date_utc": "2025-09-04 17:39:35",
-    "last_update_utc": "2025-09-04 17:39:35",
-    "latitude": "51.524399",
-    "longitude": "-0.189999",
-    "area_range": "Local event",
-    "address": "Victoria Station, Westminster, London, Greater London, England",
-    "crawled_at": "2025-09-04T23:19:55.417926",
-    "event_url": "https://rsoe-edis.org/eventList/details/942151/0"
-  },
-  {
     "event_id": "942175",
     "event_title": "Australia - Fire",
     "event_category": "Fire in built environment",
@@ -25093,6 +25018,21 @@
     "address": "Savannah Region",
     "crawled_at": "2025-09-04T23:14:55.590024",
     "event_url": "https://rsoe-edis.org/eventList/details/942347/0"
+  },
+  {
+    "event_id": "942348",
+    "event_title": "Afghanistan - M 4.9",
+    "event_category": "Earthquake",
+    "original_category": "Geological - Earthquake",
+    "source": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000qtxh",
+    "event_date_utc": "2025-09-04 21:46:40",
+    "last_update_utc": "2025-09-04 22:04:54",
+    "latitude": "34.6919",
+    "longitude": "70.6691",
+    "area_range": "-",
+    "address": "-",
+    "crawled_at": "2025-09-04T23:14:53.889166",
+    "event_url": "https://rsoe-edis.org/eventList/details/942348/0"
   },
   {
     "event_id": "942349",
@@ -25815,6 +25755,21 @@
     "event_url": "https://rsoe-edis.org/eventList/details/939925/0"
   },
   {
+    "event_id": "939926",
+    "event_title": "United States - Quick-moving wildfire scorches historic California gold mining town, burning multiple homes",
+    "event_category": "Fire in built environment",
+    "original_category": "Fire - Outdoor fire",
+    "source": "https://ktar.com/national-news/quick-moving-wildfire-scorches-historic-california-gold-mining-town-burning-multiple-homes/5745464/",
+    "event_date_utc": "2025-09-03 10:50:00",
+    "last_update_utc": "2025-09-03 10:50:00",
+    "latitude": "37.87098",
+    "longitude": "-120.433",
+    "area_range": "City / district wide event",
+    "address": "Chinese Camp, Tuolumne County, California",
+    "crawled_at": "2025-09-04T02:25:44.108372",
+    "event_url": "https://rsoe-edis.org/eventList/details/939926/0"
+  },
+  {
     "event_id": "939927",
     "event_title": "Indonesia - M 4.7",
     "event_category": "Earthquake",
@@ -25933,21 +25888,6 @@
     "address": "-",
     "crawled_at": "2025-09-04T02:25:30.207487",
     "event_url": "https://rsoe-edis.org/eventList/details/939938/0"
-  },
-  {
-    "event_id": "939939",
-    "event_title": "South Africa - Emergency appeal launched by Mdzananda Animal Clinic following drunk driving damage",
-    "event_category": "Fire in built environment",
-    "original_category": "Traffic incident - Public road accident",
-    "source": "https://iol.co.za/news/south-africa/2025-09-03-emergency-appeal-launched-by-mdzananda-animal-clinic-following-drunk-driving-damage/",
-    "event_date_utc": "2025-09-03 11:29:38",
-    "last_update_utc": "2025-09-03 11:29:39",
-    "latitude": "-34.047209",
-    "longitude": "18.682396",
-    "area_range": "Local event",
-    "address": "Mdzananda Animal Clinic, Khayelitsha, City of Cape Town, Western Cape íprovince",
-    "crawled_at": "2025-09-04T02:25:28.426667",
-    "event_url": "https://rsoe-edis.org/eventList/details/939939/0"
   },
   {
     "event_id": "939940",
@@ -26353,21 +26293,6 @@
     "address": "-",
     "crawled_at": "2025-09-04T02:21:45.786304",
     "event_url": "https://rsoe-edis.org/eventList/details/940088/0"
-  },
-  {
-    "event_id": "940098",
-    "event_title": "United States - Fire",
-    "event_category": "Fire in built environment",
-    "original_category": "Fire - Outdoor fire",
-    "source": "https://earthdata.nasa.gov/",
-    "event_date_utc": "2025-09-03 11:34:00",
-    "last_update_utc": "2025-09-03 11:34:00",
-    "latitude": "37.818366",
-    "longitude": "-120.424642",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-09-04T02:21:28.527686",
-    "event_url": "https://rsoe-edis.org/eventList/details/940098/0"
   },
   {
     "event_id": "940100",
@@ -29025,21 +28950,6 @@
     "event_url": "https://rsoe-edis.org/eventList/details/940474/0"
   },
   {
-    "event_id": "940482",
-    "event_title": "South Africa - Five killed in N1 North Road crash near Midrand",
-    "event_category": "Fire in built environment",
-    "original_category": "Traffic incident - Public road accident",
-    "source": "https://iol.co.za/news/crime-and-courts/2025-09-03-five-killed-in-n1-north-road-crash-near-midrand/",
-    "event_date_utc": "2025-09-03 19:29:25",
-    "last_update_utc": "2025-09-03 19:29:25",
-    "latitude": "-25.989529",
-    "longitude": "28.12843",
-    "area_range": "Local event",
-    "address": "Midrand, Johannesburg Metropolitan Municipality, Gauteng Province",
-    "crawled_at": "2025-09-04T02:11:16.738758",
-    "event_url": "https://rsoe-edis.org/eventList/details/940482/0"
-  },
-  {
     "event_id": "940484",
     "event_title": "Australia - Fire",
     "event_category": "Fire in built environment",
@@ -29803,21 +29713,6 @@
     "address": "-",
     "crawled_at": "2025-09-04T02:03:18.994016",
     "event_url": "https://rsoe-edis.org/eventList/details/940785/0"
-  },
-  {
-    "event_id": "940786",
-    "event_title": "Malaysia - KUCHING",
-    "event_category": "Fire in built environment",
-    "original_category": "Weather - Extreme rainfall",
-    "source": "https://severeweather.wmo.int/v2/",
-    "event_date_utc": "2025-09-04 00:00:00",
-    "last_update_utc": "2025-09-04 00:00:00",
-    "latitude": "1.48",
-    "longitude": "110.33",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-09-04T02:03:17.233829",
-    "event_url": "https://rsoe-edis.org/eventList/details/940786/0"
   },
   {
     "event_id": "940787",
