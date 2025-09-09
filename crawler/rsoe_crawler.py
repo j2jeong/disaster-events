@@ -41,10 +41,10 @@ def clean_duplicate_key(title: str, date: str, lat: str, lon: str) -> str:
         lat_f = float(lat) if lat else 0
         lon_f = float(lon) if lon else 0
         
-        # Fire 이벤트의 경우 더 큰 반경으로 클러스터링 (0.05도 약 5km)
+        # Fire 이벤트의 경우 더 큰 반경으로 클러스터링 (0.1도 약 10km)
         if 'fire' in title.lower():
-            lat_rounded = f"{round(lat_f * 20) / 20:.2f}"  # 0.05도 단위
-            lon_rounded = f"{round(lon_f * 20) / 20:.2f}"
+            lat_rounded = f"{round(lat_f * 10) / 10:.1f}"  # 0.1도 단위 (약 10km)
+            lon_rounded = f"{round(lon_f * 10) / 10:.1f}"
         else:
             # 다른 이벤트는 기존대로 (0.01도 약 1km)
             lat_rounded = f"{round(lat_f * 100) / 100:.2f}"
@@ -520,31 +520,32 @@ class RSOECrawler:
         norm = re.sub(r'\bthe\b', ' ', norm)
         norm = re.sub(r'\s+', ' ', norm).strip()
         
-        # RSOE 실제 카테고리 패턴 매핑 (Main Category - Sub Category 형식)
+        # RSOE 실제 카테고리 패턴 매핑 - 더 정확한 패턴
         aliases = [
-            # Social incidents
+            # War-related
             (r'social incident.*war|^war$', 'War'),
             (r'social incident.*(terrorism|local security conflict)', 'War'),
             
-            # Ecological disasters  
+            # Environment pollution  
             (r'ecological disaster.*environment pollution', 'Environment pollution'),
             (r'industrial.*environment pollution', 'Environment pollution'),
+            (r'industrial.*collapse of built environment', 'Environment pollution'),
             
-            # Explosions
+            # Explosions - 정확한 매칭
             (r'explosion.*industrial explosion', 'Industrial explosion'),
             (r'explosion.*surroundings explosion', 'Surroundings explosion'),
             
-            # Fire
-            (r'fire.*fire in built environment', 'Fire in built environment'),
+            # Fire - 모든 화재를 Fire in built environment로 통합
+            (r'fire.*(fire in built environment|outdoor fire)', 'Fire in built environment'),
             
-            # Geological events
+            # Geological events - 정확한 매칭
             (r'geological.*earthquake', 'Earthquake'),
-            (r'geological.*landslide', 'Landslide'),
+            (r'geological.*landslide', 'Landslide'), 
             (r'geological.*volcanic eruption', 'Volcanic eruption'),
             
-            # Hydrological events
+            # Hydrological/Weather events - 물 관련 모든 것을 Flood로
             (r'hydrological.*(flood|flash flood)', 'Flood'),
-            (r'weather.*extreme rainfall', 'Flood'),  # 강우도 홍수로 분류
+            (r'weather.*(extreme rainfall|lightning)', 'Flood'),
         ]
         
         # Try pattern matching first
