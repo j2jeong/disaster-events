@@ -41,10 +41,10 @@ def clean_duplicate_key(title: str, date: str, lat: str, lon: str) -> str:
         lat_f = float(lat) if lat else 0
         lon_f = float(lon) if lon else 0
         
-        # Fire 이벤트의 경우 더 큰 반경으로 클러스터링 (0.1도 약 10km)
+        # Fire 이벤트의 경우 더 큰 반경으로 클러스터링 (0.2도 약 20km)
         if 'fire' in title.lower():
-            lat_rounded = f"{round(lat_f * 10) / 10:.1f}"  # 0.1도 단위 (약 10km)
-            lon_rounded = f"{round(lon_f * 10) / 10:.1f}"
+            lat_rounded = f"{round(lat_f * 5) / 5:.1f}"  # 0.2도 단위 (약 20km)
+            lon_rounded = f"{round(lon_f * 5) / 5:.1f}"
         else:
             # 다른 이벤트는 기존대로 (0.01도 약 1km)
             lat_rounded = f"{round(lat_f * 100) / 100:.2f}"
