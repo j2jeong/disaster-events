@@ -27,34 +27,47 @@ def _parse_iso(dt: str) -> float:
         return 0.0
 
 def clean_duplicate_key(title: str, date: str, lat: str, lon: str) -> str:
-    """중복 제거용 키 생성 (정규화) - 더 엄격한 클러스터링 방지"""
+    """중복 제거용 키 생성 (정규화) - Fire 이벤트에 대해 더 공격적인 클러스터링"""
     clean_title = re.sub(r'[^\w\s]', '', title.lower()).strip()
     clean_title = re.sub(r'\s+', ' ', clean_title)
     
     # Remove common words that don't help distinguish events
-    common_words = ['earthquake', 'fire', 'flood', 'explosion', 'war', 'pollution', 'landslide', 'volcanic', 'eruption']
+    common_words = ['earthquake', 'fire', 'flood', 'explosion', 'war', 'pollution', 'landslide', 'volcanic', 'eruption',
+                   'building', 'house', 'residential', 'apartment', 'structure', 'commercial', 'industrial']
     title_words = [word for word in clean_title.split() if word not in common_words]
-    clean_title = ' '.join(title_words[:5])  # Only keep first 5 significant words
+    clean_title = ' '.join(title_words[:3])  # Only keep first 3 significant words
     
     try:
-        # 더 정밀한 좌표로 클러스터링 방지 (소수점 4자리로 충분, 너무 정밀하면 같은 사건도 다르게 인식)
-        lat_clean = f"{float(lat):.4f}" if lat else "0"
-        lon_clean = f"{float(lon):.4f}" if lon else "0"
+        lat_f = float(lat) if lat else 0
+        lon_f = float(lon) if lon else 0
         
-        # 비슷한 위치 (0.01도 약 1km 내) 이벤트들은 같은 지역으로 간주
-        lat_rounded = f"{round(float(lat) * 100) / 100:.2f}" if lat else "0"  
-        lon_rounded = f"{round(float(lon) * 100) / 100:.2f}" if lon else "0"
-        
-        # Use rounded coordinates for clustering prevention, exact for exact duplicates
+        # Fire 이벤트의 경우 더 큰 반경으로 클러스터링 (0.05도 약 5km)
+        if 'fire' in title.lower():
+            lat_rounded = f"{round(lat_f * 20) / 20:.2f}"  # 0.05도 단위
+            lon_rounded = f"{round(lon_f * 20) / 20:.2f}"
+        else:
+            # 다른 이벤트는 기존대로 (0.01도 약 1km)
+            lat_rounded = f"{round(lat_f * 100) / 100:.2f}"
+            lon_rounded = f"{round(lon_f * 100) / 100:.2f}"
+            
         location_key = f"{lat_rounded}|{lon_rounded}"
     except:
-        lat_clean = "0"
-        lon_clean = "0"
         location_key = "0|0"
     
-    date_clean = date[:10] if len(date) >= 10 else date
+    # Fire 이벤트의 경우 시간 범위도 더 크게 (같은 주)
+    if 'fire' in title.lower():
+        try:
+            from datetime import datetime, timedelta
+            date_obj = datetime.fromisoformat(date.replace('Z', '+00:00')) if date else datetime.now()
+            # 같은 주로 그룹핑 (월요일 기준)
+            week_start = date_obj - timedelta(days=date_obj.weekday())
+            date_clean = week_start.strftime('%Y-%W')  # Year-Week format
+        except:
+            date_clean = date[:7] if len(date) >= 7 else date  # Year-Month
+    else:
+        date_clean = date[:10] if len(date) >= 10 else date  # Exact date
     
-    # Create a key that groups similar events in same area on same day
+    # Create a key that groups similar events more aggressively for fires
     return f"{clean_title}|{date_clean}|{location_key}"
 
 def _stable_dedupe(urls: List[str]) -> List[str]:
