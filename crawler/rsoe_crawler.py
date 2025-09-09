@@ -27,17 +27,35 @@ def _parse_iso(dt: str) -> float:
         return 0.0
 
 def clean_duplicate_key(title: str, date: str, lat: str, lon: str) -> str:
-    """중복 제거용 키 생성 (정규화)"""
+    """중복 제거용 키 생성 (정규화) - 더 엄격한 클러스터링 방지"""
     clean_title = re.sub(r'[^\w\s]', '', title.lower()).strip()
     clean_title = re.sub(r'\s+', ' ', clean_title)
+    
+    # Remove common words that don't help distinguish events
+    common_words = ['earthquake', 'fire', 'flood', 'explosion', 'war', 'pollution', 'landslide', 'volcanic', 'eruption']
+    title_words = [word for word in clean_title.split() if word not in common_words]
+    clean_title = ' '.join(title_words[:5])  # Only keep first 5 significant words
+    
     try:
+        # 더 정밀한 좌표로 클러스터링 방지 (소수점 4자리로 충분, 너무 정밀하면 같은 사건도 다르게 인식)
         lat_clean = f"{float(lat):.4f}" if lat else "0"
         lon_clean = f"{float(lon):.4f}" if lon else "0"
+        
+        # 비슷한 위치 (0.01도 약 1km 내) 이벤트들은 같은 지역으로 간주
+        lat_rounded = f"{round(float(lat) * 100) / 100:.2f}" if lat else "0"  
+        lon_rounded = f"{round(float(lon) * 100) / 100:.2f}" if lon else "0"
+        
+        # Use rounded coordinates for clustering prevention, exact for exact duplicates
+        location_key = f"{lat_rounded}|{lon_rounded}"
     except:
         lat_clean = "0"
         lon_clean = "0"
+        location_key = "0|0"
+    
     date_clean = date[:10] if len(date) >= 10 else date
-    return f"{clean_title}|{date_clean}|{lat_clean}|{lon_clean}"
+    
+    # Create a key that groups similar events in same area on same day
+    return f"{clean_title}|{date_clean}|{location_key}"
 
 def _stable_dedupe(urls: List[str]) -> List[str]:
     """순서 보존 중복 제거"""
@@ -296,11 +314,25 @@ def create_backup_if_needed(events_path: str = "docs/data/events.json"):
             except Exception:
                 pass
             print(f"✅ Created run-based backup: {run_backup_path}")
-        backups = sorted(backup_dir.glob("events_backup_*.json"))
-        if len(backups) > 10:
-            for old_backup in backups[:-10]:
+        # Smart backup cleanup - keep only recent and important backups
+        backups = sorted(backup_dir.glob("events_backup_*.json"), key=lambda x: x.stat().st_mtime, reverse=True)
+        run_backups = sorted(backup_dir.glob("events_run_*.json"), key=lambda x: x.stat().st_mtime, reverse=True)
+        
+        # Keep only 5 most recent timestamp backups
+        if len(backups) > 5:
+            for old_backup in backups[5:]:
                 old_backup.unlink()
-                print(f"🗑️ Removed old backup: {old_backup.name}")
+                print(f"🗑️ Removed old timestamp backup: {old_backup.name}")
+        
+        # Keep only 10 most recent run backups, but prioritize larger files
+        if len(run_backups) > 10:
+            # Sort by size (larger files first) among old backups
+            old_run_backups = run_backups[10:]
+            old_run_backups.sort(key=lambda x: x.stat().st_size, reverse=True)
+            # Keep 2 largest old backups, remove the rest
+            for old_backup in old_run_backups[2:]:
+                old_backup.unlink()
+                print(f"🗑️ Removed old run backup: {old_backup.name}")
     except Exception as e:
         print(f"⚠️ Error creating backup: {e}")
 
@@ -378,17 +410,63 @@ class RSOECrawler:
             "Flood": "Flood"
         }
         self.collected_events = []
+        self.existing_events = set()  # Store existing event IDs and content hashes
+        self.existing_content_keys = set()  # Store content-based duplicate keys
+        self.load_existing_events()  # Load existing events on initialization
 
-    def get_page_content(self, url, retries=3):
+    def load_existing_events(self):
+        """기존 이벤트들을 로드해서 중복 체크용 데이터 구축"""
+        try:
+            # Load current events
+            current_path = pathlib.Path("docs/data/events.json")
+            if current_path.exists():
+                with open(current_path, 'r', encoding='utf-8') as f:
+                    current_events = json.load(f)
+                for event in current_events:
+                    event_id = str(event.get("event_id", "")).strip()
+                    if event_id:
+                        self.existing_events.add(event_id)
+                    # Create content key for duplicate detection
+                    title = str(event.get('event_title', '')).strip()
+                    date = str(event.get('event_date_utc', '')).strip()
+                    lat = str(event.get('latitude', '')).strip()
+                    lon = str(event.get('longitude', '')).strip()
+                    if title:
+                        content_key = clean_duplicate_key(title, date, lat, lon)
+                        self.existing_content_keys.add(content_key)
+            
+            # Load past events too
+            past_path = pathlib.Path("docs/data/past_events.json")
+            if past_path.exists():
+                with open(past_path, 'r', encoding='utf-8') as f:
+                    past_events = json.load(f)
+                for event in past_events:
+                    event_id = str(event.get("event_id", "")).strip()
+                    if event_id:
+                        self.existing_events.add(event_id)
+                    # Create content key for duplicate detection
+                    title = str(event.get('event_title', '')).strip()
+                    date = str(event.get('event_date_utc', '')).strip()
+                    lat = str(event.get('latitude', '')).strip()
+                    lon = str(event.get('longitude', '')).strip()
+                    if title:
+                        content_key = clean_duplicate_key(title, date, lat, lon)
+                        self.existing_content_keys.add(content_key)
+            
+            print(f"✓ Loaded {len(self.existing_events)} existing event IDs and {len(self.existing_content_keys)} content keys for duplicate detection")
+        except Exception as e:
+            print(f"⚠️ Error loading existing events: {e}")
+
+    def get_page_content(self, url, retries=2):
         for attempt in range(retries):
             try:
-                response = self.session.get(url, timeout=30)
+                response = self.session.get(url, timeout=15)  # Reduced timeout
                 response.raise_for_status()
                 return response.text
             except requests.RequestException as e:
                 print(f"⚠️ Request failed (attempt {attempt + 1}/{retries}): {e}")
                 if attempt < retries - 1:
-                    time.sleep(2 ** attempt)
+                    time.sleep(1)  # Reduced retry delay
                 else:
                     print(f"✗ Failed to fetch {url} after {retries} attempts")
                     return None
@@ -429,27 +507,26 @@ class RSOECrawler:
         norm = re.sub(r'\bthe\b', ' ', norm)
         norm = re.sub(r'\s+', ' ', norm).strip()
         
-        # More comprehensive mapping patterns
+        # More comprehensive mapping patterns - ONLY target categories
         aliases = [
-            # War-related
-            (r'\b(war|conflict|armed conflict|military)\b', 'War'),
+            # War-related - more patterns
+            (r'\b(war|conflict|armed conflict|military|warfare|battle)\b', 'War'),
             
-            # Environment pollution
-            (r'\b(environment(al)? pollution|pollution|chemical spill|toxic|contamination)\b', 'Environment pollution'),
+            # Environment pollution - more patterns
+            (r'\b(environment(al)? pollution|pollution|chemical spill|toxic|contamination|hazardous|oil spill)\b', 'Environment pollution'),
             
-            # Explosions
-            (r'\b(industrial explosion|factory explosion|plant explosion)\b', 'Industrial explosion'),
-            (r'\b(surroundings? explosion|explosion|blast)\b', 'Surroundings explosion'),
+            # Explosions - more specific patterns
+            (r'\b(industrial explosion|factory explosion|plant explosion|refinery explosion)\b', 'Industrial explosion'),
+            (r'\b(surroundings? explosion|explosion|blast|detonation)\b', 'Surroundings explosion'),
             
-            # Fires
-            (r'\b(fire in (the )?built environment|building fire|house fire|structure fire|residential fire|apartment fire)\b', 'Fire in built environment'),
-            (r'\b(fire|wildfire|forest fire|brush fire)\b', 'Fire in built environment'),
+            # Fires - more specific patterns for built environment only
+            (r'\b(fire in (the )?built environment|building fire|house fire|structure fire|residential fire|apartment fire|urban fire)\b', 'Fire in built environment'),
             
-            # Natural disasters
-            (r'\b(earthquake|quake|seismic|tremor)\b', 'Earthquake'),
-            (r'\b(landslide|mudslide|rockslide|slope failure)\b', 'Landslide'),
-            (r'\b(volcan(ic|o) eruption|volcanic activity|volcano)\b', 'Volcanic eruption'),
-            (r'\b(flash? ?flood|floods?|flooding|inundation)\b', 'Flood'),
+            # Natural disasters - more patterns
+            (r'\b(earthquake|quake|seismic|tremor|aftershock)\b', 'Earthquake'),
+            (r'\b(landslide|mudslide|rockslide|slope failure|debris flow)\b', 'Landslide'),
+            (r'\b(volcan(ic|o) eruption|volcanic activity|volcano|lava|ash cloud)\b', 'Volcanic eruption'),
+            (r'\b(flash ?flood|floods?|flooding|inundation|deluge)\b', 'Flood'),
         ]
         
         # Try pattern matching first
@@ -462,9 +539,7 @@ class RSOECrawler:
             if target_cat.lower() in norm or any(word in norm for word in target_cat.lower().split()):
                 return mapped_cat
                 
-        # Debug: print unmapped categories to help improve mapping
-        if raw:
-            print(f"⚠️  UNMAPPED CATEGORY: '{raw}' -> normalized: '{norm}'")
+        # Return empty string for unmapped categories (will be filtered out)
         return ''
 
     def extract_event_details(self, event_url):
@@ -582,7 +657,7 @@ class RSOECrawler:
             pagination_links = self.find_pagination_links(main_html)
             if pagination_links:
                 print(f"✓ Found {len(pagination_links)} pagination links")
-                max_pages = min(len(pagination_links), 10)
+                max_pages = min(len(pagination_links), 3)  # Only check 3 additional pages
                 for i, page_url in enumerate(pagination_links[:max_pages]):
                     try:
                         print(f"  → Loading additional page {i+1}/{max_pages}...")
@@ -590,7 +665,7 @@ class RSOECrawler:
                         if page_html:
                             page_links = self.extract_all_event_links(page_html)
                             all_event_links.extend(page_links)
-                        time.sleep(1)
+                        time.sleep(0.5)  # Reduced page delay
                     except Exception as e:
                         print(f"⚠️ Error loading page {page_url}: {e}")
             # IMPORTANT: keep order & dedupe, then newest-first by /details/<id>
@@ -604,23 +679,64 @@ class RSOECrawler:
             print("✓ Processing event detail pages...")
             print("=" * 60)
             target_events_found = 0
-            # Process more events to capture all categories
-            max_events_to_process = min(len(all_event_links), 1000)
+            consecutive_duplicates = 0  # Track consecutive duplicates for early termination
+            max_consecutive_duplicates = 20  # Stop if we hit this many duplicates in a row
+            # Process more events since we'll terminate early on duplicates
+            max_events_to_process = min(len(all_event_links), 500)
+            
             for i, event_url in enumerate(all_event_links[:max_events_to_process], 1):
-                if i % 25 == 0:
+                if i % 50 == 0:
                     print(f"[{i:3d}/{max_events_to_process}] Progress: {i/max_events_to_process*100:.1f}%")
                 event_data = self.extract_event_details(event_url)
-                if event_data:
-                    self.collected_events.append(event_data)
-                    target_events_found += 1
-                    if i <= 10:
-                        print(f"  ✓ [{i:3d}] COLLECTED: {event_data['event_id']} - {event_data['event_category']} - {event_data['event_title'][:40]}...")
-                # Reduce sleep time to process more events faster
-                time.sleep(0.1)
+                if event_data and event_data['event_category'] in self.target_categories.values():
+                    event_id = event_data['event_id']
+                    category = event_data['event_category']
+                    title = event_data['event_title']
+                    
+                    # Create content key for duplicate detection
+                    date = event_data['event_date_utc']
+                    lat = event_data['latitude']
+                    lon = event_data['longitude']
+                    content_key = clean_duplicate_key(title, date, lat, lon)
+                    
+                    # Check for duplicates (both ID and content-based)
+                    is_duplicate = (
+                        event_id in self.existing_events or 
+                        content_key in self.existing_content_keys
+                    )
+                    
+                    if is_duplicate:
+                        consecutive_duplicates += 1
+                        if i <= 20:
+                            print(f"  🔄 [{i:3d}] DUPLICATE: {event_id} - {category} - {title[:30]}...")
+                    else:
+                        consecutive_duplicates = 0  # Reset counter on new event
+                        self.collected_events.append(event_data)
+                        self.existing_events.add(event_id)  # Add to prevent future duplicates in this run
+                        self.existing_content_keys.add(content_key)
+                        target_events_found += 1
+                        if i <= 10:
+                            print(f"  ✓ [{i:3d}] COLLECTED: {event_id} - {category} - {title[:40]}...")
+                    
+                elif event_data and event_data['event_category'] not in self.target_categories.values():
+                    if i <= 20:  # Show first 20 skipped categories for debugging
+                        print(f"  ⏭️ [{i:3d}] SKIPPED: {event_data['event_id']} - '{event_data['original_category']}' -> '{event_data['event_category']}'")
+                
+                # Early termination if too many consecutive duplicates
+                if consecutive_duplicates >= max_consecutive_duplicates:
+                    print(f"\\n⏹️ Early termination: {consecutive_duplicates} consecutive duplicates found after processing {i} events")
+                    print(f"   This suggests we've caught up with existing data.")
+                    break
+                    
+                # Minimal sleep to avoid being rate-limited
+                time.sleep(0.03)
             print("\n" + "=" * 60)
             print("✓ CRAWLING COMPLETED!")
-            print(f"Total processed: {max_events_to_process} events")
-            print(f"Target events collected: {len(self.collected_events)} events")
+            print(f"Total events processed: {i} of {max_events_to_process}")
+            print(f"New events collected: {len(self.collected_events)}")
+            print(f"Consecutive duplicates at end: {consecutive_duplicates}")
+            if consecutive_duplicates >= max_consecutive_duplicates:
+                print(f"🎯 Stopped early due to {consecutive_duplicates} consecutive duplicates - likely caught up with existing data!")
             if self.collected_events:
                 category_stats = {}
                 for event in self.collected_events:
