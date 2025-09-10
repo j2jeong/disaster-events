@@ -13,8 +13,7 @@ let highlightedMarker = null;
 let riskAnimationMarkers = [];
 let currentSort = { column: null, direction: null };
 let lastUpdateTime = null;
-let currentPage = 1;
-let rowsPerPage = 50;
+let tableItemsToShow = 50;
 let activeDateRange = null;
 
 // 데이터 로딩 함수 (개선된 버전 - past_events.json도 고려)
@@ -400,7 +399,7 @@ function sortTable(column) {
     if (direction === null) {
         currentSort = { column: null, direction: null };
         sortedData = [...filteredData];
-        populateTable(sortedData, 1);
+        populateTable(sortedData);
         return;
     }
 
@@ -445,17 +444,17 @@ function sortTable(column) {
         return direction === 'desc' ? -comparison : comparison;
     });
 
-    populateTable(sortedData, 1);
+    populateTable(sortedData);
 }
 
 function initializeData() {
     filteredData = [...disasterEvents];
     sortedData = [...filteredData];
     populateFilters();
-    populateTable(sortedData, 1);
+    populateTable(sortedData);
     populateEventList(filteredData);
     updateStats();
-    updateTimeSlider();
+    applyCurrentFilters();
     checkRiskAlerts();
     if (map) updateMapMarkers();
 }
@@ -660,7 +659,7 @@ function applyCurrentFilters() {
     const endDate = document.getElementById('endDate').value;
     const searchInput = document.getElementById('searchInput').value.toLowerCase();
 
-    let tempFiltered = [...filteredData];
+    let tempFiltered = [...disasterEvents];
 
     if (activeDateRange !== null) {
         const now = new Date();
@@ -731,7 +730,8 @@ function applyCurrentFilters() {
         sortedData = [...filteredData];
     }
 
-    populateTable(sortedData, 1);
+    tableItemsToShow = 50; // Reset for infinite scroll
+    populateTable(sortedData);
     populateEventList(filteredData);
     updateStats();
     if (map) updateMapMarkers();
@@ -770,7 +770,7 @@ function startAnimation() {
         }
         
         slider.value = currentTimeIndex;
-        updateTimeSlider();
+        applyCurrentFilters();
     }, animationSpeed);
 }
 
@@ -865,18 +865,19 @@ function populateFilters() {
     }
 }
 
-function populateTable(data, page = 1) {
+function populateTable(data, append = false) {
     const tbody = document.getElementById('tableBody');
     if (!tbody) return;
 
-    currentPage = page;
-    const start = (currentPage - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
-    const paginatedData = data.slice(start, end);
+    if (!append) {
+        tbody.innerHTML = '';
+    }
 
-    tbody.innerHTML = '';
+    const start = append ? tbody.rows.length : 0;
+    const end = start + tableItemsToShow;
+    const newData = data.slice(start, end);
 
-    paginatedData.forEach((event, index) => {
+    newData.forEach((event, index) => {
         const row = tbody.insertRow();
         row.insertCell(0).textContent = event.event_id;
         row.insertCell(1).textContent = event.event_title;
@@ -895,38 +896,6 @@ function populateTable(data, page = 1) {
         row.onclick = () => focusOnEvent(start + index);
         row.style.cursor = 'pointer';
     });
-
-    renderPaginationControls(data.length);
-}
-
-function renderPaginationControls(totalRows) {
-    const pagination = document.getElementById('pagination');
-    if (!pagination) return;
-
-    const totalPages = Math.ceil(totalRows / rowsPerPage);
-    pagination.innerHTML = '';
-
-    if (totalPages <= 1) return;
-
-    const prevButton = document.createElement('button');
-    prevButton.textContent = '이전';
-    prevButton.disabled = currentPage === 1;
-    prevButton.onclick = () => changePage(currentPage - 1);
-    pagination.appendChild(prevButton);
-
-    const pageInfo = document.createElement('span');
-    pageInfo.textContent = `${currentPage} / ${totalPages}`;
-    pagination.appendChild(pageInfo);
-
-    const nextButton = document.createElement('button');
-    nextButton.textContent = '다음';
-    nextButton.disabled = currentPage === totalPages;
-    nextButton.onclick = () => changePage(currentPage + 1);
-    pagination.appendChild(nextButton);
-}
-
-function changePage(page) {
-    populateTable(sortedData, page);
 }
 
 function populateEventList(data) {
@@ -940,16 +909,16 @@ function populateEventList(data) {
         eventItem.className = 'event-item';
         eventItem.onclick = () => focusOnEvent(index);
         
-        eventItem.innerHTML = `
-            <div class="event-title">${event.event_title}</div>
-            <div class="event-meta">
-                <span class="category-${event.event_category.toLowerCase().replace(/\s+/g, '-')}">${event.event_category}</span>
+        eventItem.innerHTML = "
+            <div class=\"event-title">${event.event_title}</div>
+            <div class=\"event-meta">
+                <span class=\"category-${event.event_category.toLowerCase().replace(/\s+/g, '-')}">${event.event_category}</span>
                 <span>${event.event_date.toLocaleString()}</span>
             </div>
-            <div style="font-size: 12px; color: #666; margin-top: 5px;">
+            <div style=\"font-size: 12px; color: #666; margin-top: 5px;">
                 📍 ${event.address || '위치 정보 없음'}
             </div>
-        `;
+        ";
         
         eventList.appendChild(eventItem);
     });
@@ -1077,7 +1046,16 @@ function downloadCSV() {
 function setupEventListeners() {
     const timeSlider = document.getElementById('timeSlider');
     if (timeSlider) {
-        timeSlider.addEventListener('input', updateTimeSlider);
+        timeSlider.addEventListener('input', applyCurrentFilters);
+    }
+
+    const tableContainer = document.querySelector('.table-container');
+    if (tableContainer) {
+        tableContainer.addEventListener('scroll', () => {
+            if (tableContainer.scrollTop + tableContainer.clientHeight >= tableContainer.scrollHeight - 5) {
+                populateTable(sortedData, true);
+            }
+        });
     }
     
     // 키보드 단축키
