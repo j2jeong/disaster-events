@@ -90,6 +90,21 @@
     "event_url": "https://rsoe-edis.org/eventList/details/947536/0"
   },
   {
+    "event_id": "947542",
+    "event_title": "Russian Federation - M 4.0",
+    "event_category": "Earthquake",
+    "original_category": "Geological - Earthquake",
+    "source": "https://www.seismicportal.eu/eventdetails.html?unid=20250909_0000458",
+    "event_date_utc": "2025-09-09 23:37:26",
+    "last_update_utc": "2025-09-10 01:36:59",
+    "latitude": "53.47",
+    "longitude": "110.35",
+    "area_range": "-",
+    "address": "-",
+    "crawled_at": "2025-09-10T01:39:25.710736",
+    "event_url": "https://rsoe-edis.org/eventList/details/947542/0"
+  },
+  {
     "event_id": "947505",
     "event_title": "North Atlantic Ocean - M 4.0",
     "event_category": "Earthquake",
