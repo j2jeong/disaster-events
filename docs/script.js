@@ -13,6 +13,8 @@ let highlightedMarker = null;
 let riskAnimationMarkers = [];
 let currentSort = { column: null, direction: null };
 let lastUpdateTime = null;
+let currentPage = 1;
+let rowsPerPage = 50;
 
 // 데이터 로딩 함수 (개선된 버전 - past_events.json도 고려)
 async function loadDisasterData() {
@@ -397,7 +399,7 @@ function sortTable(column) {
     if (direction === null) {
         currentSort = { column: null, direction: null };
         sortedData = [...filteredData];
-        populateTable(sortedData);
+        populateTable(sortedData, 1);
         return;
     }
 
@@ -442,14 +444,14 @@ function sortTable(column) {
         return direction === 'desc' ? -comparison : comparison;
     });
 
-    populateTable(sortedData);
+    populateTable(sortedData, 1);
 }
 
 function initializeData() {
     filteredData = [...disasterEvents];
     sortedData = [...filteredData];
     populateFilters();
-    populateTable(sortedData);
+    populateTable(sortedData, 1);
     populateEventList(filteredData);
     updateStats();
     updateTimeSlider();
@@ -706,7 +708,7 @@ function applyCurrentFilters() {
         sortedData = [...filteredData];
     }
 
-    populateTable(sortedData);
+    populateTable(sortedData, 1);
     populateEventList(filteredData);
     updateStats();
     if (map) updateMapMarkers();
@@ -840,31 +842,68 @@ function populateFilters() {
     }
 }
 
-function populateTable(data) {
+function populateTable(data, page = 1) {
     const tbody = document.getElementById('tableBody');
     if (!tbody) return;
-    
+
+    currentPage = page;
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    const paginatedData = data.slice(start, end);
+
     tbody.innerHTML = '';
-    
-    data.forEach((event, index) => {
+
+    paginatedData.forEach((event, index) => {
         const row = tbody.insertRow();
         row.insertCell(0).textContent = event.event_id;
         row.insertCell(1).textContent = event.event_title;
-        
+
         const categoryCell = row.insertCell(2);
         categoryCell.innerHTML = `<span class="category-${event.event_category.toLowerCase().replace(/\s+/g, '-')}">${event.event_category}</span>`;
-        
+
         row.insertCell(3).textContent = event.event_date.toLocaleString();
         row.insertCell(4).textContent = event.address || '위치 정보 없음';
         row.insertCell(5).textContent = event.latitude.toFixed(6);
         row.insertCell(6).textContent = event.longitude.toFixed(6);
-        
+
         const detailCell = row.insertCell(7);
         detailCell.innerHTML = `<button onclick="openEventUrl('${event.event_url}')" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">상세보기</button>`;
-        
-        row.onclick = () => focusOnEvent(index);
+
+        row.onclick = () => focusOnEvent(start + index);
         row.style.cursor = 'pointer';
     });
+
+    renderPaginationControls(data.length);
+}
+
+function renderPaginationControls(totalRows) {
+    const pagination = document.getElementById('pagination');
+    if (!pagination) return;
+
+    const totalPages = Math.ceil(totalRows / rowsPerPage);
+    pagination.innerHTML = '';
+
+    if (totalPages <= 1) return;
+
+    const prevButton = document.createElement('button');
+    prevButton.textContent = '이전';
+    prevButton.disabled = currentPage === 1;
+    prevButton.onclick = () => changePage(currentPage - 1);
+    pagination.appendChild(prevButton);
+
+    const pageInfo = document.createElement('span');
+    pageInfo.textContent = `${currentPage} / ${totalPages}`;
+    pagination.appendChild(pageInfo);
+
+    const nextButton = document.createElement('button');
+    nextButton.textContent = '다음';
+    nextButton.disabled = currentPage === totalPages;
+    nextButton.onclick = () => changePage(currentPage + 1);
+    pagination.appendChild(nextButton);
+}
+
+function changePage(page) {
+    populateTable(sortedData, page);
 }
 
 function populateEventList(data) {
