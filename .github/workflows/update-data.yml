@@ -56,6 +56,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase
           # docs/data 폴더에 변경이 있을 경우에만 커밋
           if ! git diff --quiet -- docs/data/; then
             git add docs/data/
