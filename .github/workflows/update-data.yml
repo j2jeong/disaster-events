@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: 'main'
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -57,6 +59,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git pull --rebase
+          git status
           # docs/data 폴더에 변경이 있을 경우에만 커밋
           if ! git diff --quiet -- docs/data/; then
             git add docs/data/
