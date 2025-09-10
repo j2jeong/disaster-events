@@ -460,6 +460,16 @@ function initializeData() {
 }
 
 function initMap() {
+    // Leaflet 가 로드되지 않았을 때에도 앱이 중단되지 않도록 가드
+    if (typeof L === 'undefined') {
+        console.error('Leaflet library is not loaded. Map features are disabled.');
+        const mapEl = document.getElementById('map');
+        if (mapEl) {
+            mapEl.innerHTML = '<div style="padding:16px;color:#666;">지도 라이브러리를 불러오지 못했습니다. 네트워크 정책 또는 CDN 차단 여부를 확인해주세요.</div>';
+        }
+        return;
+    }
+
     map = L.map('map').setView([20, 0], 2);
 
     const streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -478,7 +488,10 @@ function initMap() {
         'Satellite': satelliteLayer
     }, {}, { collapsed: false }).addTo(map);
 
-    markersLayer = L.markerClusterGroup();
+    // MarkerCluster가 없으면 일반 레이어로 대체
+    markersLayer = (L.markerClusterGroup && typeof L.markerClusterGroup === 'function')
+        ? L.markerClusterGroup()
+        : L.layerGroup();
     map.addLayer(markersLayer);
     updateMapMarkers();
 }
@@ -526,7 +539,11 @@ function updateMapMarkers() {
         markers.push(marker);
     });
 
-    markersLayer.addLayers(markers);
+    if (typeof markersLayer.addLayers === 'function') {
+        markersLayer.addLayers(markers);
+    } else {
+        markers.forEach(m => markersLayer.addLayer(m));
+    }
 
     if (filteredData.length > 0 && markersLayer.getLayers().length > 0) {
         try {
@@ -1057,6 +1074,37 @@ function setupEventListeners() {
             }
         });
     }
+
+    // 보기 전환 버튼 (CSP 환경에서 inline onclick 방지)
+    const mapViewBtn = document.getElementById('mapView');
+    const tableViewBtn = document.getElementById('tableView');
+    const listViewBtn = document.getElementById('listView');
+    if (mapViewBtn) mapViewBtn.addEventListener('click', () => switchView('map'));
+    if (tableViewBtn) tableViewBtn.addEventListener('click', () => switchView('table'));
+    if (listViewBtn) listViewBtn.addEventListener('click', () => switchView('list'));
+
+    // 다운로드 버튼
+    const excelBtn = Array.from(document.querySelectorAll('button')).find(b => b.textContent.includes('Excel'));
+    const csvBtn = Array.from(document.querySelectorAll('button')).find(b => b.textContent.includes('CSV'));
+    if (excelBtn) excelBtn.addEventListener('click', downloadExcel);
+    if (csvBtn) csvBtn.addEventListener('click', downloadCSV);
+
+    // 필터 초기화
+    const resetBtn = Array.from(document.querySelectorAll('button')).find(b => b.textContent.includes('필터 초기화'));
+    if (resetBtn) resetBtn.addEventListener('click', resetFilters);
+
+    // 새로고침 버튼
+    const refreshBtn = document.getElementById('refreshBtn');
+    if (refreshBtn) refreshBtn.addEventListener('click', refreshData);
+
+    // 날짜 범위 버튼들
+    const rangeButtons = document.querySelectorAll('.date-range-btn');
+    if (rangeButtons && rangeButtons.length) {
+        const ranges = [null, 1, 3, 7]; // 버튼 순서: 전체, 24시간, 3일, 7일
+        rangeButtons.forEach((btn, idx) => {
+            btn.addEventListener('click', () => filterByDateRange(ranges[idx]));
+        });
+    }
     
     // 키보드 단축키
     document.addEventListener('keydown', function(e) {
@@ -1086,7 +1134,11 @@ window.addEventListener('load', function() {
     loadDisasterData();
     
     // 지도 초기화
-    initMap();
+    try {
+        initMap();
+    } catch (e) {
+        console.error('Map initialization failed:', e);
+    }
     
     // 이벤트 리스너 설정
     setupEventListeners();
