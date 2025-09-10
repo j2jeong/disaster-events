@@ -27,7 +27,7 @@ def _parse_iso(dt: str) -> float:
         return 0.0
 
 def clean_duplicate_key(title: str, date: str, lat: str, lon: str) -> str:
-    """중복 제거용 키 생성 - Fire와 Earthquake 각각 클러스터링"""
+    """중복 제거용 키 생성 - 거리 기반 클러스터링으로 개선"""
     clean_title = re.sub(r'[^\w\s]', '', title.lower()).strip()
     clean_title = re.sub(r'\s+', ' ', clean_title)
     
@@ -41,37 +41,111 @@ def clean_duplicate_key(title: str, date: str, lat: str, lon: str) -> str:
         lat_f = float(lat) if lat else 0
         lon_f = float(lon) if lon else 0
         
-        # Fire 이벤트: 0.5도 단위로 클러스터링 (약 50km)
+        # Fire 이벤트: 거리 기반 클러스터링 (0.5도 ≈ 50km)
         if 'fire' in title.lower():
-            lat_rounded = f"{round(lat_f * 2) / 2:.1f}"  # 0.5도 단위
-            lon_rounded = f"{round(lon_f * 2) / 2:.1f}"  # 0.5도 단위
+            # 0.1도 그리드로 더 세밀하게 나눈 후 거리로 클러스터링
+            lat_rounded = f"{round(lat_f * 10) / 10:.1f}"  # 0.1도 단위
+            lon_rounded = f"{round(lon_f * 10) / 10:.1f}"  # 0.1도 단위
+            # 월 단위 그룹핑 추가
+            date_clean = date[:7] if len(date) >= 7 else date  # YYYY-MM
             
-        # Earthquake 이벤트: 0.5도 단위로 클러스터링 (약 50km)  
+        # Earthquake 이벤트: 거리 기반 클러스터링 (0.5도 ≈ 50km)  
         elif 'earthquake' in title.lower():
-            lat_rounded = f"{round(lat_f * 2) / 2:.1f}"  # 0.5도 단위
-            lon_rounded = f"{round(lon_f * 2) / 2:.1f}"  # 0.5도 단위
+            # 0.1도 그리드로 더 세밀하게 나눈 후 거리로 클러스터링
+            lat_rounded = f"{round(lat_f * 10) / 10:.1f}"  # 0.1도 단위
+            lon_rounded = f"{round(lon_f * 10) / 10:.1f}"  # 0.1도 단위
+            # 월 단위 그룹핑 추가
+            date_clean = date[:7] if len(date) >= 7 else date  # YYYY-MM
             
         else:
             # 다른 이벤트: 더 정밀하게
             lat_rounded = f"{round(lat_f * 100) / 100:.2f}"  # 0.01도 단위
             lon_rounded = f"{round(lon_f * 100) / 100:.2f}"
+            date_clean = date[:10] if len(date) >= 10 else date  # Full date
             
         location_key = f"{lat_rounded}|{lon_rounded}"
     except:
         location_key = "0|0"
-    
-    # Fire와 Earthquake: 한 달 단위로 그룹핑
-    if 'fire' in title.lower() or 'earthquake' in title.lower():
-        try:
-            from datetime import datetime
-            date_obj = datetime.fromisoformat(date.replace('Z', '+00:00')) if date else datetime.now()
-            date_clean = f"{date_obj.year}-{date_obj.month:02d}"  # Year-Month
-        except:
-            date_clean = date[:7] if len(date) >= 7 else date
-    else:
         date_clean = date[:10] if len(date) >= 10 else date
     
     return f"{clean_title}|{date_clean}|{location_key}"
+
+def distance_based_clustering(events: List[dict], distance_threshold: float = 0.5) -> List[dict]:
+    """거리 기반 클러스터링으로 이벤트 중복 제거"""
+    import math
+    from collections import defaultdict
+    
+    # 카테고리별로 월별 이벤트 그룹핑
+    monthly_groups = defaultdict(list)
+    other_events = []
+    
+    for event in events:
+        category = event.get('event_category', '')
+        date = event.get('event_date_utc', '')
+        
+        if category in ['Fire in built environment', 'Earthquake']:
+            month_key = f"{category}|{date[:7] if len(date) >= 7 else 'unknown'}"
+            monthly_groups[month_key].append(event)
+        else:
+            other_events.append(event)
+    
+    # 거리 기반 클러스터링 결과
+    clustered_events = []
+    
+    # Fire와 Earthquake 이벤트들을 월별로 클러스터링
+    for month_key, month_events in monthly_groups.items():
+        if len(month_events) < 2:
+            clustered_events.extend(month_events)
+            continue
+            
+        visited = set()
+        
+        for i, event1 in enumerate(month_events):
+            if i in visited:
+                continue
+                
+            # 클러스터 시작
+            cluster = [event1]
+            visited.add(i)
+            
+            # 클러스터에서 대표 이벤트 선택 기본값
+            cluster_rep = event1
+            
+            try:
+                lat1 = float(event1.get('latitude', 0))
+                lon1 = float(event1.get('longitude', 0))
+                
+                # 첫 번째 이벤트를 기준으로 거리 임계값 이내의 이벤트들 찾기
+                for j, event2 in enumerate(month_events):
+                    if j in visited:
+                        continue
+                        
+                    lat2 = float(event2.get('latitude', 0))
+                    lon2 = float(event2.get('longitude', 0))
+                    
+                    # 첫 번째 이벤트와의 거리 계산
+                    distance = math.sqrt((lat1 - lat2)**2 + (lon1 - lon2)**2)
+                    
+                    if distance <= distance_threshold:
+                        cluster.append(event2)
+                        visited.add(j)
+                
+                # 클러스터에서 대표 이벤트 선택 (가장 최근 것 또는 가장 상세한 것)
+                for event in cluster:
+                    if (event.get('event_date_utc', '') > cluster_rep.get('event_date_utc', '') or
+                        len(event.get('event_title', '')) > len(cluster_rep.get('event_title', ''))):
+                        cluster_rep = event
+                        
+            except (ValueError, TypeError):
+                pass
+                
+            clustered_events.append(cluster_rep)
+    
+    # 다른 카테고리 이벤트들은 그대로 추가
+    clustered_events.extend(other_events)
+    
+    print(f"🔗 Distance-based clustering: {len(events)} → {len(clustered_events)} events (removed {len(events) - len(clustered_events)})")
+    return clustered_events
 
 def _stable_dedupe(urls: List[str]) -> List[str]:
     """순서 보존 중복 제거"""
@@ -224,6 +298,10 @@ def merge_events(new_events: List[Dict[str, Any]],
                 duplicate_count += 1
         stats['duplicates_removed'] = duplicate_count
         print(f"✅ Content-based deduplication: removed {duplicate_count} duplicates")
+
+        # 4.5) Distance-based clustering for Fire and Earthquake events
+        print(f"\n🔗 Performing distance-based clustering...")
+        deduped = distance_based_clustering(deduped, distance_threshold=0.5)
 
         # 5) Split by age and archive old items (>30 days)
         cutoff_date = datetime.now() - timedelta(days=30)
