@@ -476,7 +476,8 @@ function initMap() {
         'Satellite': satelliteLayer
     }, {}, { collapsed: false }).addTo(map);
 
-    markersLayer = L.layerGroup().addTo(map);
+    markersLayer = L.markerClusterGroup();
+    map.addLayer(markersLayer);
     updateMapMarkers();
 }
 
@@ -494,6 +495,7 @@ function updateMapMarkers() {
     markersLayer.clearLayers();
     highlightedMarker = null;
     
+    const markers = [];
     filteredData.forEach((event, index) => {
         const color = getCategoryColor(event.event_category);
         const marker = L.circleMarker([event.latitude, event.longitude], {
@@ -518,8 +520,11 @@ function updateMapMarkers() {
             </div>
         `;
         marker.bindPopup(popupContent);
-        markersLayer.addLayer(marker);
+        marker._event_id = event.event_id;
+        markers.push(marker);
     });
+
+    markersLayer.addLayers(markers);
 
     if (filteredData.length > 0 && markersLayer.getLayers().length > 0) {
         try {
@@ -549,7 +554,6 @@ function getCategoryColor(category) {
 function focusOnEvent(index) {
     const event = currentView === 'table' ? sortedData[index] : filteredData[index];
     if (event && map) {
-        map.setView([event.latitude, event.longitude], 10);
         switchView('map');
         
         if (highlightedMarker) {
@@ -560,27 +564,31 @@ function focusOnEvent(index) {
             });
         }
         
-        const markers = markersLayer.getLayers();
-        const targetIndex = filteredData.findIndex(e => e.event_id === event.event_id);
-        const targetMarker = markers[targetIndex];
+        const targetMarker = markersLayer.getLayers().find(m => m._event_id === event.event_id);
+
         if (targetMarker) {
-            targetMarker.setStyle({
-                radius: 15,
-                weight: 4,
-                color: '#ff0000'
+            markersLayer.zoomToShowLayer(targetMarker, () => {
+                targetMarker.setStyle({
+                    radius: 15,
+                    weight: 4,
+                    color: '#ff0000'
+                });
+                targetMarker.openPopup();
+                highlightedMarker = targetMarker;
+
+                setTimeout(() => {
+                    if (highlightedMarker === targetMarker) {
+                        targetMarker.setStyle({
+                            radius: 8,
+                            weight: 2,
+                            color: '#fff'
+                        });
+                        highlightedMarker = null;
+                    }
+                }, 3000);
             });
-            highlightedMarker = targetMarker;
-            
-            setTimeout(() => {
-                if (highlightedMarker === targetMarker) {
-                    targetMarker.setStyle({
-                        radius: 8,
-                        weight: 2,
-                        color: '#fff'
-                    });
-                    highlightedMarker = null;
-                }
-            }, 3000);
+        } else {
+             map.setView([event.latitude, event.longitude], 10);
         }
     }
 }
