@@ -29,3 +29,6 @@ logs/
 # Temporary files
 *.tmp
 *.temp
+
+# Documentation
+IMPROVEMENTS.md
