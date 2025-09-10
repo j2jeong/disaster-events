@@ -659,7 +659,7 @@ function applyCurrentFilters() {
     const endDate = document.getElementById('endDate').value;
     const searchInput = document.getElementById('searchInput').value.toLowerCase();
 
-    let tempFiltered = [...disasterEvents];
+    let tempFiltered = [...filteredData];
 
     if (activeDateRange !== null) {
         const now = new Date();
