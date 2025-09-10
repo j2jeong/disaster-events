@@ -27,7 +27,7 @@ def _parse_iso(dt: str) -> float:
         return 0.0
 
 def clean_duplicate_key(title: str, date: str, lat: str, lon: str) -> str:
-    """중복 제거용 키 생성 - Fire는 실제 거리 기반 클러스터링"""
+    """중복 제거용 키 생성 - Fire와 Earthquake 각각 클러스터링"""
     clean_title = re.sub(r'[^\w\s]', '', title.lower()).strip()
     clean_title = re.sub(r'\s+', ' ', clean_title)
     
@@ -41,10 +41,16 @@ def clean_duplicate_key(title: str, date: str, lat: str, lon: str) -> str:
         lat_f = float(lat) if lat else 0
         lon_f = float(lon) if lon else 0
         
-        # Fire 이벤트: 위경도 각각 0.2도 단위로 클러스터링
+        # Fire 이벤트: 0.5도 단위로 클러스터링 (약 50km)
         if 'fire' in title.lower():
-            lat_rounded = f"{round(lat_f * 5) / 5:.1f}"  # 0.2도 단위
-            lon_rounded = f"{round(lon_f * 5) / 5:.1f}"  # 0.2도 단위
+            lat_rounded = f"{round(lat_f * 2) / 2:.1f}"  # 0.5도 단위
+            lon_rounded = f"{round(lon_f * 2) / 2:.1f}"  # 0.5도 단위
+            
+        # Earthquake 이벤트: 0.5도 단위로 클러스터링 (약 50km)  
+        elif 'earthquake' in title.lower():
+            lat_rounded = f"{round(lat_f * 2) / 2:.1f}"  # 0.5도 단위
+            lon_rounded = f"{round(lon_f * 2) / 2:.1f}"  # 0.5도 단위
+            
         else:
             # 다른 이벤트: 더 정밀하게
             lat_rounded = f"{round(lat_f * 100) / 100:.2f}"  # 0.01도 단위
@@ -54,8 +60,8 @@ def clean_duplicate_key(title: str, date: str, lat: str, lon: str) -> str:
     except:
         location_key = "0|0"
     
-    # Fire 이벤트: 한 달 단위로 그룹핑
-    if 'fire' in title.lower():
+    # Fire와 Earthquake: 한 달 단위로 그룹핑
+    if 'fire' in title.lower() or 'earthquake' in title.lower():
         try:
             from datetime import datetime
             date_obj = datetime.fromisoformat(date.replace('Z', '+00:00')) if date else datetime.now()
@@ -324,25 +330,33 @@ def create_backup_if_needed(events_path: str = "docs/data/events.json"):
             except Exception:
                 pass
             print(f"✅ Created run-based backup: {run_backup_path}")
-        # Smart backup cleanup - keep only recent and important backups
-        backups = sorted(backup_dir.glob("events_backup_*.json"), key=lambda x: x.stat().st_mtime, reverse=True)
-        run_backups = sorted(backup_dir.glob("events_run_*.json"), key=lambda x: x.stat().st_mtime, reverse=True)
+        # Aggressive backup cleanup - keep only 3 files maximum
+        # Get all backup files (timestamp, run, and special backups)
+        all_backups = list(backup_dir.glob("*.json"))
         
-        # Keep only 5 most recent timestamp backups
-        if len(backups) > 5:
-            for old_backup in backups[5:]:
-                old_backup.unlink()
-                print(f"🗑️ Removed old timestamp backup: {old_backup.name}")
-        
-        # Keep only 10 most recent run backups, but prioritize larger files
-        if len(run_backups) > 10:
-            # Sort by size (larger files first) among old backups
-            old_run_backups = run_backups[10:]
-            old_run_backups.sort(key=lambda x: x.stat().st_size, reverse=True)
-            # Keep 2 largest old backups, remove the rest
-            for old_backup in old_run_backups[2:]:
-                old_backup.unlink()
-                print(f"🗑️ Removed old run backup: {old_backup.name}")
+        if len(all_backups) > 3:
+            # Sort by modification time (newest first)
+            all_backups.sort(key=lambda x: x.stat().st_mtime, reverse=True)
+            
+            # Keep only the 3 most recent files
+            files_to_keep = all_backups[:3]
+            files_to_remove = all_backups[3:]
+            
+            print(f"🧹 Backup cleanup: keeping {len(files_to_keep)} files, removing {len(files_to_remove)} files")
+            
+            for old_backup in files_to_remove:
+                try:
+                    old_backup.unlink()
+                    print(f"🗑️ Removed old backup: {old_backup.name}")
+                except Exception as e:
+                    print(f"⚠️ Failed to remove {old_backup.name}: {e}")
+                    
+            print(f"✅ Backup cleanup completed. Keeping:")
+            for kept_file in files_to_keep:
+                file_size = kept_file.stat().st_size / (1024*1024)  # MB
+                print(f"  📁 {kept_file.name} ({file_size:.1f}MB)")
+        else:
+            print(f"✅ Backup cleanup not needed. {len(all_backups)} files in backup directory.")
     except Exception as e:
         print(f"⚠️ Error creating backup: {e}")
 
