@@ -1,5 +1,35 @@
 [
   {
+    "event_id": "947558",
+    "event_title": "Philippines - INFANTA",
+    "event_category": "Flood",
+    "original_category": "Weather - Extreme rainfall",
+    "source": "https://severeweather.wmo.int/v2/",
+    "event_date_utc": "2025-09-10 00:00:00",
+    "last_update_utc": "2025-09-10 00:00:00",
+    "latitude": "14.73",
+    "longitude": "121.66",
+    "area_range": "-",
+    "address": "-",
+    "crawled_at": "2025-09-10T03:40:24.065253",
+    "event_url": "https://rsoe-edis.org/eventList/details/947558/0"
+  },
+  {
+    "event_id": "947559",
+    "event_title": "Philippines - ALABAT",
+    "event_category": "Flood",
+    "original_category": "Weather - Extreme rainfall",
+    "source": "https://severeweather.wmo.int/v2/",
+    "event_date_utc": "2025-09-10 00:00:00",
+    "last_update_utc": "2025-09-10 00:00:00",
+    "latitude": "14.1",
+    "longitude": "122.01",
+    "area_range": "-",
+    "address": "-",
+    "crawled_at": "2025-09-10T03:40:22.548955",
+    "event_url": "https://rsoe-edis.org/eventList/details/947559/0"
+  },
+  {
     "event_id": "947550",
     "event_title": "China - LUODIAN",
     "event_category": "Flood",
@@ -19018,21 +19048,6 @@
     "address": "-",
     "crawled_at": "2025-09-03T01:16:09.289530",
     "event_url": "https://rsoe-edis.org/eventList/details/939196/0"
-  },
-  {
-    "event_id": "939230",
-    "event_title": "Mexico - M 4.0",
-    "event_category": "Earthquake",
-    "original_category": "Geological - Earthquake",
-    "source": "https://www.seismicportal.eu/eventdetails.html?unid=20250902_0000360",
-    "event_date_utc": "2025-09-02 22:08:31",
-    "last_update_utc": "2025-09-02 22:29:41",
-    "latitude": "16.979",
-    "longitude": "-95.021",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-09-03T01:15:44.530050",
-    "event_url": "https://rsoe-edis.org/eventList/details/939230/0"
   },
   {
     "event_id": "939244",
