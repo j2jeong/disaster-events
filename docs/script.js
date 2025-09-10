@@ -15,6 +15,7 @@ let currentSort = { column: null, direction: null };
 let lastUpdateTime = null;
 let currentPage = 1;
 let rowsPerPage = 50;
+let activeDateRange = null;
 
 // 데이터 로딩 함수 (개선된 버전 - past_events.json도 고려)
 async function loadDisasterData() {
@@ -595,7 +596,22 @@ function focusOnEvent(index) {
     }
 }
 
-function updateTimeSlider() {
+function filterByDateRange(days) {
+    activeDateRange = days;
+
+    document.querySelectorAll('.date-range-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+
+    const targetBtn = document.querySelector(`.date-range-btn[onclick="filterByDateRange(${days})"]`);
+    if (targetBtn) {
+        targetBtn.classList.add('active');
+    }
+
+    applyCurrentFilters();
+}
+
+function applyTimeSlider() {
     const slider = document.getElementById('timeSlider');
     const sliderValue = document.getElementById('sliderValue');
     const timeRange = document.getElementById('timeRange');
@@ -634,16 +650,23 @@ function updateTimeSlider() {
     }
     
     currentEvents.textContent = `${filteredData.length}개`;
-    applyCurrentFilters();
 }
 
 function applyCurrentFilters() {
+    applyTimeSlider();
+
     const categoryFilter = document.getElementById('categoryFilter').value;
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
     const searchInput = document.getElementById('searchInput').value.toLowerCase();
 
     let tempFiltered = [...filteredData];
+
+    if (activeDateRange !== null) {
+        const now = new Date();
+        const fromDate = new Date(now.setDate(now.getDate() - activeDateRange));
+        tempFiltered = tempFiltered.filter(event => event.event_date >= fromDate);
+    }
 
     if (categoryFilter) {
         tempFiltered = tempFiltered.filter(event => event.event_category === categoryFilter);
@@ -966,10 +989,16 @@ function switchView(view) {
 }
 
 function filterData() {
-    updateTimeSlider();
+    applyCurrentFilters();
 }
 
 function resetFilters() {
+    activeDateRange = null;
+    document.querySelectorAll('.date-range-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.querySelector('.date-range-btn[onclick="filterByDateRange(null)"]').classList.add('active');
+
     const categoryFilter = document.getElementById('categoryFilter');
     const startDate = document.getElementById('startDate');
     const endDate = document.getElementById('endDate');

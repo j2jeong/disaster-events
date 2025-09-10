@@ -81,6 +81,13 @@
             <div class="stats" id="stats"></div>
 
             <div class="filters">
+                <label>📅 기간:</label>
+                <div class="date-range-filters">
+                    <button class="date-range-btn active" onclick="filterByDateRange(null)">전체</button>
+                    <button class="date-range-btn" onclick="filterByDateRange(1)">24시간</button>
+                    <button class="date-range-btn" onclick="filterByDateRange(3)">3일</button>
+                    <button class="date-range-btn" onclick="filterByDateRange(7)">7일</button>
+                </div>
                 <label>🌎 카테고리:</label>
                 <select id="categoryFilter" onchange="filterData()">
                     <option value="">모든 카테고리</option>
