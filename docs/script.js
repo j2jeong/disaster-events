@@ -926,7 +926,7 @@ function populateEventList(data) {
         eventItem.className = 'event-item';
         eventItem.onclick = () => focusOnEvent(index);
         
-        eventItem.innerHTML = "
+        eventItem.innerHTML = `
             <div class=\"event-title">${event.event_title}</div>
             <div class=\"event-meta">
                 <span class=\"category-${event.event_category.toLowerCase().replace(/\s+/g, '-')}">${event.event_category}</span>
@@ -935,7 +935,7 @@ function populateEventList(data) {
             <div style=\"font-size: 12px; color: #666; margin-top: 5px;">
                 📍 ${event.address || '위치 정보 없음'}
             </div>
-        ";
+        `;
         
         eventList.appendChild(eventItem);
     });
