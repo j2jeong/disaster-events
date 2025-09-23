@@ -12,7 +12,8 @@ from bs4 import BeautifulSoup
 
 class ReliefWebCrawler:
     def __init__(self):
-        self.rss_url = "https://reliefweb.int/disasters/rss.xml"
+        self.api_url = "https://api.reliefweb.int/v1/disasters"
+        self.rss_url = "https://reliefweb.int/disasters/rss.xml"  # Keep RSS as backup
         self.session = requests.Session()
         self.session.headers.update({
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
@@ -271,21 +272,21 @@ class ReliefWebCrawler:
             return str(hash(url))
 
     def crawl_disasters(self):
-        """Main crawling method"""
+        """Main crawling method using ReliefWeb API"""
         print("=== STARTING RELIEFWEB DISASTER CRAWLING ===")
         print("=" * 60)
 
         try:
-            disasters = self.parse_rss_feed()
+            disasters = self.fetch_disasters_api()
 
             if not disasters:
-                print("✗ No disasters found in RSS feed")
+                print("✗ No disasters found via API")
                 return False
 
-            print(f"✓ Processing {len(disasters)} disaster reports...")
+            print(f"✓ Processing {len(disasters)} disaster reports from API...")
 
             for disaster in disasters:
-                if disaster['event_category']:  # Only collect categorized disasters
+                if disaster and disaster.get('event_category'):  # Only collect categorized disasters
                     self.collected_events.append(disaster)
 
             print(f"✓ Collected {len(self.collected_events)} relevant disasters")
@@ -308,6 +309,106 @@ class ReliefWebCrawler:
             import traceback
             traceback.print_exc()
             return False
+
+    def fetch_disasters_api(self):
+        """Fetch disasters using ReliefWeb API"""
+        print("✓ Fetching disasters from ReliefWeb API...")
+
+        # Get recent disasters (last 30 days)
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=30)
+
+        params = {
+            'appname': 'multi-source-disaster-crawler',
+            'limit': 100,  # Reduced limit
+            'preset': 'latest'  # Use preset for recent disasters
+        }
+
+        try:
+            response = self.session.get(self.api_url, params=params, timeout=30)
+            response.raise_for_status()
+
+            data = response.json()
+
+            if 'data' not in data:
+                print("✗ No disaster data found in API response")
+                return []
+
+            disasters = []
+            for disaster_data in data['data']:
+                disaster = self.parse_api_disaster(disaster_data)
+                if disaster:
+                    disasters.append(disaster)
+
+            return disasters
+
+        except Exception as e:
+            print(f"✗ Error fetching from ReliefWeb API: {e}")
+            # Fallback to RSS if API fails
+            print("⚠️ Falling back to RSS feed...")
+            return self.parse_rss_feed()
+
+    def parse_api_disaster(self, disaster_data):
+        """Parse disaster data from ReliefWeb API response"""
+        try:
+            fields = disaster_data.get('fields', {})
+
+            disaster_id = disaster_data.get('id', '')
+            name = fields.get('name', '')
+            disaster_type = fields.get('type', [])
+            date_info = fields.get('date', {})
+            country_info = fields.get('country', [])
+            glide = fields.get('glide', '')
+            url = fields.get('url', '')
+
+            if not name:
+                return None
+
+            # Extract disaster type
+            if isinstance(disaster_type, list) and disaster_type:
+                type_name = disaster_type[0].get('name', '') if isinstance(disaster_type[0], dict) else str(disaster_type[0])
+            else:
+                type_name = str(disaster_type) if disaster_type else ''
+
+            # Map disaster type to our categories
+            mapped_category = self.map_disaster_type(type_name)
+            if not mapped_category:
+                return None
+
+            # Extract country
+            if isinstance(country_info, list) and country_info:
+                country_name = country_info[0].get('name', '') if isinstance(country_info[0], dict) else str(country_info[0])
+            else:
+                country_name = str(country_info) if country_info else ''
+
+            # Extract date
+            event_date = date_info.get('created', '') if isinstance(date_info, dict) else str(date_info)
+            if not event_date:
+                event_date = datetime.now().isoformat()
+
+            return {
+                "event_id": f"RW_{disaster_id}",
+                "event_title": f"{country_name}: {name}",
+                "event_category": mapped_category,
+                "original_category": type_name,
+                "source": "ReliefWeb",
+                "source_url": url or f"https://reliefweb.int/disaster/{disaster_id}",
+                "event_date_utc": event_date,
+                "last_update_utc": event_date,
+                "latitude": "",  # API doesn't provide coordinates
+                "longitude": "",
+                "area_range": "",
+                "address": country_name,
+                "description": name,
+                "glide_number": glide,
+                "crawled_at": datetime.now().isoformat(),
+                "event_url": url or f"https://reliefweb.int/disaster/{disaster_id}",
+                "data_source": "reliefweb"
+            }
+
+        except Exception as e:
+            print(f"⚠️ Error parsing API disaster: {e}")
+            return None
 
     def get_events(self):
         """Return collected events"""
