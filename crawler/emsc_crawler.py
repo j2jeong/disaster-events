@@ -11,10 +11,9 @@ from bs4 import BeautifulSoup
 
 class EMSCCrawler:
     def __init__(self):
-        self.base_url = "https://www.emsc-csem.org"
-        # EMSC provides multiple data sources
-        self.earthquake_page_url = "https://www.emsc-csem.org/Earthquake/"
-        self.rss_url = "https://www.emsc-csem.org/service/rss/rss.php"
+        self.base_url = "https://www.seismicportal.eu"
+        # EMSC FDSN API endpoint
+        self.api_url = "https://www.seismicportal.eu/fdsnws/event/1/query"
         self.session = requests.Session()
         self.session.headers.update({
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
@@ -330,12 +329,13 @@ class EMSCCrawler:
             return str(hash(f"{lat}_{lon}_{mag}_{datetime_str}"))
 
     def crawl_earthquakes(self):
-        """Main crawling method"""
+        """Main crawling method using EMSC FDSN API"""
         print("=== STARTING EMSC EARTHQUAKE CRAWLING ===")
         print("=" * 60)
 
         try:
-            earthquakes = self.crawl_from_main_page()
+            # Get earthquakes from last 7 days with magnitude >= 4.0
+            earthquakes = self.fetch_earthquakes_api()
 
             if not earthquakes:
                 print("✗ No earthquakes found")
@@ -343,25 +343,12 @@ class EMSCCrawler:
 
             print(f"✓ Found {len(earthquakes)} earthquakes")
 
-            # Filter recent earthquakes (last 30 days)
-            cutoff_date = datetime.now() - timedelta(days=30)
-            recent_earthquakes = []
-
-            for eq in earthquakes:
-                try:
-                    eq_date = datetime.fromisoformat(eq['event_date_utc'])
-                    if eq_date >= cutoff_date:
-                        recent_earthquakes.append(eq)
-                except:
-                    # If date parsing fails, include the event
-                    recent_earthquakes.append(eq)
-
-            self.collected_events = recent_earthquakes
+            self.collected_events = earthquakes
             print(f"✓ Collected {len(self.collected_events)} recent earthquakes")
 
             if self.collected_events:
                 # Show magnitude distribution
-                mag_ranges = {'M2-3': 0, 'M3-4': 0, 'M4-5': 0, 'M5-6': 0, 'M6+': 0}
+                mag_ranges = {'M4-5': 0, 'M5-6': 0, 'M6+': 0}
                 for eq in self.collected_events:
                     try:
                         mag = float(eq.get('magnitude', 0))
@@ -371,10 +358,6 @@ class EMSCCrawler:
                             mag_ranges['M5-6'] += 1
                         elif mag >= 4:
                             mag_ranges['M4-5'] += 1
-                        elif mag >= 3:
-                            mag_ranges['M3-4'] += 1
-                        else:
-                            mag_ranges['M2-3'] += 1
                     except:
                         pass
 
@@ -391,6 +374,104 @@ class EMSCCrawler:
             import traceback
             traceback.print_exc()
             return False
+
+    def fetch_earthquakes_api(self):
+        """Fetch earthquakes using EMSC FDSN API"""
+        print("✓ Fetching earthquakes from EMSC FDSN API...")
+
+        # Get data from last 7 days
+        end_time = datetime.now()
+        start_time = end_time - timedelta(days=7)
+
+        params = {
+            'format': 'json',
+            'starttime': start_time.strftime('%Y-%m-%dT%H:%M:%S'),
+            'endtime': end_time.strftime('%Y-%m-%dT%H:%M:%S'),
+            'minmagnitude': '4.0',  # Only significant earthquakes
+            'limit': '100'  # Limit to avoid too much data
+        }
+
+        try:
+            response = self.session.get(self.api_url, params=params, timeout=30)
+            response.raise_for_status()
+
+            data = response.json()
+
+            if 'features' not in data:
+                print("✗ No earthquake features found in API response")
+                return []
+
+            earthquakes = []
+            for feature in data['features']:
+                earthquake = self.parse_api_earthquake(feature)
+                if earthquake:
+                    earthquakes.append(earthquake)
+
+            return earthquakes
+
+        except Exception as e:
+            print(f"✗ Error fetching from EMSC API: {e}")
+            return []
+
+    def parse_api_earthquake(self, feature):
+        """Parse earthquake data from EMSC FDSN API response"""
+        try:
+            properties = feature.get('properties', {})
+            geometry = feature.get('geometry', {})
+            coordinates = geometry.get('coordinates', [])
+
+            if len(coordinates) < 3:
+                return None
+
+            longitude = coordinates[0]
+            latitude = coordinates[1]
+            depth = coordinates[2] if len(coordinates) > 2 else 0
+
+            magnitude = properties.get('mag', 0)
+            time_str = properties.get('time')
+            place = properties.get('place', '')
+            event_id = properties.get('id', '')
+
+            # Convert time from milliseconds timestamp
+            if time_str:
+                try:
+                    if isinstance(time_str, str):
+                        event_datetime = time_str
+                    else:
+                        # Assume it's milliseconds timestamp
+                        event_datetime = datetime.fromtimestamp(time_str / 1000).isoformat()
+                except:
+                    event_datetime = datetime.now().isoformat()
+            else:
+                event_datetime = datetime.now().isoformat()
+
+            # Generate unique ID
+            unique_id = self.generate_earthquake_id(str(latitude), str(longitude), str(magnitude), event_datetime)
+
+            return {
+                "event_id": f"EMSC_{unique_id}",
+                "event_title": f"M{magnitude} earthquake - {place}",
+                "event_category": "Earthquake",
+                "original_category": "Earthquake",
+                "source": "EMSC",
+                "source_url": "https://www.emsc-csem.org/",
+                "event_date_utc": event_datetime,
+                "last_update_utc": event_datetime,
+                "latitude": str(latitude),
+                "longitude": str(longitude),
+                "area_range": "",
+                "address": place,
+                "description": f"Magnitude {magnitude} earthquake at depth {depth}km",
+                "magnitude": str(magnitude),
+                "depth_km": str(depth),
+                "crawled_at": datetime.now().isoformat(),
+                "event_url": "https://www.emsc-csem.org/",
+                "data_source": "emsc"
+            }
+
+        except Exception as e:
+            print(f"⚠️ Error parsing API earthquake: {e}")
+            return None
 
     def get_events(self):
         """Return collected events"""
