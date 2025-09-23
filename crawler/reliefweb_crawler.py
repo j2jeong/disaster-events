@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 
 class ReliefWebCrawler:
     def __init__(self):
-        self.api_url = "https://api.reliefweb.int/v1/disasters"
+        self.api_url = "https://api.reliefweb.int/v2/disasters"
         self.rss_url = "https://reliefweb.int/disasters/rss.xml"  # Keep RSS as backup
         self.session = requests.Session()
         self.session.headers.update({
@@ -318,29 +318,17 @@ class ReliefWebCrawler:
         end_date = datetime.now()
         start_date = end_date - timedelta(days=30)
 
-        # Build URL with query parameters
-        url_params = [
-            'appname=multi-source-disaster-crawler',
-            'limit=50',
-            'sort[]=date:desc',
-            'fields[include][]=name',
-            'fields[include][]=type',
-            'fields[include][]=date',
-            'fields[include][]=country',
-            'fields[include][]=glide',
-            'fields[include][]=url',
-            'fields[include][]=description',
-            f'filter[field]=date.created',
-            f'filter[value][from]={start_date.strftime("%Y-%m-%d")}T00:00:00%2B00:00',
-            f'filter[value][to]={end_date.strftime("%Y-%m-%d")}T23:59:59%2B00:00'
-        ]
-
-        # Build full URL
-        full_url = f"{self.api_url}?{'&'.join(url_params)}"
+        # Use correct parameters for API v2 with required fields
+        params = {
+            'appname': 'multi-source-disaster-crawler.github.io',
+            'limit': 100,
+            'sort[]': 'date:desc',
+            'fields[include][]': ['name', 'type', 'date', 'country', 'glide', 'url', 'description']
+        }
 
         try:
-            print(f"✓ Making API request to ReliefWeb...")
-            response = self.session.get(full_url, timeout=30)
+            print(f"✓ Making API request to ReliefWeb v2...")
+            response = self.session.get(self.api_url, params=params, timeout=30)
 
             print(f"✓ Response status: {response.status_code}")
 
