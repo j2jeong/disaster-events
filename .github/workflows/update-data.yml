@@ -9,6 +9,8 @@ on:
 # Add permissions for the workflow
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   update-data:
@@ -96,7 +98,7 @@ jobs:
           done
         fi
 
-    - name: Upload artifacts
+    - name: Upload data artifacts
       uses: actions/upload-artifact@v4
       if: always()
       with:
@@ -106,13 +108,31 @@ jobs:
           docs/data/backups/
         retention-days: 7
 
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4
+    - name: Setup Pages
+      uses: actions/configure-pages@v5
+      if: success()
+
+    - name: Upload GitHub Pages artifact
+      uses: actions/upload-pages-artifact@v3
       if: success()
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs
-        publish_branch: gh-pages
-        force_orphan: false
-        enable_jekyll: false
-        cname: false
+        path: ./docs
+
+  deploy:
+    needs: update-data
+    if: success()
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
