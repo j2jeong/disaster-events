@@ -318,21 +318,44 @@ class ReliefWebCrawler:
         end_date = datetime.now()
         start_date = end_date - timedelta(days=30)
 
-        params = {
-            'appname': 'multi-source-disaster-crawler',
-            'limit': 100,  # Reduced limit
-            'preset': 'latest'  # Use preset for recent disasters
-        }
+        # Build URL with query parameters
+        url_params = [
+            'appname=multi-source-disaster-crawler',
+            'limit=50',
+            'sort[]=date:desc',
+            'fields[include][]=name',
+            'fields[include][]=type',
+            'fields[include][]=date',
+            'fields[include][]=country',
+            'fields[include][]=glide',
+            'fields[include][]=url',
+            'fields[include][]=description',
+            f'filter[field]=date.created',
+            f'filter[value][from]={start_date.strftime("%Y-%m-%d")}T00:00:00%2B00:00',
+            f'filter[value][to]={end_date.strftime("%Y-%m-%d")}T23:59:59%2B00:00'
+        ]
+
+        # Build full URL
+        full_url = f"{self.api_url}?{'&'.join(url_params)}"
 
         try:
-            response = self.session.get(self.api_url, params=params, timeout=30)
-            response.raise_for_status()
+            print(f"✓ Making API request to ReliefWeb...")
+            response = self.session.get(full_url, timeout=30)
+
+            print(f"✓ Response status: {response.status_code}")
+
+            if response.status_code != 200:
+                print(f"✗ API returned status {response.status_code}: {response.text[:200]}")
+                raise Exception(f"API returned status {response.status_code}")
 
             data = response.json()
 
             if 'data' not in data:
                 print("✗ No disaster data found in API response")
+                print(f"Available keys: {list(data.keys())}")
                 return []
+
+            print(f"✓ Found {len(data['data'])} disasters from API")
 
             disasters = []
             for disaster_data in data['data']:
@@ -354,60 +377,111 @@ class ReliefWebCrawler:
             fields = disaster_data.get('fields', {})
 
             disaster_id = disaster_data.get('id', '')
-            name = fields.get('name', '')
-            disaster_type = fields.get('type', [])
-            date_info = fields.get('date', {})
-            country_info = fields.get('country', [])
-            glide = fields.get('glide', '')
-            url = fields.get('url', '')
 
-            if not name:
+            # Handle different field structures
+            name = fields.get('name', '') or fields.get('title', '')
+
+            # Type can be in different formats
+            disaster_types = fields.get('type', [])
+            type_name = ''
+
+            if isinstance(disaster_types, list) and disaster_types:
+                # Handle list of type objects or strings
+                first_type = disaster_types[0]
+                if isinstance(first_type, dict):
+                    type_name = first_type.get('name', '') or first_type.get('title', '')
+                else:
+                    type_name = str(first_type)
+            elif isinstance(disaster_types, dict):
+                type_name = disaster_types.get('name', '') or disaster_types.get('title', '')
+            elif isinstance(disaster_types, str):
+                type_name = disaster_types
+
+            # Skip if no disaster type or name
+            if not name or not type_name:
+                print(f"⚠️ Skipping disaster - missing name or type: {disaster_data}")
                 return None
-
-            # Extract disaster type
-            if isinstance(disaster_type, list) and disaster_type:
-                type_name = disaster_type[0].get('name', '') if isinstance(disaster_type[0], dict) else str(disaster_type[0])
-            else:
-                type_name = str(disaster_type) if disaster_type else ''
 
             # Map disaster type to our categories
             mapped_category = self.map_disaster_type(type_name)
             if not mapped_category:
+                print(f"⚠️ Skipping disaster - unmapped type '{type_name}'")
                 return None
 
-            # Extract country
-            if isinstance(country_info, list) and country_info:
-                country_name = country_info[0].get('name', '') if isinstance(country_info[0], dict) else str(country_info[0])
-            else:
-                country_name = str(country_info) if country_info else ''
+            # Extract country information
+            countries = fields.get('country', [])
+            country_name = ''
 
-            # Extract date
-            event_date = date_info.get('created', '') if isinstance(date_info, dict) else str(date_info)
-            if not event_date:
-                event_date = datetime.now().isoformat()
+            if isinstance(countries, list) and countries:
+                first_country = countries[0]
+                if isinstance(first_country, dict):
+                    country_name = first_country.get('name', '') or first_country.get('title', '')
+                else:
+                    country_name = str(first_country)
+            elif isinstance(countries, dict):
+                country_name = countries.get('name', '') or countries.get('title', '')
+            elif isinstance(countries, str):
+                country_name = countries
+
+            # Extract date information
+            date_info = fields.get('date', {})
+            event_date = datetime.now().isoformat()
+
+            if isinstance(date_info, dict):
+                # Try different date fields
+                for date_field in ['event', 'created', 'changed']:
+                    if date_field in date_info:
+                        try:
+                            event_date = date_info[date_field]
+                            if not event_date.endswith('Z') and 'T' in event_date:
+                                event_date = event_date + 'Z'
+                            break
+                        except:
+                            continue
+            elif isinstance(date_info, str):
+                event_date = date_info
+
+            # Get additional fields
+            glide = fields.get('glide', '') or ''
+            url = fields.get('url', '') or f"https://reliefweb.int/disaster/{disaster_id}"
+            description = fields.get('description', '') or fields.get('body', '') or name
+
+            # Clean up description
+            if description and len(description) > 300:
+                # Remove HTML tags if present
+                try:
+                    from bs4 import BeautifulSoup
+                    clean_description = BeautifulSoup(description, 'html.parser').get_text()
+                    if len(clean_description) > 300:
+                        clean_description = clean_description[:300] + "..."
+                    description = clean_description
+                except:
+                    description = description[:300] + "..."
 
             return {
                 "event_id": f"RW_{disaster_id}",
-                "event_title": f"{country_name}: {name}",
+                "event_title": f"{country_name}: {name}" if country_name else name,
                 "event_category": mapped_category,
                 "original_category": type_name,
                 "source": "ReliefWeb",
-                "source_url": url or f"https://reliefweb.int/disaster/{disaster_id}",
+                "source_url": url,
                 "event_date_utc": event_date,
                 "last_update_utc": event_date,
                 "latitude": "",  # API doesn't provide coordinates
                 "longitude": "",
                 "area_range": "",
                 "address": country_name,
-                "description": name,
+                "description": description,
                 "glide_number": glide,
                 "crawled_at": datetime.now().isoformat(),
-                "event_url": url or f"https://reliefweb.int/disaster/{disaster_id}",
+                "event_url": url,
                 "data_source": "reliefweb"
             }
 
         except Exception as e:
             print(f"⚠️ Error parsing API disaster: {e}")
+            import traceback
+            traceback.print_exc()
             return None
 
     def get_events(self):
