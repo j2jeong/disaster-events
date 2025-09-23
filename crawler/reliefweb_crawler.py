@@ -20,22 +20,50 @@ class ReliefWebCrawler:
         self.collected_events = []
 
         # ReliefWeb disaster type mapping to our categories
+        # Maps all 22 ReliefWeb disaster types to 9 RSOE standard categories
         self.disaster_type_mapping = {
+            # Direct mappings
             'earthquake': 'Earthquake',
             'flood': 'Flood',
+            'flash flood': 'Flood',
             'fire': 'Fire in built environment',
-            'wildfire': 'Fire in built environment',
-            'explosion': 'Industrial explosion',
+            'wild fire': 'Fire in built environment',
             'landslide': 'Landslide',
+            'land slide': 'Landslide',
+            'mud slide': 'Landslide',
+            'volcano': 'Volcanic eruption',
             'volcanic': 'Volcanic eruption',
-            'pollution': 'Environment pollution',
-            'war': 'War',
-            'conflict': 'War',
-            'drought': 'Flood',  # Related to water issues
-            'cyclone': 'Flood',  # Often causes flooding
+
+            # Water-related disasters -> Flood
+            'drought': 'Flood',
+            'tsunami': 'Flood',
+            'storm surge': 'Flood',
+            'extratropical cyclone': 'Flood',
+            'tropical cyclone': 'Flood',
+            'cyclone': 'Flood',
             'hurricane': 'Flood',
             'typhoon': 'Flood',
-            'tsunami': 'Flood'
+
+            # Weather-related -> Environment pollution (closest match)
+            'cold wave': 'Environment pollution',
+            'heat wave': 'Environment pollution',
+            'severe local storm': 'Environment pollution',
+            'snow avalanche': 'Environment pollution',
+
+            # Health/Bio disasters -> Environment pollution
+            'epidemic': 'Environment pollution',
+            'insect infestation': 'Environment pollution',
+
+            # Human-caused disasters
+            'complex emergency': 'War',
+            'war': 'War',
+            'conflict': 'War',
+            'technological disaster': 'Industrial explosion',
+            'explosion': 'Industrial explosion',
+            'industrial accident': 'Industrial explosion',
+
+            # Catch-all
+            'other': 'Environment pollution'
         }
 
     def get_page_content(self, url, retries=2):
@@ -159,28 +187,46 @@ class ReliefWebCrawler:
         """Map ReliefWeb disaster type to our standard categories"""
         disaster_type = disaster_type.lower().strip()
 
-        # Direct mapping
+        # Try exact matching first
+        if disaster_type in self.disaster_type_mapping:
+            return self.disaster_type_mapping[disaster_type]
+
+        # Try partial matching for compound disaster types
         for key, mapped in self.disaster_type_mapping.items():
             if key in disaster_type:
                 return mapped
 
-        # Additional keyword matching
-        if any(word in disaster_type for word in ['fire', 'burn', 'blaze']):
-            return 'Fire in built environment'
-        elif any(word in disaster_type for word in ['quake', 'seismic']):
-            return 'Earthquake'
-        elif any(word in disaster_type for word in ['flood', 'inundation', 'deluge']):
-            return 'Flood'
-        elif any(word in disaster_type for word in ['slide', 'landslip']):
-            return 'Landslide'
-        elif any(word in disaster_type for word in ['erupt', 'volcano']):
-            return 'Volcanic eruption'
-        elif any(word in disaster_type for word in ['war', 'conflict', 'violence']):
-            return 'War'
-        elif any(word in disaster_type for word in ['pollut', 'contamin', 'toxic']):
-            return 'Environment pollution'
-        elif any(word in disaster_type for word in ['explos', 'blast', 'detona']):
-            return 'Industrial explosion'
+        # Additional keyword matching for variations
+        keyword_mapping = {
+            'fire': ['fire', 'burn', 'blaze', 'wildfire'],
+            'flood': ['flood', 'inundation', 'deluge', 'storm', 'cyclone', 'hurricane', 'typhoon'],
+            'earthquake': ['quake', 'seismic', 'tremor'],
+            'landslide': ['slide', 'landslip', 'rockfall', 'mudslide'],
+            'volcano': ['erupt', 'volcano', 'volcanic', 'lava'],
+            'war': ['war', 'conflict', 'violence', 'emergency', 'crisis'],
+            'pollution': ['pollut', 'contamin', 'toxic', 'chemical', 'epidemic', 'disease'],
+            'explosion': ['explos', 'blast', 'detona', 'accident', 'technological']
+        }
+
+        for disaster_key, keywords in keyword_mapping.items():
+            if any(keyword in disaster_type for keyword in keywords):
+                # Map to appropriate category
+                if disaster_key == 'fire':
+                    return 'Fire in built environment'
+                elif disaster_key == 'flood':
+                    return 'Flood'
+                elif disaster_key == 'earthquake':
+                    return 'Earthquake'
+                elif disaster_key == 'landslide':
+                    return 'Landslide'
+                elif disaster_key == 'volcano':
+                    return 'Volcanic eruption'
+                elif disaster_key == 'war':
+                    return 'War'
+                elif disaster_key == 'pollution':
+                    return 'Environment pollution'
+                elif disaster_key == 'explosion':
+                    return 'Industrial explosion'
 
         return None  # Don't collect if we can't categorize
 
