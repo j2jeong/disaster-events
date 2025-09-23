@@ -29,12 +29,28 @@ class MultiSourceCrawler:
         all_collected_events = []
         source_stats = {}
 
-        # 1. RSOE Crawler
+        # 1. RSOE Crawler (with timeout protection)
         print("\n" + "=" * 60)
         print("1️⃣  CRAWLING RSOE EDIS")
         print("=" * 60)
         try:
+            import signal
+            import os
+
+            def timeout_handler(signum, frame):
+                raise TimeoutError("RSOE crawler timed out")
+
+            # Set timeout only if not in GitHub Actions or CI environment
+            is_ci = os.environ.get('CI') or os.environ.get('GITHUB_ACTIONS')
+            timeout_seconds = 300 if is_ci else 120  # 5 min in CI, 2 min locally
+
+            signal.signal(signal.SIGALRM, timeout_handler)
+            signal.alarm(timeout_seconds)
+
+            print(f"⏰ RSOE timeout set to {timeout_seconds} seconds")
             rsoe_success = self.rsoe_crawler.crawl_events()
+            signal.alarm(0)  # Cancel timeout
+
             if rsoe_success:
                 rsoe_events = self.rsoe_crawler.collected_events
                 all_collected_events.extend(rsoe_events)
@@ -43,9 +59,14 @@ class MultiSourceCrawler:
             else:
                 source_stats['RSOE'] = 0
                 print("⚠️ RSOE: No events collected")
+        except TimeoutError:
+            print(f"⚠️ RSOE: Timed out after {timeout_seconds} seconds, skipping...")
+            source_stats['RSOE'] = 0
         except Exception as e:
             print(f"❌ RSOE crawler failed: {e}")
             source_stats['RSOE'] = 0
+        finally:
+            signal.alarm(0)
 
         # 2. ReliefWeb Crawler
         print("\n" + "=" * 60)
@@ -53,6 +74,7 @@ class MultiSourceCrawler:
         print("=" * 60)
         try:
             reliefweb_success = self.reliefweb_crawler.crawl_disasters()
+
             if reliefweb_success:
                 reliefweb_events = self.reliefweb_crawler.get_events()
                 all_collected_events.extend(reliefweb_events)
@@ -71,6 +93,7 @@ class MultiSourceCrawler:
         print("=" * 60)
         try:
             emsc_success = self.emsc_crawler.crawl_earthquakes()
+
             if emsc_success:
                 emsc_events = self.emsc_crawler.get_events()
                 all_collected_events.extend(emsc_events)

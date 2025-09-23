@@ -788,9 +788,9 @@ class RSOECrawler:
             print("=" * 60)
             target_events_found = 0
             consecutive_duplicates = 0  # Track consecutive duplicates for early termination
-            max_consecutive_duplicates = 20  # Stop if we hit this many duplicates in a row
-            # Process more events since we'll terminate early on duplicates
-            max_events_to_process = min(len(all_event_links), 500)
+            max_consecutive_duplicates = 10  # Stop if we hit this many duplicates in a row (reduced from 20)
+            # Process fewer events for faster execution
+            max_events_to_process = min(len(all_event_links), 100)  # Reduced from 500 to 100
             
             for i, event_url in enumerate(all_event_links[:max_events_to_process], 1):
                 if i % 50 == 0:
@@ -837,7 +837,7 @@ class RSOECrawler:
                     break
                     
                 # Minimal sleep to avoid being rate-limited
-                time.sleep(0.03)
+                time.sleep(0.01)  # Reduced from 0.03 to 0.01
             print("\n" + "=" * 60)
             print("✓ CRAWLING COMPLETED!")
             print(f"Total events processed: {i} of {max_events_to_process}")
