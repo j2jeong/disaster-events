@@ -245,6 +245,28 @@ function updateStats() {
         }
     });
 
+    // Count events by data source
+    const sourceCounts = {};
+    filteredData.forEach(event => {
+        const dataSource = event.data_source || getDataSourceFromEventId(event.event_id);
+        sourceCounts[dataSource] = (sourceCounts[dataSource] || 0) + 1;
+    });
+
+    const sourceStatsHtml = Object.entries(sourceCounts).map(([source, count]) => {
+        const displayName = {
+            'rsoe': 'RSOE',
+            'reliefweb': 'ReliefWeb',
+            'emsc': 'EMSC'
+        }[source] || source.toUpperCase();
+
+        return `
+            <div class="stat-box source-stat">
+                <div class="stat-number source-${source}">${count.toLocaleString()}</div>
+                <div class="stat-label">${displayName}</div>
+            </div>
+        `;
+    }).join('');
+
     stats.innerHTML = `
         <div class="stat-box">
             <div class="stat-number">${totalEvents.toLocaleString()}</div>
@@ -262,6 +284,7 @@ function updateStats() {
             <div class="stat-number">${clusters.length}</div>
             <div class="stat-label">영향 지역</div>
         </div>
+        ${sourceStatsHtml}
     `;
     
     // 콘솔에 상세 통계 출력
@@ -672,6 +695,7 @@ function applyCurrentFilters() {
     applyTimeSlider();
 
     const categoryFilter = document.getElementById('categoryFilter').value;
+    const sourceFilter = document.getElementById('sourceFilter').value;
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
     const searchInput = document.getElementById('searchInput').value.toLowerCase();
@@ -688,6 +712,13 @@ function applyCurrentFilters() {
         tempFiltered = tempFiltered.filter(event => event.event_category === categoryFilter);
     }
 
+    if (sourceFilter) {
+        tempFiltered = tempFiltered.filter(event => {
+            const dataSource = event.data_source || getDataSourceFromEventId(event.event_id);
+            return dataSource === sourceFilter;
+        });
+    }
+
     if (startDate) {
         const start = new Date(startDate);
         tempFiltered = tempFiltered.filter(event => event.event_date >= start);
@@ -700,7 +731,7 @@ function applyCurrentFilters() {
     }
 
     if (searchInput) {
-        tempFiltered = tempFiltered.filter(event => 
+        tempFiltered = tempFiltered.filter(event =>
             event.event_title.toLowerCase().includes(searchInput)
         );
     }
@@ -902,12 +933,22 @@ function populateTable(data, append = false) {
         const categoryCell = row.insertCell(2);
         categoryCell.innerHTML = `<span class="category-${event.event_category.toLowerCase().replace(/\s+/g, '-')}">${event.event_category}</span>`;
 
-        row.insertCell(3).textContent = event.event_date.toLocaleString();
-        row.insertCell(4).textContent = event.address || '위치 정보 없음';
-        row.insertCell(5).textContent = event.latitude.toFixed(6);
-        row.insertCell(6).textContent = event.longitude.toFixed(6);
+        // Data source cell
+        const sourceCell = row.insertCell(3);
+        const dataSource = event.data_source || getDataSourceFromEventId(event.event_id);
+        const sourceDisplay = {
+            'rsoe': 'RSOE',
+            'reliefweb': 'ReliefWeb',
+            'emsc': 'EMSC'
+        }[dataSource] || 'RSOE';
+        sourceCell.innerHTML = `<span class="source-${dataSource}">${sourceDisplay}</span>`;
 
-        const detailCell = row.insertCell(7);
+        row.insertCell(4).textContent = event.event_date.toLocaleString();
+        row.insertCell(5).textContent = event.address || '위치 정보 없음';
+        row.insertCell(6).textContent = event.latitude.toFixed(6);
+        row.insertCell(7).textContent = event.longitude.toFixed(6);
+
+        const detailCell = row.insertCell(8);
         detailCell.innerHTML = `<button onclick="openEventUrl('${event.event_url}')" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">상세보기</button>`;
 
         row.onclick = () => focusOnEvent(start + index);
@@ -978,6 +1019,18 @@ function filterData() {
     applyCurrentFilters();
 }
 
+function getDataSourceFromEventId(eventId) {
+    // Determine data source from event ID prefix
+    if (eventId && typeof eventId === 'string') {
+        if (eventId.startsWith('RW_')) {
+            return 'reliefweb';
+        } else if (eventId.startsWith('EMSC_')) {
+            return 'emsc';
+        }
+    }
+    return 'rsoe'; // Default to RSOE for legacy events
+}
+
 function resetFilters() {
     activeDateRange = null;
     document.querySelectorAll('.date-range-btn').forEach(btn => {
@@ -986,12 +1039,14 @@ function resetFilters() {
     document.querySelector('.date-range-btn[onclick="filterByDateRange(null)"]').classList.add('active');
 
     const categoryFilter = document.getElementById('categoryFilter');
+    const sourceFilter = document.getElementById('sourceFilter');
     const startDate = document.getElementById('startDate');
     const endDate = document.getElementById('endDate');
     const searchInput = document.getElementById('searchInput');
     const timeSlider = document.getElementById('timeSlider');
-    
+
     if (categoryFilter) categoryFilter.value = '';
+    if (sourceFilter) sourceFilter.value = '';
     if (startDate) startDate.value = '';
     if (endDate) endDate.value = '';
     if (searchInput) searchInput.value = '';
@@ -1017,6 +1072,7 @@ function downloadExcel() {
         'Event ID': event.event_id,
         'Title': event.event_title,
         'Category': event.event_category,
+        'Data Source': event.data_source || getDataSourceFromEventId(event.event_id),
         'Date': event.event_date_utc,
         'Latitude': event.latitude,
         'Longitude': event.longitude,
@@ -1034,11 +1090,12 @@ function downloadExcel() {
 function downloadCSV() {
     const dataToExport = currentView === 'table' ? sortedData : filteredData;
     const csvContent = [
-        ['Event ID', 'Title', 'Category', 'Date', 'Latitude', 'Longitude', 'Address', 'Source', 'URL'],
+        ['Event ID', 'Title', 'Category', 'Data Source', 'Date', 'Latitude', 'Longitude', 'Address', 'Source', 'URL'],
         ...dataToExport.map(event => [
             event.event_id,
             event.event_title,
             event.event_category,
+            event.data_source || getDataSourceFromEventId(event.event_id),
             event.event_date_utc,
             event.latitude,
             event.longitude,

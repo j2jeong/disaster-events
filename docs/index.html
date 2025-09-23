@@ -92,7 +92,15 @@
                 <select id="categoryFilter" onchange="filterData()">
                     <option value="">모든 카테고리</option>
                 </select>
-                
+
+                <label>📡 데이터 소스:</label>
+                <select id="sourceFilter" onchange="filterData()">
+                    <option value="">모든 소스</option>
+                    <option value="rsoe">RSOE EDIS</option>
+                    <option value="reliefweb">ReliefWeb</option>
+                    <option value="emsc">EMSC</option>
+                </select>
+
                 <label>📅 날짜 범위:</label>
                 <input type="date" id="startDate" onchange="filterData()">
                 <input type="date" id="endDate" onchange="filterData()">
@@ -113,6 +121,7 @@
                                     <th class="sortable" data-column="event_id" onclick="sortTable('event_id')">ID</th>
                                     <th class="sortable" data-column="event_title" onclick="sortTable('event_title')">제목</th>
                                     <th class="sortable" data-column="event_category" onclick="sortTable('event_category')">카테고리</th>
+                                    <th class="sortable" data-column="data_source" onclick="sortTable('data_source')">소스</th>
                                     <th class="sortable" data-column="event_date" onclick="sortTable('event_date')">날짜</th>
                                     <th class="sortable" data-column="address" onclick="sortTable('address')">위치</th>
                                     <th class="sortable" data-column="latitude" onclick="sortTable('latitude')">위도</th>

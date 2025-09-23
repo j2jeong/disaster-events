@@ -1,110 +1,103 @@
-# .gitlab-ci.yml
+name: Update Disaster Data
 
-stages:
-  - build
-  - deploy
+on:
+  schedule:
+    # Run every day at 08:00 KTC (23:00 UTC previous day)
+    - cron: "0 23 * * *"
+  workflow_dispatch:  # Allow manual trigger
 
-variables:
-  PYTHON_VERSION: "3.11"
-  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
 
-# 캐시 설정 (빌드 시간 단축)
-cache:
-  paths:
-    - .cache/pip
-    - venv/
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
 
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        cache: 'pip'
 
-update_disaster_data:
-  stage: build
-  image: python:3.11-slim
-  before_script:
-    # Git 설정
-    - git config --global user.name "GitLab CI"
-    - git config --global user.email "gitlab-ci@example.com"
-    # Python 환경 설정
-    - python -m venv venv
-    - source venv/bin/activate
-    - pip install --upgrade pip
-    - pip install -r crawler/requirements.txt
-  script:
-    # 데이터 크롤링 실행
-    - echo "Starting disaster data crawler..."
-    - python crawler/rsoe_crawler.py
-    
-    # 이전 이벤트 아카이빙
-    - echo "Archiving previous events..."
-    - python crawler/merge_data.py
-    
-    # 데이터 검증
-    - |
-      if [ -f docs/data/events.json ]; then
-        echo "✅ Data file exists: docs/data/events.json"
-        echo "File size: $(du -h docs/data/events.json)"
-        echo "Events count: $(grep -c '"event_id"' docs/data/events.json || echo '0')"
-      else
-        echo "⚠️ Warning: docs/data/events.json not found"
-        exit 1
-      fi
-    
-    # 마지막 업데이트 타임스탬프 생성
-    - echo "Last updated: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" > docs/data/last_update.txt
-    
-    # Git 변경사항 커밋 및 푸시
-    - |
-      if git diff --quiet -- docs/data/; then
-        echo "No changes in data files to commit."
-      else
-        echo "Committing data changes..."
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r crawler/requirements.txt
+
+    - name: Configure Git
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+
+    - name: Run multi-source disaster data crawler
+      run: |
+        echo "🌍 Starting multi-source disaster data crawler..."
+        echo "📡 Sources: RSOE, ReliefWeb, EMSC"
+        python crawler/multi_source_crawler.py
+
+    - name: Validate generated data
+      run: |
+        if [ -f docs/data/events.json ]; then
+          echo "✅ Data file exists: docs/data/events.json"
+          echo "📊 File size: $(du -h docs/data/events.json)"
+          echo "🔢 Events count: $(grep -c '"event_id"' docs/data/events.json || echo '0')"
+
+          # Check if JSON is valid
+          python -c "import json; json.load(open('docs/data/events.json'))" && echo "✅ JSON is valid"
+        else
+          echo "❌ Error: docs/data/events.json not found"
+          exit 1
+        fi
+
+        if [ -f docs/data/past_events.json ]; then
+          echo "📚 Archive file exists: docs/data/past_events.json"
+          echo "📊 Archive size: $(du -h docs/data/past_events.json)"
+          echo "🔢 Archived events: $(grep -c '"event_id"' docs/data/past_events.json || echo '0')"
+        fi
+
+    - name: Update timestamp
+      run: |
+        echo "Last updated: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" > docs/data/last_update.txt
+        echo "Data sources: RSOE EDIS, ReliefWeb, EMSC" >> docs/data/last_update.txt
+        echo "Run number: ${{ github.run_number }}" >> docs/data/last_update.txt
+
+    - name: Commit and push changes
+      run: |
         git add docs/data/
-        git commit -m "chore: update disaster data (pipeline $CI_PIPELINE_ID)"
-        
-        # 푸시 재시도 로직
-        for i in {1..3}; do
-          if git push https://gitlab-ci-token:${CI_PUSH_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git HEAD:main; then
-            echo "Successfully pushed on attempt $i"
-            break
-          elif [ $i -eq 3 ]; then
-            echo "Failed to push after 3 attempts"
-            exit 1
-          else
-            echo "Push failed, attempt $i. Retrying..."
-            git fetch origin
-            git rebase origin/main
-            sleep $((i * 5))
-          fi
-        done
-      fi
-  artifacts:
-    paths:
-      - docs/
-    expire_in: 1 hour
-  rules:
-    # 수동 실행 또는 스케줄 실행만 허용
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-    - if: $CI_PIPELINE_SOURCE == "web"
-    # 메인 브랜치에서만 실행
-    - if: $CI_COMMIT_BRANCH == "main"
-      when: manual
-  retry:
-    max: 2
-    when:
-      - runner_system_failure
-      - stuck_or_timeout_failure
 
-# GitLab Pages 배포 (GitHub Pages 대신)
-pages:
-  stage: deploy
-  dependencies:
-    - update_disaster_data
-  script:
-    # GitLab Pages는 public 폴더를 사용
-    - mkdir public
-    - cp -r docs/* public/
-  artifacts:
-    paths:
-      - public
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
-  needs:
-    - update_disaster_data
+        if git diff --staged --quiet; then
+          echo "📝 No changes in data files to commit."
+        else
+          echo "💾 Committing data changes..."
+          git commit -m "chore: update disaster data (run ${{ github.run_number }})"
+
+          # Push with retry logic
+          for i in {1..3}; do
+            if git push; then
+              echo "✅ Successfully pushed on attempt $i"
+              break
+            elif [ $i -eq 3 ]; then
+              echo "❌ Failed to push after 3 attempts"
+              exit 1
+            else
+              echo "⚠️ Push failed, attempt $i. Retrying..."
+              git fetch origin
+              git rebase origin/main
+              sleep $((i * 5))
+            fi
+          done
+        fi
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: disaster-data-${{ github.run_number }}
+        path: |
+          docs/data/
+          docs/data/backups/
+        retention-days: 7

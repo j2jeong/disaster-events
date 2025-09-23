@@ -652,3 +652,44 @@ tr:hover {
     margin: 0 10px;
     font-weight: bold;
 }
+
+/* Data Source Styles */
+.source-rsoe {
+    background: #3498db;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.source-reliefweb {
+    background: #e74c3c;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.source-emsc {
+    background: #f39c12;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+/* Source statistics in stat boxes */
+.source-stat .stat-number.source-rsoe {
+    color: #3498db;
+}
+
+.source-stat .stat-number.source-reliefweb {
+    color: #e74c3c;
+}
+
+.source-stat .stat-number.source-emsc {
+    color: #f39c12;
+}
