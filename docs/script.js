@@ -721,10 +721,17 @@ function applyCurrentFilters() {
     }
 
     if (sourceFilter) {
+        console.log(`🔍 Filtering by source: '${sourceFilter}'`);
+        console.log(`📊 Before filter: ${tempFiltered.length} events`);
         tempFiltered = tempFiltered.filter(event => {
             const dataSource = event.data_source || getDataSourceFromEventId(event.event_id);
-            return dataSource === sourceFilter;
+            const matches = dataSource === sourceFilter;
+            if (sourceFilter === 'reliefweb' && dataSource === 'reliefweb') {
+                console.log(`✅ ReliefWeb event matched: ${event.event_id} - ${event.event_title}`);
+            }
+            return matches;
         });
+        console.log(`📊 After filter: ${tempFiltered.length} events`);
     }
 
     if (startDate) {
