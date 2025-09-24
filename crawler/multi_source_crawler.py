@@ -29,12 +29,24 @@ class MultiSourceCrawler:
         all_collected_events = []
         source_stats = {}
 
-        # 1. RSOE Crawler (temporarily disabled for debugging)
+        # 1. RSOE Crawler
         print("\n" + "=" * 60)
         print("1️⃣  CRAWLING RSOE EDIS")
         print("=" * 60)
-        print("⚠️ RSOE: Temporarily disabled to test ReliefWeb + EMSC only")
-        source_stats['RSOE'] = 0
+        try:
+            rsoe_success = self.rsoe_crawler.crawl_events()
+
+            if rsoe_success:
+                rsoe_events = self.rsoe_crawler.collected_events or []
+                all_collected_events.extend(rsoe_events)
+                source_stats['RSOE'] = len(rsoe_events)
+                print(f"✓ RSOE: Collected {len(rsoe_events)} events")
+            else:
+                source_stats['RSOE'] = 0
+                print("⚠️ RSOE: No events collected")
+        except Exception as e:
+            print(f"❌ RSOE crawler failed: {e}")
+            source_stats['RSOE'] = 0
 
         # 2. ReliefWeb Crawler
         print("\n" + "=" * 60)
