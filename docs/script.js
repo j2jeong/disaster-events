@@ -110,23 +110,29 @@ async function loadDisasterData() {
         }
         
         // 5. 데이터 전처리
-        disasterEvents = deduped.map(event => ({
-            ...event,
-            latitude: parseFloat(event.latitude) || 0,
-            longitude: parseFloat(event.longitude) || 0,
-            event_date: new Date(event.event_date_utc)
-        })).filter(event => {
-            // Allow events without coordinates (e.g., ReliefWeb events)
-            const hasCoords = !isNaN(event.latitude) && !isNaN(event.longitude) &&
-                             event.latitude !== 0 && event.longitude !== 0;
+        disasterEvents = deduped.map(event => {
+            const lat = parseFloat(event.latitude);
+            const lon = parseFloat(event.longitude);
+
+            return {
+                ...event,
+                latitude: !isNaN(lat) ? lat : 0,
+                longitude: !isNaN(lon) ? lon : 0,
+                event_date: new Date(event.event_date_utc),
+                hasValidCoords: !isNaN(lat) && !isNaN(lon) && lat !== 0 && lon !== 0 && event.latitude !== "" && event.longitude !== ""
+            };
+        }).filter(event => {
+            // Keep all events with valid titles (coordinates are optional)
             const isValidEvent = event.event_title && event.event_title.trim() !== '';
-            return hasCoords || isValidEvent; // Keep events with coords OR valid title
+            return isValidEvent;
         });
 
         // 시간순 정렬
         disasterEvents.sort((a, b) => a.event_date - b.event_date);
         
-        console.log(`✅ Processed ${disasterEvents.length} valid events with coordinates`);
+        // Count events with valid coordinates
+        const coordCount = disasterEvents.filter(e => e.hasValidCoords).length;
+        console.log(`✅ Processed ${disasterEvents.length} valid events (${coordCount} with coordinates)`);
         loadingIndicator.classList.add('hidden');
         
         // 통계 출력
@@ -136,8 +142,10 @@ async function loadDisasterData() {
         
         disasterEvents.forEach(event => {
             const cat = event.event_category || 'Unknown';
+            const source = event.data_source || getDataSourceFromEventId(event.event_id);
+
             categoryStats[cat] = (categoryStats[cat] || 0) + 1;
-            
+
             if (new Date(event.crawled_at || 0) >= recentStats) {
                 recentCount++;
             }
@@ -550,8 +558,7 @@ function updateMapMarkers() {
     const markers = [];
     filteredData.forEach((event, index) => {
         // Skip events without valid coordinates
-        if (!event.latitude || !event.longitude ||
-            event.latitude === 0 || event.longitude === 0) {
+        if (!event.hasValidCoords) {
             return;
         }
 
