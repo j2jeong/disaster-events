@@ -183,8 +183,28 @@ async function loadDisasterData() {
         try {
             disasterEvents = deduped.map((event, index) => {
                 try {
-                    const lat = parseFloat(event.latitude);
-                    const lon = parseFloat(event.longitude);
+                    // More careful coordinate parsing - preserve original values if they're valid numbers
+                    let lat, lon;
+
+                    if (event.latitude === null || event.latitude === undefined || event.latitude === "") {
+                        lat = 0;
+                    } else {
+                        lat = parseFloat(event.latitude);
+                        if (isNaN(lat)) {
+                            console.warn(`⚠️ Invalid latitude for event ${event.event_id}: "${event.latitude}"`);
+                            lat = 0;
+                        }
+                    }
+
+                    if (event.longitude === null || event.longitude === undefined || event.longitude === "") {
+                        lon = 0;
+                    } else {
+                        lon = parseFloat(event.longitude);
+                        if (isNaN(lon)) {
+                            console.warn(`⚠️ Invalid longitude for event ${event.event_id}: "${event.longitude}"`);
+                            lon = 0;
+                        }
+                    }
 
                     // Fix invalid date formats like "2025-07-08T00:00:00+00:00Z"
                     let dateString = event.event_date_utc;
@@ -201,10 +221,10 @@ async function loadDisasterData() {
 
                     return {
                         ...event,
-                        latitude: !isNaN(lat) ? lat : 0,
-                        longitude: !isNaN(lon) ? lon : 0,
+                        latitude: lat,
+                        longitude: lon,
                         event_date: isNaN(eventDate.getTime()) ? new Date() : eventDate,
-                        hasValidCoords: !isNaN(lat) && !isNaN(lon) && lat !== 0 && lon !== 0 && event.latitude !== "" && event.longitude !== ""
+                        hasValidCoords: lat !== 0 && lon !== 0 && !isNaN(lat) && !isNaN(lon)
                     };
                 } catch (mapError) {
                     console.error(`❌ Error processing event ${index}:`, mapError, event);
@@ -217,7 +237,14 @@ async function loadDisasterData() {
                 return isValidEvent;
             });
 
-            console.log(`✅ Data preprocessing completed: ${disasterEvents.length} events`);
+            const coordCount = disasterEvents.filter(e => e.hasValidCoords).length;
+            console.log(`✅ Data preprocessing completed: ${disasterEvents.length} events (${coordCount} with valid coordinates)`);
+
+            // Debug: Show sample coordinate values
+            console.log('📍 Sample coordinate values:');
+            disasterEvents.slice(0, 5).forEach((event, i) => {
+                console.log(`  ${i+1}. ${event.event_id}: lat=${event.latitude}, lon=${event.longitude}, hasValidCoords=${event.hasValidCoords}`);
+            });
 
         } catch (preprocessError) {
             console.error('❌ Data preprocessing failed:', preprocessError);
