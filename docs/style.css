@@ -433,6 +433,10 @@ tr:hover {
     display: none !important;
 }
 
+/* Force-hide removed UI elements (cache-safe) */
+#testBtn { display: none !important; }
+.source-stat { display: none !important; }
+
 .risk-alert {
     background: linear-gradient(135deg, #ff6b6b, #ee5a24);
     color: white;
