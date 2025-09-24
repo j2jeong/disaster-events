@@ -467,28 +467,6 @@ function updateStats() {
         }
     });
 
-    // Count events by data source
-    const sourceCounts = {};
-    filteredData.forEach(event => {
-        const dataSource = event.data_source || getDataSourceFromEventId(event.event_id);
-        sourceCounts[dataSource] = (sourceCounts[dataSource] || 0) + 1;
-    });
-
-    const sourceStatsHtml = Object.entries(sourceCounts).map(([source, count]) => {
-        const displayName = {
-            'rsoe': 'RSOE',
-            'reliefweb': 'ReliefWeb',
-            'emsc': 'EMSC'
-        }[source] || source.toUpperCase();
-
-        return `
-            <div class="stat-box source-stat">
-                <div class="stat-number source-${source}">${count.toLocaleString()}</div>
-                <div class="stat-label">${displayName}</div>
-            </div>
-        `;
-    }).join('');
-
     stats.innerHTML = `
         <div class="stat-box">
             <div class="stat-number">${totalEvents.toLocaleString()}</div>
@@ -506,7 +484,6 @@ function updateStats() {
             <div class="stat-number">${clusters.length}</div>
             <div class="stat-label">영향 지역</div>
         </div>
-        ${sourceStatsHtml}
     `;
     
     // 콘솔에 상세 통계 출력
