@@ -572,7 +572,47 @@ class ReliefWebCrawler:
             'laos': ('19.86', '102.50'),
             'congo': ('-4.04', '15.27'),
             'republic of the congo': ('-4.04', '15.27'),
-            'guinea': ('9.95', '-9.70')
+            'guinea': ('9.95', '-9.70'),
+
+            # Extended country mappings for complete coverage
+            'burundi': ('-3.37', '29.92'),
+            'cameroon': ('7.37', '12.35'),
+            'botswana': ('-22.33', '24.68'),
+            'cuba': ('21.52', '-77.78'),
+            'comoros': ('-11.88', '43.87'),
+            'costa rica': ('9.75', '-83.75'),
+            'dominican republic': ('18.74', '-70.16'),
+            'gabon': ('-0.80', '11.61'),
+            'georgia': ('42.32', '43.36'),
+            'honduras': ('15.20', '-86.24'),
+            'kyrgyzstan': ('41.20', '74.77'),
+            'libya': ('26.34', '17.23'),
+            'malaysia': ('4.21', '101.98'),
+            'mali': ('17.57', '-3.99'),
+            'senegal': ('14.50', '-14.45'),
+            'sri lanka': ('7.87', '80.77'),
+            'thailand': ('15.87', '100.99'),
+            'vanuatu': ('-15.38', '166.96'),
+            'tajikistan': ('38.86', '71.28'),
+
+            # Full name variations for better matching
+            'bahamas': ('25.03', '-77.40'),
+            'belize': ('17.19', '-88.50'),
+            'central african republic': ('6.61', '20.94'),
+            "côte d'ivoire": ('7.54', '-5.55'),
+            'guinea-bissau': ('11.80', '-15.18'),
+            'papua new guinea': ('-6.31', '143.96'),
+            'united republic of tanzania': ('-6.37', '34.89'),
+            'tanzania': ('-6.37', '34.89'),
+            'venezuela (bolivarian republic of)': ('6.42', '-66.59'),
+            'china - taiwan province': ('23.82', '121.56'),
+            'taiwan': ('23.82', '121.56'),
+            'bosnia and herzegovina': ('43.92', '17.68'),
+            'american samoa': ('-14.31', '-170.70'),
+
+            # Additional missing countries
+            'cambodia': ('12.57', '104.99'),
+            'panama': ('8.54', '-80.78')
         }
 
         country_lower = country_name.lower().strip()
