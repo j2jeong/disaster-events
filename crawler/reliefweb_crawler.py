@@ -318,13 +318,18 @@ class ReliefWebCrawler:
         end_date = datetime.now()
         start_date = end_date - timedelta(days=30)
 
-        # Use correct parameters for API v2 with required fields
+        # Use correct parameters for API v2 with required fields and recent filter
         params = {
             'appname': 'multi-source-disaster-crawler.github.io',
             'limit': 100,
-            'sort[]': 'date:desc',
+            'sort[]': 'date.created:desc',  # Sort by creation date descending
             'fields[include][]': ['name', 'type', 'date', 'country', 'glide', 'url', 'description']
         }
+
+        # Add date filter for recent disasters (last 60 days)
+        recent_date = (datetime.now() - timedelta(days=60)).strftime('%Y-%m-%d')
+        params['filter[field]'] = 'date.created'
+        params['filter[value][from]'] = f"{recent_date}T00:00:00+00:00"
 
         try:
             print(f"✓ Making API request to ReliefWeb v2...")
