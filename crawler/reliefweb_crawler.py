@@ -436,7 +436,16 @@ class ReliefWebCrawler:
 
             # Get additional fields
             glide = fields.get('glide', '') or ''
-            url = fields.get('url', '') or f"https://reliefweb.int/disaster/{disaster_id}"
+
+            # ReliefWeb disaster URLs follow the pattern: https://reliefweb.int/disaster/{disaster-code}
+            # We need to construct the proper disaster URL, not the taxonomy URL
+            api_url = fields.get('url', '')
+            if api_url and '/taxonomy/term/' in api_url:
+                # Extract the term ID and construct proper disaster URL
+                term_id = api_url.split('/taxonomy/term/')[-1]
+                url = f"https://reliefweb.int/disaster/{disaster_id}"
+            else:
+                url = api_url or f"https://reliefweb.int/disaster/{disaster_id}"
             description = fields.get('description', '') or fields.get('body', '') or name
 
             # Clean up description
@@ -451,12 +460,16 @@ class ReliefWebCrawler:
                 except:
                     description = description[:300] + "..."
 
-            # Try to get coordinates from country location
+            # For now, use country coordinates as ReliefWeb individual disaster pages
+            # don't seem to contain the coordinate data we need
             latitude, longitude = self.get_country_coordinates(country_name)
-            if not latitude or not longitude:
-                print(f"⚠️ No coordinates found for country: {country_name}")
-            else:
+            if latitude and longitude:
                 print(f"✅ Using country coordinates for {country_name}: {latitude}, {longitude}")
+            else:
+                print(f"⚠️ No coordinates found for country: {country_name}")
+
+            # TODO: In the future, we could extract coordinates from ReliefWeb's map API
+            # or from the main disasters listing page which might contain coordinate data
 
             return {
                 "event_id": f"RW_{disaster_id}",
@@ -541,20 +554,76 @@ class ReliefWebCrawler:
             'venezuela': ('6.42', '-66.59'),
             'yemen': ('15.55', '48.52'),
             'zimbabwe': ('-19.02', '29.15'),
-            'zambia': ('-13.13', '27.85')
+            'zambia': ('-13.13', '27.85'),
+
+            # Additional missing countries
+            'benin': ('9.31', '2.32'),
+            'sierra leone': ('8.46', '-11.78'),
+            'bolivia (plurinational state of)': ('-16.29', '-63.59'),
+            'bolivia': ('-16.29', '-63.59'),
+            'equatorial guinea': ('1.65', '10.27'),
+            'syrian arab republic': ('34.80', '38.99'),
+            'syria': ('34.80', '38.99'),  # Duplicate for safety
+            'cabo verde': ('16.54', '-24.01'),
+            'cape verde': ('16.54', '-24.01'),
+            'viet nam': ('14.06', '108.28'),
+            'vietnam': ('14.06', '108.28'),
+            "lao people's democratic republic (the)": ('19.86', '102.50'),
+            'laos': ('19.86', '102.50'),
+            'congo': ('-4.04', '15.27'),
+            'republic of the congo': ('-4.04', '15.27'),
+            'guinea': ('9.95', '-9.70')
         }
 
         country_lower = country_name.lower().strip()
         return country_coords.get(country_lower, ("", ""))
 
     def extract_coordinates_from_url(self, url):
-        """Extract coordinates from ReliefWeb disaster page or use country coordinates"""
+        """Extract coordinates from ReliefWeb disaster page"""
         try:
             if not url or '/disaster/' not in url:
                 return "", ""
 
-            # For now, skip web scraping and use country coordinates
-            # This is more reliable than web scraping which may fail
+            print(f"🌍 Extracting coordinates from: {url}")
+            content = self.get_page_content(url, retries=2)
+            if not content:
+                print(f"⚠️ Failed to fetch page content from {url}")
+                return "", ""
+
+            # Look for data-disaster-lat and data-disaster-lon attributes using regex
+            import re
+            lat_pattern = r'data-disaster-lat=["\']([^"\']+)["\']'
+            lon_pattern = r'data-disaster-lon=["\']([^"\']+)["\']'
+
+            lat_match = re.search(lat_pattern, content)
+            lon_match = re.search(lon_pattern, content)
+
+            if lat_match and lon_match:
+                lat = lat_match.group(1).strip()
+                lon = lon_match.group(1).strip()
+                print(f"✅ Found coordinates via regex: lat={lat}, lon={lon}")
+                return lat, lon
+
+            # Alternative: Look for BeautifulSoup parsing
+            try:
+                soup = BeautifulSoup(content, 'html.parser')
+                disaster_articles = soup.find_all('article', attrs={
+                    'data-disaster-lat': True,
+                    'data-disaster-lon': True
+                })
+
+                if disaster_articles:
+                    article = disaster_articles[0]
+                    lat = article.get('data-disaster-lat', '').strip()
+                    lon = article.get('data-disaster-lon', '').strip()
+
+                    if lat and lon:
+                        print(f"✅ Found coordinates via BeautifulSoup: lat={lat}, lon={lon}")
+                        return lat, lon
+            except Exception as soup_error:
+                print(f"⚠️ BeautifulSoup parsing failed: {soup_error}")
+
+            print(f"⚠️ No coordinates found in {url}")
             return "", ""
 
         except Exception as e:
