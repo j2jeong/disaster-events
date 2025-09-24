@@ -39,6 +39,14 @@ async function loadDisasterData() {
         
         const mainData = await response.json();
         console.log(`✅ Loaded ${mainData.length} events from main data file`);
+
+    // Debug: Count events by source
+    const sourceCount = {};
+    mainData.forEach(event => {
+        const source = event.data_source || getDataSourceFromEventId(event.event_id);
+        sourceCount[source] = (sourceCount[source] || 0) + 1;
+    });
+    console.log('📊 Events by source in loaded data:', sourceCount);
         
         // 2. 과거 이벤트 데이터 로드 시도 (선택적)
         let pastData = [];
