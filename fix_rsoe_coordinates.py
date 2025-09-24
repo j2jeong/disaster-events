@@ -53,57 +53,66 @@ def get_coordinates_from_address(address):
 
     return "", ""
 
-def main():
-    print("🔄 Fixing RSOE events with missing coordinates...")
-
-    # Load current events
-    events_file = 'docs/data/events.json'
-    with open(events_file, 'r') as f:
-        events = json.load(f)
-
-    print(f"📊 Total events loaded: {len(events)}")
-
+def process_file(path: str) -> int:
     updated_count = 0
+    try:
+        with open(path, 'r') as f:
+            data = json.load(f)
+    except Exception as e:
+        print(f"⚠️ Failed to load {path}: {e}")
+        return 0
 
-    for event in events:
-        # Check if it's an RSOE event (no data_source field or data_source == 'rsoe')
+    for event in data:
         is_rsoe = not event.get('data_source') or event.get('data_source') == 'rsoe'
+        if not is_rsoe:
+            continue
 
-        if is_rsoe:
-            current_lat = event.get('latitude', '')
-            current_lon = event.get('longitude', '')
+        current_lat = str(event.get('latitude', '')).strip()
+        current_lon = str(event.get('longitude', '')).strip()
 
-            # Check if coordinates are missing or empty
-            needs_update = (current_lat == '' or current_lon == '' or
-                          current_lat == '0' or current_lon == '0')
+        # Treat strings like "0" or 0.0 as missing
+        def is_missing(v: str) -> bool:
+            try:
+                if v in ('', None):
+                    return True
+                f = float(v)
+                return f == 0.0
+            except Exception:
+                return True
 
-            if needs_update:
-                address = event.get('address', '')
-                if address:
-                    lat, lon = get_coordinates_from_address(address)
-                    if lat and lon:
-                        event['latitude'] = lat
-                        event['longitude'] = lon
-                        updated_count += 1
-                        print(f"✅ Updated {event['event_id']}: {address} -> {lat}, {lon}")
-                    else:
-                        print(f"⚠️ No coordinates found for: {address}")
+        if is_missing(current_lat) or is_missing(current_lon):
+            address = event.get('address', '')
+            if address:
+                lat, lon = get_coordinates_from_address(address)
+                if lat and lon:
+                    event['latitude'] = lat
+                    event['longitude'] = lon
+                    updated_count += 1
+                    print(f"✅ Updated {event.get('event_id')}: {address} -> {lat}, {lon} ({path})")
+                else:
+                    print(f"⚠️ No coordinates found for: {address} ({path})")
 
-    if updated_count > 0:
-        # Create backup
-        backup_file = f"docs/data/backups/events_backup_rsoe_coords_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-        print(f"💾 Creating backup: {backup_file}")
+    if updated_count:
+        # backup
+        backup_file = f"{path}.backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        try:
+            with open(backup_file, 'w') as f:
+                json.dump(data, f, indent=2)
+            with open(path, 'w') as f:
+                json.dump(data, f, indent=2)
+            print(f"💾 Saved {updated_count} updates to {path} (backup: {backup_file})")
+        except Exception as e:
+            print(f"⚠️ Failed to save {path}: {e}")
+            return 0
+    return updated_count
 
-        with open(backup_file, 'w') as f:
-            json.dump(events, f, indent=2)
 
-        # Save updated events
-        with open(events_file, 'w') as f:
-            json.dump(events, f, indent=2)
-
-        print(f"✅ Updated {updated_count} RSOE events with coordinates")
-        print(f"💾 Saved to {events_file}")
-    else:
+def main():
+    print("🔄 Fixing RSOE events with missing coordinates (events + past_events)...")
+    total = 0
+    total += process_file('docs/data/events.json')
+    total += process_file('docs/data/past_events.json')
+    if total == 0:
         print("ℹ️ No RSOE events needed coordinate updates")
 
 if __name__ == "__main__":

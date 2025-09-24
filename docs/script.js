@@ -181,14 +181,29 @@ async function loadDisasterData() {
         console.log('🔄 Merging and deduplicating data...');
         const allEvents = [...pastData, ...mainData];
         const eventMap = new Map();
-        
-        // event_id 기준으로 중복 제거 (최신 것 우선)
+
+        // 좌표 유효성 체크 (원시 이벤트 기준)
+        const rawHasCoords = (e) => {
+            if (!e) return false;
+            const lat = parseFloat(e.latitude);
+            const lon = parseFloat(e.longitude);
+            return !isNaN(lat) && !isNaN(lon) && lat !== 0 && lon !== 0;
+        };
+
+        // event_id 기준으로 중복 제거
+        // 우선순위: (1) 더 최신 crawled_at (2) 좌표 보유 이벤트 > 무좌표 이벤트
         allEvents.forEach(event => {
             const eventId = event.event_id;
             if (eventId && eventId.trim() !== '') {
                 const existing = eventMap.get(eventId);
-                if (!existing || new Date(event.crawled_at || 0) > new Date(existing.crawled_at || 0)) {
+                if (!existing) {
                     eventMap.set(eventId, event);
+                } else {
+                    const isNewer = new Date(event.crawled_at || 0) > new Date(existing.crawled_at || 0);
+                    const preferCoords = !rawHasCoords(existing) && rawHasCoords(event);
+                    if (isNewer || preferCoords) {
+                        eventMap.set(eventId, event);
+                    }
                 }
             }
         });
