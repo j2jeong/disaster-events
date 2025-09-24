@@ -1776,7 +1776,7 @@
     "description": "Magnitude 5.1 earthquake at depth -40.0km",
     "magnitude": "5.1",
     "depth_km": "-40.0",
-    "crawled_at": "2025-09-24T02:12:42.013235",
+    "crawled_at": "2025-09-24T02:15:39.813488",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
