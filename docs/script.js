@@ -33,11 +33,28 @@ async function loadDisasterData() {
         // 1. 메인 이벤트 데이터 로드
         console.log('📂 Loading main events data...');
         const response = await fetch('./data/events.json?t=' + new Date().getTime());
+        console.log('📡 Fetch response:', {
+            status: response.status,
+            statusText: response.statusText,
+            headers: Array.from(response.headers.entries()),
+            url: response.url
+        });
+
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
         }
-        
-        const mainData = await response.json();
+
+        const responseText = await response.text();
+        console.log(`📄 Response text length: ${responseText.length} characters`);
+
+        let mainData;
+        try {
+            mainData = JSON.parse(responseText);
+        } catch (parseError) {
+            console.error('JSON parsing failed:', parseError);
+            console.error('First 500 chars of response:', responseText.substring(0, 500));
+            throw new Error(`JSON parsing failed: ${parseError.message}`);
+        }
         console.log(`✅ Loaded ${mainData.length} events from main data file`);
 
     // Debug: Count events by source
@@ -110,22 +127,44 @@ async function loadDisasterData() {
         }
         
         // 5. 데이터 전처리
-        disasterEvents = deduped.map(event => {
-            const lat = parseFloat(event.latitude);
-            const lon = parseFloat(event.longitude);
+        console.log('🔄 Starting data preprocessing...');
 
-            return {
-                ...event,
-                latitude: !isNaN(lat) ? lat : 0,
-                longitude: !isNaN(lon) ? lon : 0,
-                event_date: new Date(event.event_date_utc),
-                hasValidCoords: !isNaN(lat) && !isNaN(lon) && lat !== 0 && lon !== 0 && event.latitude !== "" && event.longitude !== ""
-            };
-        }).filter(event => {
-            // Keep all events with valid titles (coordinates are optional)
-            const isValidEvent = event.event_title && event.event_title.trim() !== '';
-            return isValidEvent;
-        });
+        try {
+            disasterEvents = deduped.map((event, index) => {
+                try {
+                    const lat = parseFloat(event.latitude);
+                    const lon = parseFloat(event.longitude);
+                    const eventDate = new Date(event.event_date_utc);
+
+                    // Validate date
+                    if (isNaN(eventDate.getTime())) {
+                        console.warn(`⚠️ Invalid date for event ${event.event_id}: ${event.event_date_utc}`);
+                    }
+
+                    return {
+                        ...event,
+                        latitude: !isNaN(lat) ? lat : 0,
+                        longitude: !isNaN(lon) ? lon : 0,
+                        event_date: isNaN(eventDate.getTime()) ? new Date() : eventDate,
+                        hasValidCoords: !isNaN(lat) && !isNaN(lon) && lat !== 0 && lon !== 0 && event.latitude !== "" && event.longitude !== ""
+                    };
+                } catch (mapError) {
+                    console.error(`❌ Error processing event ${index}:`, mapError, event);
+                    return null;
+                }
+            }).filter(event => {
+                if (!event) return false;
+                // Keep all events with valid titles (coordinates are optional)
+                const isValidEvent = event.event_title && event.event_title.trim() !== '';
+                return isValidEvent;
+            });
+
+            console.log(`✅ Data preprocessing completed: ${disasterEvents.length} events`);
+
+        } catch (preprocessError) {
+            console.error('❌ Data preprocessing failed:', preprocessError);
+            throw new Error(`Data preprocessing failed: ${preprocessError.message}`);
+        }
 
         // 시간순 정렬
         disasterEvents.sort((a, b) => a.event_date - b.event_date);
@@ -164,9 +203,21 @@ async function loadDisasterData() {
         
     } catch (error) {
         console.error('❌ Failed to load disaster data:', error);
+        console.error('Error details:', {
+            message: error.message,
+            stack: error.stack,
+            name: error.name
+        });
+
         loadingIndicator.classList.add('hidden');
         errorMessage.classList.remove('hidden');
-        
+
+        // 에러 메시지에 더 구체적인 정보 표시
+        const errorMsgElement = document.querySelector('#errorMessage p');
+        if (errorMsgElement) {
+            errorMsgElement.textContent = `데이터 로딩 실패: ${error.message || '알 수 없는 오류'}. 브라우저 콘솔을 확인해주세요.`;
+        }
+
         // 에러 발생시에도 기존 데이터라도 유지하려고 시도
         if (disasterEvents.length === 0) {
             console.log('🔄 Attempting to use cached/existing data...');
