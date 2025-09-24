@@ -15,7 +15,7 @@
     "description": "Magnitude 4.5 earthquake at depth -71.9km",
     "magnitude": "4.5",
     "depth_km": "-71.9",
-    "crawled_at": "2025-09-24T01:33:33.679628",
+    "crawled_at": "2025-09-24T10:37:05.633237",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -35,7 +35,7 @@
     "description": "Magnitude 4.9 earthquake at depth -6.0km",
     "magnitude": "4.9",
     "depth_km": "-6.0",
-    "crawled_at": "2025-09-24T01:33:33.679616",
+    "crawled_at": "2025-09-24T10:37:05.633231",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -55,7 +55,7 @@
     "description": "Magnitude 4.8 earthquake at depth -10.0km",
     "magnitude": "4.8",
     "depth_km": "-10.0",
-    "crawled_at": "2025-09-24T01:33:33.679610",
+    "crawled_at": "2025-09-24T10:37:05.633228",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -75,7 +75,7 @@
     "description": "Magnitude 4.3 earthquake at depth -197.8km",
     "magnitude": "4.3",
     "depth_km": "-197.8",
-    "crawled_at": "2025-09-24T01:33:33.679598",
+    "crawled_at": "2025-09-24T10:37:05.633221",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -95,7 +95,7 @@
     "description": "Magnitude 4.4 earthquake at depth -10.0km",
     "magnitude": "4.4",
     "depth_km": "-10.0",
-    "crawled_at": "2025-09-24T01:33:33.679591",
+    "crawled_at": "2025-09-24T10:37:05.633218",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -115,7 +115,7 @@
     "description": "Magnitude 4.8 earthquake at depth -10.0km",
     "magnitude": "4.8",
     "depth_km": "-10.0",
-    "crawled_at": "2025-09-24T01:33:33.679585",
+    "crawled_at": "2025-09-24T10:37:05.633215",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -135,7 +135,7 @@
     "description": "Magnitude 4.3 earthquake at depth -149.0km",
     "magnitude": "4.3",
     "depth_km": "-149.0",
-    "crawled_at": "2025-09-24T01:33:33.679579",
+    "crawled_at": "2025-09-24T10:37:05.633212",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -155,7 +155,7 @@
     "description": "Magnitude 4.1 earthquake at depth -37.8km",
     "magnitude": "4.1",
     "depth_km": "-37.8",
-    "crawled_at": "2025-09-24T01:33:33.679573",
+    "crawled_at": "2025-09-24T10:37:05.633209",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -175,7 +175,7 @@
     "description": "Magnitude 5.0 earthquake at depth -12.0km",
     "magnitude": "5.0",
     "depth_km": "-12.0",
-    "crawled_at": "2025-09-24T01:33:33.679567",
+    "crawled_at": "2025-09-24T10:37:05.633206",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -195,7 +195,7 @@
     "description": "Magnitude 4.1 earthquake at depth -13.6km",
     "magnitude": "4.1",
     "depth_km": "-13.6",
-    "crawled_at": "2025-09-24T01:33:33.679555",
+    "crawled_at": "2025-09-24T10:37:05.633199",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -215,7 +215,7 @@
     "description": "Magnitude 4.9 earthquake at depth -10.0km",
     "magnitude": "4.9",
     "depth_km": "-10.0",
-    "crawled_at": "2025-09-24T01:33:33.679542",
+    "crawled_at": "2025-09-24T10:37:05.633193",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -235,7 +235,7 @@
     "description": "Magnitude 4.2 earthquake at depth -60.0km",
     "magnitude": "4.2",
     "depth_km": "-60.0",
-    "crawled_at": "2025-09-24T01:33:33.679536",
+    "crawled_at": "2025-09-24T10:37:05.633190",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -255,7 +255,7 @@
     "description": "Magnitude 4.0 earthquake at depth -5.6km",
     "magnitude": "4.0",
     "depth_km": "-5.6",
-    "crawled_at": "2025-09-24T01:33:33.679529",
+    "crawled_at": "2025-09-24T10:37:05.633187",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -275,7 +275,7 @@
     "description": "Magnitude 4.7 earthquake at depth -143.0km",
     "magnitude": "4.7",
     "depth_km": "-143.0",
-    "crawled_at": "2025-09-24T01:33:33.679523",
+    "crawled_at": "2025-09-24T10:37:05.633183",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -295,7 +295,7 @@
     "description": "Magnitude 4.9 earthquake at depth -27.0km",
     "magnitude": "4.9",
     "depth_km": "-27.0",
-    "crawled_at": "2025-09-24T01:33:33.679503",
+    "crawled_at": "2025-09-24T10:37:05.633174",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -315,7 +315,7 @@
     "description": "Magnitude 4.3 earthquake at depth -7.6km",
     "magnitude": "4.3",
     "depth_km": "-7.6",
-    "crawled_at": "2025-09-24T01:33:33.679483",
+    "crawled_at": "2025-09-24T10:37:05.633164",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -335,7 +335,7 @@
     "description": "Magnitude 4.5 earthquake at depth -249.1km",
     "magnitude": "4.5",
     "depth_km": "-249.1",
-    "crawled_at": "2025-09-24T01:33:33.679477",
+    "crawled_at": "2025-09-24T10:37:05.633160",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -355,7 +355,7 @@
     "description": "Magnitude 4.5 earthquake at depth -70.0km",
     "magnitude": "4.5",
     "depth_km": "-70.0",
-    "crawled_at": "2025-09-24T01:33:33.679471",
+    "crawled_at": "2025-09-24T10:37:05.633157",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -375,7 +375,7 @@
     "description": "Magnitude 4.2 earthquake at depth -25.0km",
     "magnitude": "4.2",
     "depth_km": "-25.0",
-    "crawled_at": "2025-09-24T01:33:33.679464",
+    "crawled_at": "2025-09-24T10:37:05.633154",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -395,7 +395,7 @@
     "description": "Magnitude 4.0 earthquake at depth -197.0km",
     "magnitude": "4.0",
     "depth_km": "-197.0",
-    "crawled_at": "2025-09-24T01:33:33.679458",
+    "crawled_at": "2025-09-24T10:37:05.633150",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -415,7 +415,7 @@
     "description": "Magnitude 5.4 earthquake at depth -10.0km",
     "magnitude": "5.4",
     "depth_km": "-10.0",
-    "crawled_at": "2025-09-24T01:33:33.679446",
+    "crawled_at": "2025-09-24T10:37:05.633144",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -435,7 +435,7 @@
     "description": "Magnitude 4.5 earthquake at depth -10.0km",
     "magnitude": "4.5",
     "depth_km": "-10.0",
-    "crawled_at": "2025-09-24T01:33:33.679439",
+    "crawled_at": "2025-09-24T10:37:05.633140",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -455,7 +455,7 @@
     "description": "Magnitude 4.2 earthquake at depth -191.9km",
     "magnitude": "4.2",
     "depth_km": "-191.9",
-    "crawled_at": "2025-09-24T01:33:33.679433",
+    "crawled_at": "2025-09-24T10:37:05.633137",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -475,7 +475,7 @@
     "description": "Magnitude 4.7 earthquake at depth -38.0km",
     "magnitude": "4.7",
     "depth_km": "-38.0",
-    "crawled_at": "2025-09-24T01:33:33.679427",
+    "crawled_at": "2025-09-24T10:37:05.633133",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -495,7 +495,7 @@
     "description": "Magnitude 4.6 earthquake at depth -66.0km",
     "magnitude": "4.6",
     "depth_km": "-66.0",
-    "crawled_at": "2025-09-24T01:33:33.679382",
+    "crawled_at": "2025-09-24T10:37:05.633108",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -515,27 +515,7 @@
     "description": "Magnitude 5.0 earthquake at depth -120.0km",
     "magnitude": "5.0",
     "depth_km": "-120.0",
-    "crawled_at": "2025-09-24T01:33:33.679370",
-    "event_url": "https://www.emsc-csem.org/",
-    "data_source": "emsc"
-  },
-  {
-    "event_id": "EMSC_20250922_15638_75014_51",
-    "event_title": "M5.1 earthquake - ",
-    "event_category": "Earthquake",
-    "original_category": "Earthquake",
-    "source": "EMSC",
-    "source_url": "https://www.emsc-csem.org/",
-    "event_date_utc": "2025-09-22T18:46:43.69Z",
-    "last_update_utc": "2025-09-22T18:46:43.69Z",
-    "latitude": "-15.638",
-    "longitude": "-75.0145",
-    "area_range": "",
-    "address": "",
-    "description": "Magnitude 5.1 earthquake at depth -40.0km",
-    "magnitude": "5.1",
-    "depth_km": "-40.0",
-    "crawled_at": "2025-09-24T01:33:33.679358",
+    "crawled_at": "2025-09-24T10:37:05.633103",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -555,7 +535,7 @@
     "description": "Magnitude 4.6 earthquake at depth -46.0km",
     "magnitude": "4.6",
     "depth_km": "-46.0",
-    "crawled_at": "2025-09-24T01:33:33.679321",
+    "crawled_at": "2025-09-24T10:37:05.633076",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -575,7 +555,7 @@
     "description": "Magnitude 4.5 earthquake at depth -105.3km",
     "magnitude": "4.5",
     "depth_km": "-105.3",
-    "crawled_at": "2025-09-24T01:33:33.679314",
+    "crawled_at": "2025-09-24T10:37:05.633072",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -595,7 +575,7 @@
     "description": "Magnitude 4.2 earthquake at depth -19.0km",
     "magnitude": "4.2",
     "depth_km": "-19.0",
-    "crawled_at": "2025-09-24T01:33:33.679307",
+    "crawled_at": "2025-09-24T10:37:05.633069",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -615,7 +595,7 @@
     "description": "Magnitude 4.6 earthquake at depth -10.0km",
     "magnitude": "4.6",
     "depth_km": "-10.0",
-    "crawled_at": "2025-09-24T01:33:33.679301",
+    "crawled_at": "2025-09-24T10:37:05.633066",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -635,7 +615,7 @@
     "description": "Magnitude 4.3 earthquake at depth -193.0km",
     "magnitude": "4.3",
     "depth_km": "-193.0",
-    "crawled_at": "2025-09-24T01:33:33.679294",
+    "crawled_at": "2025-09-24T10:37:05.633062",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -655,7 +635,7 @@
     "description": "Magnitude 4.0 earthquake at depth -5.8km",
     "magnitude": "4.0",
     "depth_km": "-5.8",
-    "crawled_at": "2025-09-24T01:33:33.679272",
+    "crawled_at": "2025-09-24T10:37:05.633059",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -675,7 +655,7 @@
     "description": "Magnitude 4.9 earthquake at depth -124.5km",
     "magnitude": "4.9",
     "depth_km": "-124.5",
-    "crawled_at": "2025-09-24T01:33:33.679266",
+    "crawled_at": "2025-09-24T10:37:05.633056",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -695,7 +675,7 @@
     "description": "Magnitude 4.4 earthquake at depth -29.0km",
     "magnitude": "4.4",
     "depth_km": "-29.0",
-    "crawled_at": "2025-09-24T01:33:33.679260",
+    "crawled_at": "2025-09-24T10:37:05.633052",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -715,7 +695,7 @@
     "description": "Magnitude 4.0 earthquake at depth -13.2km",
     "magnitude": "4.0",
     "depth_km": "-13.2",
-    "crawled_at": "2025-09-24T01:33:33.679254",
+    "crawled_at": "2025-09-24T10:37:05.633049",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -735,7 +715,7 @@
     "description": "Magnitude 5.1 earthquake at depth -30.0km",
     "magnitude": "5.1",
     "depth_km": "-30.0",
-    "crawled_at": "2025-09-24T01:33:33.679242",
+    "crawled_at": "2025-09-24T10:37:05.633043",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -755,7 +735,7 @@
     "description": "Magnitude 4.5 earthquake at depth -50.0km",
     "magnitude": "4.5",
     "depth_km": "-50.0",
-    "crawled_at": "2025-09-24T01:33:33.679236",
+    "crawled_at": "2025-09-24T10:37:05.633040",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -775,7 +755,7 @@
     "description": "Magnitude 5.2 earthquake at depth -10.0km",
     "magnitude": "5.2",
     "depth_km": "-10.0",
-    "crawled_at": "2025-09-24T01:33:33.679230",
+    "crawled_at": "2025-09-24T10:37:05.633037",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -795,7 +775,7 @@
     "description": "Magnitude 4.4 earthquake at depth -50.0km",
     "magnitude": "4.4",
     "depth_km": "-50.0",
-    "crawled_at": "2025-09-24T01:33:33.679223",
+    "crawled_at": "2025-09-24T10:37:05.633033",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -815,7 +795,7 @@
     "description": "Magnitude 4.0 earthquake at depth -11.7km",
     "magnitude": "4.0",
     "depth_km": "-11.7",
-    "crawled_at": "2025-09-24T01:33:33.679217",
+    "crawled_at": "2025-09-24T10:37:05.633030",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -835,7 +815,7 @@
     "description": "Magnitude 4.2 earthquake at depth -153.0km",
     "magnitude": "4.2",
     "depth_km": "-153.0",
-    "crawled_at": "2025-09-24T01:33:33.679210",
+    "crawled_at": "2025-09-24T10:37:05.633028",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -855,7 +835,7 @@
     "description": "Magnitude 4.2 earthquake at depth -23.0km",
     "magnitude": "4.2",
     "depth_km": "-23.0",
-    "crawled_at": "2025-09-24T01:33:33.679203",
+    "crawled_at": "2025-09-24T10:37:05.633024",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -875,7 +855,7 @@
     "description": "Magnitude 5.1 earthquake at depth -44.0km",
     "magnitude": "5.1",
     "depth_km": "-44.0",
-    "crawled_at": "2025-09-24T01:33:33.679197",
+    "crawled_at": "2025-09-24T10:37:05.633021",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -895,7 +875,7 @@
     "description": "Magnitude 5.0 earthquake at depth -40.0km",
     "magnitude": "5.0",
     "depth_km": "-40.0",
-    "crawled_at": "2025-09-24T01:33:33.679191",
+    "crawled_at": "2025-09-24T10:37:05.633017",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -915,7 +895,7 @@
     "description": "Magnitude 5.2 earthquake at depth -10.0km",
     "magnitude": "5.2",
     "depth_km": "-10.0",
-    "crawled_at": "2025-09-24T01:33:33.679184",
+    "crawled_at": "2025-09-24T10:37:05.633014",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -935,7 +915,7 @@
     "description": "Magnitude 4.2 earthquake at depth -185.0km",
     "magnitude": "4.2",
     "depth_km": "-185.0",
-    "crawled_at": "2025-09-24T01:33:33.679178",
+    "crawled_at": "2025-09-24T10:37:05.633011",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -955,7 +935,7 @@
     "description": "Magnitude 4.0 earthquake at depth -9.0km",
     "magnitude": "4.0",
     "depth_km": "-9.0",
-    "crawled_at": "2025-09-24T01:33:33.679172",
+    "crawled_at": "2025-09-24T10:37:05.633008",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -975,7 +955,7 @@
     "description": "Magnitude 4.9 earthquake at depth -10.0km",
     "magnitude": "4.9",
     "depth_km": "-10.0",
-    "crawled_at": "2025-09-24T01:33:33.679165",
+    "crawled_at": "2025-09-24T10:37:05.633005",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -995,7 +975,7 @@
     "description": "Magnitude 4.4 earthquake at depth -5.0km",
     "magnitude": "4.4",
     "depth_km": "-5.0",
-    "crawled_at": "2025-09-24T01:33:33.679159",
+    "crawled_at": "2025-09-24T10:37:05.633002",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -1015,7 +995,7 @@
     "description": "Magnitude 4.2 earthquake at depth -10.0km",
     "magnitude": "4.2",
     "depth_km": "-10.0",
-    "crawled_at": "2025-09-24T01:33:33.679153",
+    "crawled_at": "2025-09-24T10:37:05.632998",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -1035,7 +1015,7 @@
     "description": "Magnitude 4.0 earthquake at depth -10.0km",
     "magnitude": "4.0",
     "depth_km": "-10.0",
-    "crawled_at": "2025-09-24T01:33:33.679147",
+    "crawled_at": "2025-09-24T10:37:05.632995",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -1055,7 +1035,7 @@
     "description": "Magnitude 4.0 earthquake at depth -139.0km",
     "magnitude": "4.0",
     "depth_km": "-139.0",
-    "crawled_at": "2025-09-24T01:33:33.679141",
+    "crawled_at": "2025-09-24T10:37:05.632993",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -1075,7 +1055,7 @@
     "description": "Magnitude 5.5 earthquake at depth -50.0km",
     "magnitude": "5.5",
     "depth_km": "-50.0",
-    "crawled_at": "2025-09-24T01:33:33.679135",
+    "crawled_at": "2025-09-24T10:37:05.632990",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -1095,7 +1075,7 @@
     "description": "Magnitude 4.0 earthquake at depth -110.0km",
     "magnitude": "4.0",
     "depth_km": "-110.0",
-    "crawled_at": "2025-09-24T01:33:33.679129",
+    "crawled_at": "2025-09-24T10:37:05.632986",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -1115,7 +1095,7 @@
     "description": "Magnitude 4.0 earthquake at depth -99.0km",
     "magnitude": "4.0",
     "depth_km": "-99.0",
-    "crawled_at": "2025-09-24T01:33:33.679117",
+    "crawled_at": "2025-09-24T10:37:05.632980",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -1135,7 +1115,7 @@
     "description": "Magnitude 4.4 earthquake at depth -83.5km",
     "magnitude": "4.4",
     "depth_km": "-83.5",
-    "crawled_at": "2025-09-24T01:33:33.679098",
+    "crawled_at": "2025-09-24T10:37:05.632972",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -1155,7 +1135,7 @@
     "description": "Magnitude 4.0 earthquake at depth -13.9km",
     "magnitude": "4.0",
     "depth_km": "-13.9",
-    "crawled_at": "2025-09-24T01:33:33.679092",
+    "crawled_at": "2025-09-24T10:37:05.632969",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -1175,7 +1155,7 @@
     "description": "Magnitude 4.8 earthquake at depth -350.1km",
     "magnitude": "4.8",
     "depth_km": "-350.1",
-    "crawled_at": "2025-09-24T01:33:33.679086",
+    "crawled_at": "2025-09-24T10:37:05.632965",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -1195,7 +1175,7 @@
     "description": "Magnitude 4.6 earthquake at depth -155.3km",
     "magnitude": "4.6",
     "depth_km": "-155.3",
-    "crawled_at": "2025-09-24T01:33:33.679079",
+    "crawled_at": "2025-09-24T10:37:05.632962",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -1215,7 +1195,7 @@
     "description": "Magnitude 4.6 earthquake at depth -50.0km",
     "magnitude": "4.6",
     "depth_km": "-50.0",
-    "crawled_at": "2025-09-24T01:33:33.679072",
+    "crawled_at": "2025-09-24T10:37:05.632958",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -1235,7 +1215,27 @@
     "description": "Magnitude 4.6 earthquake at depth -20.0km",
     "magnitude": "4.6",
     "depth_km": "-20.0",
-    "crawled_at": "2025-09-24T01:33:33.679065",
+    "crawled_at": "2025-09-24T10:37:05.632955",
+    "event_url": "https://www.emsc-csem.org/",
+    "data_source": "emsc"
+  },
+  {
+    "event_id": "EMSC_20250923_15744_75290_55",
+    "event_title": "M5.5 earthquake - ",
+    "event_category": "Earthquake",
+    "original_category": "Earthquake",
+    "source": "EMSC",
+    "source_url": "https://www.emsc-csem.org/",
+    "event_date_utc": "2025-09-23T17:39:19.418Z",
+    "last_update_utc": "2025-09-23T17:39:19.418Z",
+    "latitude": "-15.7448",
+    "longitude": "-75.2904",
+    "area_range": "",
+    "address": "",
+    "description": "Magnitude 5.5 earthquake at depth -9.0km",
+    "magnitude": "5.5",
+    "depth_km": "-9.0",
+    "crawled_at": "2025-09-24T10:37:05.632952",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -1255,7 +1255,7 @@
     "description": "Magnitude 4.4 earthquake at depth -76.5km",
     "magnitude": "4.4",
     "depth_km": "-76.5",
-    "crawled_at": "2025-09-24T01:33:33.679051",
+    "crawled_at": "2025-09-24T10:37:05.632948",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -1275,7 +1275,7 @@
     "description": "Magnitude 4.9 earthquake at depth -72.0km",
     "magnitude": "4.9",
     "depth_km": "-72.0",
-    "crawled_at": "2025-09-24T01:33:33.679041",
+    "crawled_at": "2025-09-24T10:37:05.632944",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -1295,7 +1295,7 @@
     "description": "Magnitude 4.4 earthquake at depth -10.0km",
     "magnitude": "4.4",
     "depth_km": "-10.0",
-    "crawled_at": "2025-09-24T01:33:33.679026",
+    "crawled_at": "2025-09-24T10:37:05.632941",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -1315,7 +1315,7 @@
     "description": "Magnitude 4.7 earthquake at depth -15.0km",
     "magnitude": "4.7",
     "depth_km": "-15.0",
-    "crawled_at": "2025-09-24T01:33:33.679019",
+    "crawled_at": "2025-09-24T10:37:05.632938",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -1335,7 +1335,7 @@
     "description": "Magnitude 5.0 earthquake at depth -10.0km",
     "magnitude": "5.0",
     "depth_km": "-10.0",
-    "crawled_at": "2025-09-24T01:33:33.679011",
+    "crawled_at": "2025-09-24T10:37:05.632934",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -1355,7 +1355,7 @@
     "description": "Magnitude 4.0 earthquake at depth -17.0km",
     "magnitude": "4.0",
     "depth_km": "-17.0",
-    "crawled_at": "2025-09-24T01:33:33.679003",
+    "crawled_at": "2025-09-24T10:37:05.632930",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -1375,7 +1375,7 @@
     "description": "Magnitude 4.6 earthquake at depth -7.0km",
     "magnitude": "4.6",
     "depth_km": "-7.0",
-    "crawled_at": "2025-09-24T01:33:33.678994",
+    "crawled_at": "2025-09-24T10:37:05.632926",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -1395,7 +1395,7 @@
     "description": "Magnitude 4.4 earthquake at depth -101.9km",
     "magnitude": "4.4",
     "depth_km": "-101.9",
-    "crawled_at": "2025-09-24T01:33:33.678985",
+    "crawled_at": "2025-09-24T10:37:05.632920",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -1415,7 +1415,7 @@
     "description": "Magnitude 4.2 earthquake at depth -45.9km",
     "magnitude": "4.2",
     "depth_km": "-45.9",
-    "crawled_at": "2025-09-24T01:33:33.678966",
+    "crawled_at": "2025-09-24T10:37:05.632900",
     "event_url": "https://www.emsc-csem.org/",
     "data_source": "emsc"
   },
@@ -1434,7 +1434,7 @@
     "address": "Guatemala",
     "description": "Since 8 July, a series of earthquakes has severely affected several departments of Guatemala, causing significant impacts on both the population and infrastructure. According to the latest report from the National Coordinator for Disaster Reduction (CONRED), updated as of 16 July, a total of 14,541 ...",
     "glide_number": "EQ-2025-000111-GTM",
-    "crawled_at": "2025-09-24T01:33:32.041937",
+    "crawled_at": "2025-09-24T10:37:04.515731",
     "event_url": "https://reliefweb.int/taxonomy/term/52406",
     "data_source": "reliefweb"
   },
@@ -1453,7 +1453,7 @@
     "address": "Sudan",
     "description": "Between 14 and 15 July 2025, heavy rain and floods across Dar As Salam town of Dar As Salam locality, North Darfur reportedly displaced 87 households. Field teams estimated that 87 houses were destroyed, while 37 houses were partially damaged. Displaced households sought shelter with host communitie...",
     "glide_number": "FL-2025-000154-SDN",
-    "crawled_at": "2025-09-24T01:33:32.041885",
+    "crawled_at": "2025-09-24T10:37:04.515698",
     "event_url": "https://reliefweb.int/taxonomy/term/52407",
     "data_source": "reliefweb"
   },
@@ -1472,7 +1472,7 @@
     "address": "South Sudan",
     "description": "As of 30 July, flooding continues to impact an estimated 80,000 people in Mayendit and Bor South counties, in Unity and Jonglei states. While no flood-related displacement has been reported to date, communities remain at heightened risk due to prolonged exposure to floodwaters. By the end of July, 8...",
     "glide_number": "FL-2025-000158-SSD",
-    "crawled_at": "2025-09-24T01:33:32.041834",
+    "crawled_at": "2025-09-24T10:37:04.514934",
     "event_url": "https://reliefweb.int/taxonomy/term/52409",
     "data_source": "reliefweb"
   },
@@ -1491,7 +1491,7 @@
     "address": "Guinea",
     "description": "In the morning hours of July 22, 2025, Coyah Prefecture was struck by intense torrential rainfall, leading to catastrophic and widespread flooding across the region. Four deaths have been confirmed, including two children, and at least 527 people have sustained injuries. The disaster has displaced 5...",
     "glide_number": "FL-2025-000150-GIN",
-    "crawled_at": "2025-09-24T01:33:32.041789",
+    "crawled_at": "2025-09-24T10:37:04.514919",
     "event_url": "https://reliefweb.int/taxonomy/term/52413",
     "data_source": "reliefweb"
   },
@@ -1510,7 +1510,7 @@
     "address": "Nepal",
     "description": "Although the monsoon arrived in Nepal on 29 May, the majority of areas in Madhesh Province (Province 2) remain deprived of rain six weeks later. The lack of rainfall has led to a water crisis, and the province is facing an unexpected drought despite predictions of above-average rainfall. The provinc...",
     "glide_number": "DR-2025-000125-NPL",
-    "crawled_at": "2025-09-24T01:33:32.041744",
+    "crawled_at": "2025-09-24T10:37:04.514904",
     "event_url": "https://reliefweb.int/taxonomy/term/52414",
     "data_source": "reliefweb"
   },
@@ -1529,7 +1529,7 @@
     "address": "Congo",
     "description": "The Ministry of Health was informed on July 10, 2025 of the appearance of several cases of diarrhea in the health district of Ile de Mbamou, Brazzaville department, clinically accompanied by the following signs: Fever, vomiting, emission of liquid stools. The Ministry of Health, in collaboration wit...",
     "glide_number": "EP-2025-000130-COG",
-    "crawled_at": "2025-09-24T01:33:32.041686",
+    "crawled_at": "2025-09-24T10:37:04.514884",
     "event_url": "https://reliefweb.int/taxonomy/term/52415",
     "data_source": "reliefweb"
   },
@@ -1548,7 +1548,7 @@
     "address": "Lao People's Democratic Republic (the)",
     "description": "According to successive UN situation reports that are referring to in initial government assessment reports, between 21 and 30 July 2025, heavy rainfall associated with the remnants of Tropical Depression Wipha caused widespread flooding and landslides across northern and central provinces of Lao PD...",
     "glide_number": "FL-2025-000126-LAO",
-    "crawled_at": "2025-09-24T01:33:32.041642",
+    "crawled_at": "2025-09-24T10:37:04.514869",
     "event_url": "https://reliefweb.int/taxonomy/term/52416",
     "data_source": "reliefweb"
   },
@@ -1567,7 +1567,7 @@
     "address": "Somalia",
     "description": "As of July 2025, Somalia particularly Puntland regions of Mudug, Nugal and Bari were grappling with a sustained and intensifying diphtheria outbreak. The disease, a highly contagious yet vaccine-preventable illness, continues to spread at alarming rates, placing an immense strain on Puntland’s alrea...",
     "glide_number": "EP-2025-000142-SOM",
-    "crawled_at": "2025-09-24T01:33:32.041600",
+    "crawled_at": "2025-09-24T10:37:04.514856",
     "event_url": "https://reliefweb.int/taxonomy/term/52419",
     "data_source": "reliefweb"
   },
@@ -1586,7 +1586,7 @@
     "address": "Viet Nam",
     "description": "Over the last few days, Tuyên Quang province in northeastern Viet Nam has been affected by storms, strong winds, and landslides, resulting in fatalities and damage. According to the ASEAN Disaster Information Network (ADINet) and as of 11 July, one person died due to a lightning strike and 13 houses...",
     "glide_number": "FL-2025-000129-VNM",
-    "crawled_at": "2025-09-24T01:33:32.041552",
+    "crawled_at": "2025-09-24T10:37:04.514839",
     "event_url": "https://reliefweb.int/taxonomy/term/52420",
     "data_source": "reliefweb"
   },
@@ -1605,7 +1605,7 @@
     "address": "Cabo Verde",
     "description": "Following torrential rains on 11 August, flash floods struck the northern islands of São Vicente, Santo Antão, and São Nicolau, leaving nine people dead, three missing, and displacing 1,500 people. The Government has declared a state of calamity across the affected municipalities and formally reques...",
     "glide_number": "FL-2025-000147-CPV",
-    "crawled_at": "2025-09-24T01:33:32.041487",
+    "crawled_at": "2025-09-24T10:37:04.514817",
     "event_url": "https://reliefweb.int/taxonomy/term/52423",
     "data_source": "reliefweb"
   },
@@ -1624,7 +1624,7 @@
     "address": "Syrian Arab Republic",
     "description": "The ongoing heatwave in Syria, which began on 8 August 2025, has had a wide-reaching impact across multiple governorates, including Rural Damascus, Hama, Aleppo, Homs, Sweida, and Daraa. Temperatures have exceeded 45°C, placing immense strain on already vulnerable communities facing multiple, compou...",
     "glide_number": "HT-2025-000132-SYR",
-    "crawled_at": "2025-09-24T01:33:32.041439",
+    "crawled_at": "2025-09-24T10:37:04.514803",
     "event_url": "https://reliefweb.int/taxonomy/term/52425",
     "data_source": "reliefweb"
   },
@@ -1643,7 +1643,7 @@
     "address": "Equatorial Guinea",
     "description": "For several days, the island region of Equatorial Guinea has been hit by persistent rains, affecting several districts of the capital Malabo. However, the most worrying situation occurred in the city of Luba, capital of the province of Bioko Sur. On Saturday, August 2, 2025, heavy rainfall fell on t...",
     "glide_number": "FL-2025-000145-GNQ",
-    "crawled_at": "2025-09-24T01:33:32.041384",
+    "crawled_at": "2025-09-24T10:37:04.514789",
     "event_url": "https://reliefweb.int/taxonomy/term/52426",
     "data_source": "reliefweb"
   },
@@ -1662,7 +1662,7 @@
     "address": "Yemen",
     "description": "The International Rescue Committee (IRC) is mounting an urgent response to severe flooding that has swept across southern Yemen. More than 100,000 people have been affected by flash floods, triggered by torrential rains, that have destroyed homes – including camps for already displaced families – an...",
     "glide_number": "FL-2025-000151-YEM",
-    "crawled_at": "2025-09-24T01:33:32.041273",
+    "crawled_at": "2025-09-24T10:37:04.514773",
     "event_url": "https://reliefweb.int/taxonomy/term/52427",
     "data_source": "reliefweb"
   },
@@ -1681,7 +1681,7 @@
     "address": "Chad",
     "description": "The cholera outbreak continues to spread, reaching Sila\nprovince after Ouaddaï, where Abdi health district reported\nfour cases, including one death, last week. In Ouaddaï,\nthree health districts are affected, with Farchana and\nAmléyouna recently reporting additional cases. Since 13\nJuly, Ouaddaï has...",
     "glide_number": "EP-2025-000149-TCD",
-    "crawled_at": "2025-09-24T01:33:32.041206",
+    "crawled_at": "2025-09-24T10:37:04.514750",
     "event_url": "https://reliefweb.int/taxonomy/term/52429",
     "data_source": "reliefweb"
   },
@@ -1700,7 +1700,7 @@
     "address": "Afghanistan",
     "description": "On 31 August 2025 at 23.47 local time, a 6+ magnitude earthquake struck Afghanistan’s Nangarhar Province near the Pakistan border. The epicenter was located in Kama district, some 30 km northeast of the city of Jalalabad. Several aftershocks have occurred since, with the initial quake felt in neighb...",
     "glide_number": "EQ-2025-000153-AFG",
-    "crawled_at": "2025-09-24T01:33:32.041152",
+    "crawled_at": "2025-09-24T10:37:04.514734",
     "event_url": "https://reliefweb.int/taxonomy/term/52431",
     "data_source": "reliefweb"
   },
@@ -1719,7 +1719,7 @@
     "address": "Democratic Republic of the Congo",
     "description": "Health authorities in the Democratic Republic of the Congo have declared an outbreak of Ebola virus disease in Kasai Province where 28 suspected cases and 15 deaths, including four health workers, have been reported as of 4 September 2025. The outbreak has affected Bulape and Mweka health zones in K...",
     "glide_number": "EP-2025-000157-COD",
-    "crawled_at": "2025-09-24T01:33:32.041008",
+    "crawled_at": "2025-09-24T10:37:04.514677",
     "event_url": "https://reliefweb.int/taxonomy/term/52433",
     "data_source": "reliefweb"
   },
@@ -1738,7 +1738,7 @@
     "address": "Bolivia (Plurinational State of)",
     "description": "Bolivia entered its seasonal dry period (June to September), a period marked by heightened wildfire risk, particularly in the eastern and Amazonian regions. This risk is exacerbated by slash-and-burn agricultural practices (\"chaqueo\"), which often become uncontrolled and lead to large-scale fires. O...",
     "glide_number": "WF-2025-000163-BOL",
-    "crawled_at": "2025-09-24T01:33:32.040948",
+    "crawled_at": "2025-09-24T10:37:04.514658",
     "event_url": "https://reliefweb.int/taxonomy/term/52435",
     "data_source": "reliefweb"
   },
@@ -1757,7 +1757,7 @@
     "address": "Sierra Leone",
     "description": "Between 31 August and 5 September 2025, Sierra Leone experienced devastating flash floods across 17 communities in seven districts including Bonthe, Kenema, Bo, Moyamba, Kono, Falaba, and Koinadugu. The floods, caused by persistent heavy rainfall and overflowing riverbanks, have affected over 11,080...",
     "glide_number": "FL-2025-000169-SLE",
-    "crawled_at": "2025-09-24T01:33:32.040893",
+    "crawled_at": "2025-09-24T10:37:04.514635",
     "event_url": "https://reliefweb.int/taxonomy/term/52441",
     "data_source": "reliefweb"
   },
@@ -1776,7 +1776,7 @@
     "address": "Benin",
     "description": "Intense rainfall observed in the departments of Mono, Couffo, Zou and Ouémé in the South of Benin caused the overflow of the river Couffo on 26 June 2024 in 6 of the 11 districts of the commune it crosses in Couffo department, Adoukandji, Ahomadegbe, Gnizounme, Tchito, Tohou and Zalli. A rapid asses...",
     "glide_number": "FL-2024-000235-BEN",
-    "crawled_at": "2025-09-24T01:33:32.040830",
+    "crawled_at": "2025-09-24T10:37:04.514597",
     "event_url": "https://reliefweb.int/taxonomy/term/52442",
     "data_source": "reliefweb"
   },
@@ -49472,230 +49472,5 @@
     "address": "-",
     "crawled_at": "2025-08-26T01:21:25.356085",
     "event_url": "https://rsoe-edis.org/eventList/details/932947/0"
-  },
-  {
-    "event_id": "932167",
-    "event_title": "Russian Federation - M 4.0",
-    "event_category": "Earthquake",
-    "original_category": "Geological - Earthquake",
-    "source": "https://www.seismicportal.eu/eventdetails.html?unid=20250825_0000122",
-    "event_date_utc": "2025-08-25 04:00:17",
-    "last_update_utc": "2025-08-25 04:22:32",
-    "latitude": "53.7019",
-    "longitude": "158.8684",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-08-25T07:39:45.405550",
-    "event_url": "https://rsoe-edis.org/eventList/details/932167/0"
-  },
-  {
-    "event_id": "932196",
-    "event_title": "Russian Federation - M 4.5",
-    "event_category": "Earthquake",
-    "original_category": "Geological - Earthquake",
-    "source": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000r3kj",
-    "event_date_utc": "2025-08-25 04:00:17",
-    "last_update_utc": "2025-08-25 04:57:06",
-    "latitude": "53.18",
-    "longitude": "160.313",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-08-25T07:39:19.657247",
-    "event_url": "https://rsoe-edis.org/eventList/details/932196/0"
-  },
-  {
-    "event_id": "932216",
-    "event_title": "North Pacific Ocean - M 4.0",
-    "event_category": "Earthquake",
-    "original_category": "Geological - Earthquake",
-    "source": "https://www.seismicportal.eu/eventdetails.html?unid=20250825_0000165",
-    "event_date_utc": "2025-08-25 05:40:32",
-    "last_update_utc": "2025-08-25 05:57:16",
-    "latitude": "15.473",
-    "longitude": "-94.781",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-08-25T07:39:04.324732",
-    "event_url": "https://rsoe-edis.org/eventList/details/932216/0"
-  },
-  {
-    "event_id": "932223",
-    "event_title": "Guyana - Fire guts Kwakwani Secondary School",
-    "event_category": "Fire in built environment",
-    "original_category": "Fire - Fire in built environment",
-    "source": "https://kaieteurnewsonline.com/2025/08/25/kwakwani-secondary-school-gutted-by-fire/",
-    "event_date_utc": "2025-08-25 06:22:23",
-    "last_update_utc": "2025-08-25 06:22:24",
-    "latitude": "5.283333",
-    "longitude": "-58.05",
-    "area_range": "Local event",
-    "address": "Kwakwani, Upper Demerara - Berbice",
-    "crawled_at": "2025-08-25T07:38:57.528903",
-    "event_url": "https://rsoe-edis.org/eventList/details/932223/0"
-  },
-  {
-    "event_id": "932241",
-    "event_title": "North Pacific Ocean - M 6.0",
-    "event_category": "Earthquake",
-    "original_category": "Geological - Earthquake",
-    "source": "https://www.seismicportal.eu/eventdetails.html?unid=20250825_0000176",
-    "event_date_utc": "2025-08-25 06:48:39",
-    "last_update_utc": "2025-08-25 07:01:09",
-    "latitude": "49.439",
-    "longitude": "159.9463",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-08-25T07:38:42.658606",
-    "event_url": "https://rsoe-edis.org/eventList/details/932241/0"
-  },
-  {
-    "event_id": "932255",
-    "event_title": "Philippine Sea - M 4.0",
-    "event_category": "Earthquake",
-    "original_category": "Geological - Earthquake",
-    "source": "https://www.seismicportal.eu/eventdetails.html?unid=20250825_0000180",
-    "event_date_utc": "2025-08-25 06:51:52",
-    "last_update_utc": "2025-08-25 07:15:05",
-    "latitude": "4.46",
-    "longitude": "127.65",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-08-25T07:38:30.049118",
-    "event_url": "https://rsoe-edis.org/eventList/details/932255/0"
-  },
-  {
-    "event_id": "932256",
-    "event_title": "Indonesia - M 4.0",
-    "event_category": "Earthquake",
-    "original_category": "Geological - Earthquake",
-    "source": "https://www.seismicportal.eu/eventdetails.html?unid=20250825_0000185",
-    "event_date_utc": "2025-08-25 06:53:11",
-    "last_update_utc": "2025-08-25 07:11:16",
-    "latitude": "-9.255",
-    "longitude": "123.967",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-08-25T07:38:29.207660",
-    "event_url": "https://rsoe-edis.org/eventList/details/932256/0"
-  },
-  {
-    "event_id": "932257",
-    "event_title": "Mexico - Flood in Mexico",
-    "event_category": "Flood",
-    "original_category": "Hydrological - Flood",
-    "source": "https://www.gdacs.org/report.aspx?eventid=1103425&episodeid=9&eventtype=FL",
-    "event_date_utc": "2025-08-06 01:00:00",
-    "last_update_utc": "2025-08-24 01:00:00",
-    "latitude": "18.881723",
-    "longitude": "-99.176703",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-08-25T07:38:28.333307",
-    "event_url": "https://rsoe-edis.org/eventList/details/932257/0"
-  },
-  {
-    "event_id": "931433",
-    "event_title": "Celebes Sea - M 4.0",
-    "event_category": "Earthquake",
-    "original_category": "Geological - Earthquake",
-    "source": "https://www.seismicportal.eu/eventdetails.html?unid=20250824_0000380",
-    "event_date_utc": "2025-08-24 17:39:47",
-    "last_update_utc": "2025-08-24 18:01:19",
-    "latitude": "3.09",
-    "longitude": "124.74",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-08-25T07:01:11.582480",
-    "event_url": "https://rsoe-edis.org/eventList/details/931433/0"
-  },
-  {
-    "event_id": "930759",
-    "event_title": "Philippines - M 4.0",
-    "event_category": "Earthquake",
-    "original_category": "Geological - Earthquake",
-    "source": "https://www.seismicportal.eu/eventdetails.html?unid=20250824_0000061",
-    "event_date_utc": "2025-08-24 02:18:21",
-    "last_update_utc": "2025-08-24 02:29:04",
-    "latitude": "10.22",
-    "longitude": "121.89",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-08-25T07:01:10.777743",
-    "event_url": "https://rsoe-edis.org/eventList/details/930759/0"
-  },
-  {
-    "event_id": "930034",
-    "event_title": "North Pacific Ocean - M 4.0",
-    "event_category": "Earthquake",
-    "original_category": "Geological - Earthquake",
-    "source": "https://www.seismicportal.eu/eventdetails.html?unid=20250823_0000183",
-    "event_date_utc": "2025-08-23 09:36:30",
-    "last_update_utc": "2025-08-23 09:49:04",
-    "latitude": "42.9",
-    "longitude": "146.6",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-08-25T07:00:50.800478",
-    "event_url": "https://rsoe-edis.org/eventList/details/930034/0"
-  },
-  {
-    "event_id": "930026",
-    "event_title": "North Pacific Ocean - M 6.0",
-    "event_category": "Earthquake",
-    "original_category": "Geological - Earthquake",
-    "source": "https://earthquakes.ga.gov.au",
-    "event_date_utc": "2025-08-23 09:17:13",
-    "last_update_utc": "2025-08-23 09:31:23",
-    "latitude": "13.385678",
-    "longitude": "-90.009735",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-08-25T07:00:12.595186",
-    "event_url": "https://rsoe-edis.org/eventList/details/930026/0"
-  },
-  {
-    "event_id": "929273",
-    "event_title": "Guyana - Fire destroys Chinese supermarket at Charity",
-    "event_category": "Fire in built environment",
-    "original_category": "Fire - Fire in built environment",
-    "source": "https://www.kaieteurnewsonline.com/2025/08/22/fire-destroys-chinese-supermarket-at-charity/",
-    "event_date_utc": "2025-08-22 11:26:51",
-    "last_update_utc": "2025-08-22 11:26:51",
-    "latitude": "7.033059",
-    "longitude": "-58.4891",
-    "area_range": "Local event",
-    "address": "Essequibo Coast, Pomeroon-Supenaam Region",
-    "crawled_at": "2025-08-25T07:00:06.176879",
-    "event_url": "https://rsoe-edis.org/eventList/details/929273/0"
-  },
-  {
-    "event_id": "931413",
-    "event_title": "Japan - M 4.0",
-    "event_category": "Earthquake",
-    "original_category": "Geological - Earthquake",
-    "source": "https://www.seismicportal.eu/eventdetails.html?unid=20250824_0000344",
-    "event_date_utc": "2025-08-24 16:44:30",
-    "last_update_utc": "2025-08-24 16:49:04",
-    "latitude": "35.8",
-    "longitude": "136.3",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-08-25T06:59:46.847070",
-    "event_url": "https://rsoe-edis.org/eventList/details/931413/0"
-  },
-  {
-    "event_id": "931929",
-    "event_title": "Indonesia - M 4.0",
-    "event_category": "Earthquake",
-    "original_category": "Geological - Earthquake",
-    "source": "https://www.seismicportal.eu/eventdetails.html?unid=20250824_0000555",
-    "event_date_utc": "2025-08-24 23:04:30",
-    "last_update_utc": "2025-08-25 02:03:37",
-    "latitude": "-6.9331",
-    "longitude": "129.365",
-    "area_range": "-",
-    "address": "-",
-    "crawled_at": "2025-08-25T06:59:34.938631",
-    "event_url": "https://rsoe-edis.org/eventList/details/931929/0"
   }
 ]
