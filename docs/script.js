@@ -26,6 +26,52 @@ window.debugLoadData = async function() {
         return false;
     }
 };
+
+// 특정 RSOE 이벤트 좌표 디버깅
+window.debugRsoeCoordinates = async function() {
+    console.log('🔍 Debugging RSOE coordinates...');
+    try {
+        const data = await debugLoadData();
+        if (!data) return;
+
+        const problemEventIds = ['167359', '316381', '489963', '558581', '590400'];
+
+        console.log('📊 Checking problematic RSOE events:');
+        problemEventIds.forEach(eventId => {
+            const event = data.find(e => e.event_id === eventId);
+            if (event) {
+                console.log(`🔍 Event ${eventId}:`, {
+                    title: event.title,
+                    latitude: event.latitude,
+                    longitude: event.longitude,
+                    address: event.address,
+                    data_source: event.data_source || 'rsoe'
+                });
+            } else {
+                console.log(`❌ Event ${eventId} not found in data`);
+            }
+        });
+
+        // Check all RSOE events with 0 coordinates
+        const rsoeEvents = data.filter(e => !e.data_source || e.data_source === 'rsoe');
+        const zeroCoordEvents = rsoeEvents.filter(e =>
+            parseFloat(e.latitude || 0) === 0 && parseFloat(e.longitude || 0) === 0
+        );
+
+        console.log(`📊 Total RSOE events: ${rsoeEvents.length}`);
+        console.log(`⚠️ RSOE events with 0 coordinates: ${zeroCoordEvents.length}`);
+
+        if (zeroCoordEvents.length > 0) {
+            console.log('🔍 Zero coordinate events:');
+            zeroCoordEvents.slice(0, 10).forEach(event => {
+                console.log(`  - ${event.event_id}: ${event.title} (${event.address})`);
+            });
+        }
+
+    } catch (error) {
+        console.error('Debug failed:', error);
+    }
+};
 let filteredData = [];
 let sortedData = [];
 let map;
@@ -349,9 +395,23 @@ async function refreshData() {
     const refreshBtn = document.getElementById('refreshBtn');
     refreshBtn.classList.add('refreshing');
     refreshBtn.textContent = '새로고침 중...';
-    
+
     console.log('🔄 Manual refresh requested');
-    await loadDisasterData();
+    console.log('💥 Force clearing all caches...');
+
+    // Clear any browser caches if possible
+    try {
+        if ('caches' in window) {
+            const cacheNames = await caches.keys();
+            await Promise.all(cacheNames.map(name => caches.delete(name)));
+            console.log('✅ Service Worker caches cleared');
+        }
+    } catch (e) {
+        console.log('⚠️ Could not clear service worker caches:', e);
+    }
+
+    // Force reload with timestamp
+    window.location.href = window.location.href.split('?')[0] + '?refresh=' + Date.now();
 }
 
 // 통계 업데이트 함수 (개선된 버전)
