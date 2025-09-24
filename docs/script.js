@@ -1,5 +1,31 @@
 // 전역 변수
 let disasterEvents = [];
+
+// 디버깅용 전역 함수
+window.debugLoadData = async function() {
+    console.log('🔍 Debug: Starting basic data load test...');
+    try {
+        const response = await fetch('./data/events.json?t=' + new Date().getTime());
+        console.log('Response status:', response.status);
+        console.log('Response headers:', Array.from(response.headers.entries()));
+
+        if (!response.ok) {
+            console.error('HTTP Error:', response.status, response.statusText);
+            return false;
+        }
+
+        const text = await response.text();
+        console.log('Response length:', text.length);
+
+        const json = JSON.parse(text);
+        console.log('JSON parsed successfully. Events count:', json.length);
+
+        return json;
+    } catch (error) {
+        console.error('Debug load failed:', error);
+        return false;
+    }
+};
 let filteredData = [];
 let sortedData = [];
 let map;
@@ -15,6 +41,31 @@ let currentSort = { column: null, direction: null };
 let lastUpdateTime = null;
 let tableItemsToShow = 50;
 let activeDateRange = null;
+
+// 테스트 데이터 로딩 함수
+async function loadTestData() {
+    console.log('🧪 Loading test data...');
+    try {
+        const response = await fetch('./test_data.json');
+        const testData = await response.json();
+
+        disasterEvents = testData.map(event => ({
+            ...event,
+            latitude: parseFloat(event.latitude) || 0,
+            longitude: parseFloat(event.longitude) || 0,
+            event_date: new Date(event.event_date_utc),
+            hasValidCoords: event.latitude && event.longitude && event.latitude !== "" && event.longitude !== ""
+        }));
+
+        console.log(`✅ Test data loaded: ${disasterEvents.length} events`);
+        document.getElementById('loadingIndicator').classList.add('hidden');
+        initializeData();
+        return true;
+    } catch (error) {
+        console.error('❌ Test data loading failed:', error);
+        return false;
+    }
+}
 
 // 데이터 로딩 함수 (개선된 버전 - past_events.json도 고려)
 async function loadDisasterData() {
@@ -134,11 +185,18 @@ async function loadDisasterData() {
                 try {
                     const lat = parseFloat(event.latitude);
                     const lon = parseFloat(event.longitude);
-                    const eventDate = new Date(event.event_date_utc);
+
+                    // Fix invalid date formats like "2025-07-08T00:00:00+00:00Z"
+                    let dateString = event.event_date_utc;
+                    if (dateString && dateString.includes('+00:00Z')) {
+                        dateString = dateString.replace('+00:00Z', 'Z');
+                    }
+
+                    const eventDate = new Date(dateString);
 
                     // Validate date
                     if (isNaN(eventDate.getTime())) {
-                        console.warn(`⚠️ Invalid date for event ${event.event_id}: ${event.event_date_utc}`);
+                        console.warn(`⚠️ Invalid date for event ${event.event_id}: ${event.event_date_utc} (fixed: ${dateString})`);
                     }
 
                     return {
@@ -220,8 +278,12 @@ async function loadDisasterData() {
 
         // 에러 발생시에도 기존 데이터라도 유지하려고 시도
         if (disasterEvents.length === 0) {
-            console.log('🔄 Attempting to use cached/existing data...');
-            // 여기에 localStorage나 다른 fallback 로직 추가 가능
+            console.log('🔄 Attempting to use test data as fallback...');
+            const testSuccess = await loadTestData();
+            if (testSuccess) {
+                console.log('✅ Successfully loaded test data as fallback');
+                return;
+            }
         }
     } finally {
         refreshBtn.disabled = false;
