@@ -451,6 +451,13 @@ class ReliefWebCrawler:
                 except:
                     description = description[:300] + "..."
 
+            # Try to get coordinates from country location
+            latitude, longitude = self.get_country_coordinates(country_name)
+            if not latitude or not longitude:
+                print(f"⚠️ No coordinates found for country: {country_name}")
+            else:
+                print(f"✅ Using country coordinates for {country_name}: {latitude}, {longitude}")
+
             return {
                 "event_id": f"RW_{disaster_id}",
                 "event_title": f"{country_name}: {name}" if country_name else name,
@@ -460,8 +467,8 @@ class ReliefWebCrawler:
                 "source_url": url,
                 "event_date_utc": event_date,
                 "last_update_utc": event_date,
-                "latitude": "",  # API doesn't provide coordinates
-                "longitude": "",
+                "latitude": latitude,
+                "longitude": longitude,
                 "area_range": "",
                 "address": country_name,
                 "description": description,
@@ -476,6 +483,83 @@ class ReliefWebCrawler:
             import traceback
             traceback.print_exc()
             return None
+
+    def get_country_coordinates(self, country_name):
+        """Get approximate coordinates for a country"""
+        if not country_name:
+            return "", ""
+
+        # Country center coordinates (approximate)
+        country_coords = {
+            'afghanistan': ('33.93', '67.71'),
+            'albania': ('41.15', '20.17'),
+            'algeria': ('28.03', '1.66'),
+            'angola': ('-11.20', '17.87'),
+            'argentina': ('-38.42', '-63.62'),
+            'australia': ('-25.27', '133.78'),
+            'bangladesh': ('23.68', '90.36'),
+            'bolivia': ('-16.29', '-63.59'),
+            'brazil': ('-14.24', '-51.93'),
+            'cameroon': ('7.37', '12.35'),
+            'canada': ('56.13', '-106.35'),
+            'chad': ('15.45', '18.73'),
+            'chile': ('-35.68', '-71.54'),
+            'china': ('35.86', '104.20'),
+            'colombia': ('4.57', '-74.30'),
+            'democratic republic of the congo': ('-4.04', '21.76'),
+            'ecuador': ('-1.83', '-78.18'),
+            'egypt': ('26.82', '30.80'),
+            'ethiopia': ('9.15', '40.49'),
+            'ghana': ('7.95', '-1.02'),
+            'guatemala': ('15.78', '-90.23'),
+            'haiti': ('18.97', '-72.29'),
+            'india': ('20.59', '78.96'),
+            'indonesia': ('-0.79', '113.92'),
+            'iran': ('32.43', '53.69'),
+            'iraq': ('33.22', '43.68'),
+            'kenya': ('-0.02', '37.91'),
+            'madagascar': ('-18.77', '46.87'),
+            'mali': ('17.57', '-3.99'),
+            'mexico': ('23.63', '-102.55'),
+            'mozambique': ('-18.67', '35.53'),
+            'myanmar': ('21.91', '95.96'),
+            'nepal': ('28.39', '84.12'),
+            'niger': ('17.61', '8.08'),
+            'nigeria': ('9.08', '8.68'),
+            'pakistan': ('30.38', '69.35'),
+            'peru': ('-9.19', '-75.02'),
+            'philippines': ('12.88', '121.77'),
+            'somalia': ('5.15', '46.20'),
+            'south africa': ('-30.56', '22.94'),
+            'south sudan': ('6.88', '31.31'),
+            'sudan': ('12.86', '30.22'),
+            'syria': ('34.80', '38.99'),
+            'tanzania': ('-6.37', '34.89'),
+            'turkey': ('38.96', '35.24'),
+            'uganda': ('1.37', '32.29'),
+            'ukraine': ('48.38', '31.17'),
+            'venezuela': ('6.42', '-66.59'),
+            'yemen': ('15.55', '48.52'),
+            'zimbabwe': ('-19.02', '29.15'),
+            'zambia': ('-13.13', '27.85')
+        }
+
+        country_lower = country_name.lower().strip()
+        return country_coords.get(country_lower, ("", ""))
+
+    def extract_coordinates_from_url(self, url):
+        """Extract coordinates from ReliefWeb disaster page or use country coordinates"""
+        try:
+            if not url or '/disaster/' not in url:
+                return "", ""
+
+            # For now, skip web scraping and use country coordinates
+            # This is more reliable than web scraping which may fail
+            return "", ""
+
+        except Exception as e:
+            print(f"⚠️ Error extracting coordinates from {url}: {e}")
+            return "", ""
 
     def get_events(self):
         """Return collected events"""

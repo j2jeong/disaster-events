@@ -112,10 +112,16 @@ async function loadDisasterData() {
         // 5. 데이터 전처리
         disasterEvents = deduped.map(event => ({
             ...event,
-            latitude: parseFloat(event.latitude),
-            longitude: parseFloat(event.longitude),
+            latitude: parseFloat(event.latitude) || 0,
+            longitude: parseFloat(event.longitude) || 0,
             event_date: new Date(event.event_date_utc)
-        })).filter(event => !isNaN(event.latitude) && !isNaN(event.longitude));
+        })).filter(event => {
+            // Allow events without coordinates (e.g., ReliefWeb events)
+            const hasCoords = !isNaN(event.latitude) && !isNaN(event.longitude) &&
+                             event.latitude !== 0 && event.longitude !== 0;
+            const isValidEvent = event.event_title && event.event_title.trim() !== '';
+            return hasCoords || isValidEvent; // Keep events with coords OR valid title
+        });
 
         // 시간순 정렬
         disasterEvents.sort((a, b) => a.event_date - b.event_date);
@@ -543,6 +549,12 @@ function updateMapMarkers() {
     
     const markers = [];
     filteredData.forEach((event, index) => {
+        // Skip events without valid coordinates
+        if (!event.latitude || !event.longitude ||
+            event.latitude === 0 || event.longitude === 0) {
+            return;
+        }
+
         const color = getCategoryColor(event.event_category);
         const marker = L.circleMarker([event.latitude, event.longitude], {
             radius: 8,
