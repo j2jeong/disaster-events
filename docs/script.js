@@ -41,11 +41,12 @@ window.debugRsoeCoordinates = async function() {
             const event = data.find(e => e.event_id === eventId);
             if (event) {
                 console.log(`🔍 Event ${eventId}:`, {
-                    title: event.title,
+                    title: event.event_title || event.title,
                     latitude: event.latitude,
                     longitude: event.longitude,
                     address: event.address,
-                    data_source: event.data_source || 'rsoe'
+                    data_source: event.data_source || 'rsoe',
+                    raw_event: event
                 });
             } else {
                 console.log(`❌ Event ${eventId} not found in data`);
@@ -64,9 +65,22 @@ window.debugRsoeCoordinates = async function() {
         if (zeroCoordEvents.length > 0) {
             console.log('🔍 Zero coordinate events:');
             zeroCoordEvents.slice(0, 10).forEach(event => {
-                console.log(`  - ${event.event_id}: ${event.title} (${event.address})`);
+                console.log(`  - ${event.event_id}: ${event.event_title} (${event.address}) - lat: "${event.latitude}" lon: "${event.longitude}"`);
             });
         }
+
+        // Check coordinate processing pipeline
+        console.log('🔍 Testing coordinate processing...');
+        const testEvents = data.slice(0, 5);
+        testEvents.forEach(event => {
+            const processedEvent = preprocessEvent(event);
+            console.log(`Event ${event.event_id}:`, {
+                raw_lat: event.latitude,
+                raw_lon: event.longitude,
+                processed_lat: processedEvent.latitude,
+                processed_lon: processedEvent.longitude
+            });
+        });
 
     } catch (error) {
         console.error('Debug failed:', error);

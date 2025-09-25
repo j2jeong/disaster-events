@@ -7,16 +7,19 @@ from pathlib import Path
 
 # Add the crawler directory to the path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from rsoe_crawler import RSOECrawler, merge_events, create_backup_if_needed, update_past_events_archive
 from reliefweb_crawler import ReliefWebCrawler
 from emsc_crawler import EMSCCrawler
+from dynamic_geocoder import DynamicGeocoder
 
 class MultiSourceCrawler:
     def __init__(self):
         self.rsoe_crawler = RSOECrawler()
         self.reliefweb_crawler = ReliefWebCrawler()
         self.emsc_crawler = EMSCCrawler()
+        self.geocoder = DynamicGeocoder()
         self.all_events = []
 
     def crawl_all_sources(self):
@@ -137,10 +140,43 @@ class MultiSourceCrawler:
             print("📦 Creating backup of existing data...")
             create_backup_if_needed("docs/data/events.json")
 
+            # Apply dynamic geocoding to events with missing coordinates
+            print("🌍 Applying dynamic geocoding to events with missing coordinates...")
+            geocoded_events = []
+            geocoded_count = 0
+
+            for event in self.all_events:
+                # Check if coordinates are missing or zero
+                def is_missing_coordinate(coord_str):
+                    if not coord_str or coord_str in ['', '0', '0.0', '0.00']:
+                        return True
+                    try:
+                        coord_val = float(coord_str)
+                        return coord_val == 0.0
+                    except:
+                        return True
+
+                current_lat = str(event.get('latitude', '')).strip()
+                current_lon = str(event.get('longitude', '')).strip()
+
+                if is_missing_coordinate(current_lat) or is_missing_coordinate(current_lon):
+                    address = event.get('address', '')
+                    if address and address != '-':
+                        lat, lon = self.geocoder.get_coordinates(address, event)
+                        if lat and lon:
+                            event['latitude'] = lat
+                            event['longitude'] = lon
+                            geocoded_count += 1
+
+                geocoded_events.append(event)
+
+            if geocoded_count > 0:
+                print(f"✅ Enhanced {geocoded_count} events with dynamic geocoding")
+
             # Merge with existing events using the enhanced merge function
             print("🔄 Merging new events with existing database...")
             merged_events = merge_events(
-                self.all_events,
+                geocoded_events,
                 existing_path="docs/data/events.json",
                 past_events_path="docs/data/past_events.json"
             )
