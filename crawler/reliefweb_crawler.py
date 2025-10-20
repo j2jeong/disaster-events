@@ -475,6 +475,41 @@ class ReliefWebCrawler:
                 print(f"⚠️ BeautifulSoup parsing failed: {soup_error}")
 
             print(f"⚠️ No coordinates found in {url}")
+
+            # Fallback: scan the main disasters listing page where map entries embed lat/lon
+            try:
+                list_urls = [
+                    "https://reliefweb.int/disasters",
+                    "https://reliefweb.int/disasters?status=ongoing",
+                    "https://reliefweb.int/disasters?status=alert",
+                ]
+
+                # Normalize event URL forms to compare
+                from urllib.parse import urlparse
+                event_path = urlparse(url).path
+                possible_links = {url, f"https://reliefweb.int{event_path}", event_path}
+
+                for list_url in list_urls:
+                    list_html = self.get_page_content(list_url, retries=2)
+                    if not list_html:
+                        continue
+
+                    soup = BeautifulSoup(list_html, 'html.parser')
+                    articles = soup.find_all('article', attrs={'data-disaster-lat': True, 'data-disaster-lon': True})
+                    for art in articles:
+                        a = art.find('a', href=True)
+                        if not a:
+                            continue
+                        href = a['href']
+                        if href in possible_links:
+                            lat = art.get('data-disaster-lat', '').strip()
+                            lon = art.get('data-disaster-lon', '').strip()
+                            if lat and lon:
+                                print(f"✅ Found coordinates on listing page: lat={lat}, lon={lon}")
+                                return lat, lon
+            except Exception as list_err:
+                print(f"⚠️ Listing page coordinate fallback failed: {list_err}")
+
             return "", ""
 
         except Exception as e:
