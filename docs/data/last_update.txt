@@ -1,3 +1,3 @@
-Last updated: 2025-12-10 23:15:42 UTC
+Last updated: 2025-12-11 23:17:14 UTC
 Data sources: RSOE EDIS, ReliefWeb, EMSC
-Run number: 186
+Run number: 187
