@@ -1,5 +1,35 @@
 [
   {
+    "event_id": "1112306",
+    "event_title": "United States - WICHITA FALLS/SHEPS AFB/WICHITA FALLS/MUN., TX.",
+    "event_category": "Flood",
+    "original_category": "Weather - Lightning",
+    "source": "https://severeweather.wmo.int/v2/",
+    "event_date_utc": "2026-07-05 21:00:00",
+    "last_update_utc": "2026-07-05 21:00:00",
+    "latitude": "33.96",
+    "longitude": "-98.48",
+    "area_range": "-",
+    "address": "-",
+    "crawled_at": "2026-07-06T00:00:35.930127",
+    "event_url": "https://rsoe-edis.org/eventList/details/1112306/0"
+  },
+  {
+    "event_id": "1112307",
+    "event_title": "United States - SAVANNAH/MUNICIPAL,  GA.",
+    "event_category": "Flood",
+    "original_category": "Weather - Lightning",
+    "source": "https://severeweather.wmo.int/v2/",
+    "event_date_utc": "2026-07-05 21:00:00",
+    "last_update_utc": "2026-07-05 21:00:00",
+    "latitude": "32.13",
+    "longitude": "-81.2",
+    "area_range": "-",
+    "address": "-",
+    "crawled_at": "2026-07-06T00:00:34.509512",
+    "event_url": "https://rsoe-edis.org/eventList/details/1112307/0"
+  },
+  {
     "event_id": "EMSC_20260701_2906_7333_40",
     "event_title": "M4.0 earthquake - ",
     "event_category": "Earthquake",
